@@ -2,16 +2,16 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>دومينو الشك - VIP Premium (Online Edition)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>do4 - VIP Premium (Stable Layout & AI)</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- مكاتب Firebase للربط الأونلاين -->
+    <!-- مكتبات Firebase للأونلاين -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; }
         body {
             background: radial-gradient(circle at top, #1e293b, #000000); color: #f8fafc; font-family: 'Tajawal', sans-serif;
             text-align: center; margin: 0; padding: 5px; 
@@ -20,342 +20,289 @@
         h1 { 
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
             -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-            margin: 5px 0 10px 0; font-size: 1.8rem; letter-spacing: 1px; flex-shrink: 0; font-weight: 900; 
+            margin: 5px 0 10px 0; font-size: 1.6rem; letter-spacing: 1px; flex-shrink: 0; font-weight: 900; 
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
         
-        .screen { display: none; width: 100%; max-width: 650px; margin: 0 auto; flex: 1; flex-direction: column; position: relative; height: 100%; overflow-y: auto; padding-bottom: 15px; }
-        .screen.active { display: flex; }
+        .screen { display: none; width: 100%; max-width: 650px; margin: 0 auto; flex: 1; flex-direction: column; position: relative; height: 100%; }
+        .screen.active { display: flex; justify-content: flex-start; }
         .hidden { display: none !important; pointer-events: none; }
 
         /* ================== تصميم الزجاج الاحترافي ================== */
         .glass-panel {
             background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 0 20px rgba(212, 175, 55, 0.1); 
             margin: auto; width: 95%; max-height: 95%; overflow-y: auto; position: relative; z-index: 10;
         }
-        .glass-panel h2 { color: #d4af37; font-size: 2rem; margin-top: 0; border-bottom: 2px dashed rgba(212,175,55,0.3); padding-bottom: 15px; font-weight: 900; }
+        .glass-panel h2 { color: #d4af37; font-size: 1.8rem; margin-top: 0; border-bottom: 2px dashed rgba(212,175,55,0.3); padding-bottom: 10px; font-weight: 900; }
         
         .info-btn {
-            position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(212, 175, 55, 0.5);
-            color: #d4af37; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; transition: 0.3s;
+            position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #d4af37; width: 30px; height: 30px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .info-btn:hover { background: rgba(212, 175, 55, 0.3); transform: scale(1.15) rotate(15deg); }
 
-        .setup-section { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        .setup-section:hover { border-color: rgba(212, 175, 55, 0.3); box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); }
-        .setup-section h3 { margin-top: 0; color: #cbd5e1; font-size: 1.2rem; font-weight: 700; }
+        .setup-section { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 15px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .setup-section h3 { margin-top: 0; color: #cbd5e1; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
         
         .name-input {
-            padding: 12px; border-radius: 10px; border: 2px solid rgba(212, 175, 55, 0.3); text-align: center;
-            width: 90%; margin-bottom: 10px; font-family: 'Tajawal'; font-size: 1.1rem; font-weight: bold;
-            background: rgba(0,0,0,0.6); color: #fff; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+            padding: 10px; border-radius: 10px; border: 2px solid rgba(212, 175, 55, 0.3); text-align: center;
+            width: 90%; margin-bottom: 8px; font-family: 'Tajawal'; font-size: 1rem; font-weight: bold;
+            background: rgba(0,0,0,0.6); color: #fff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
-        .name-input:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); transform: scale(1.02); }
+        .name-input:focus { outline: none; border-color: #d4af37; }
 
-        .radio-group { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+        .radio-group { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
         .radio-label {
-            background: rgba(255,255,255,0.05); padding: 8px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer; font-weight: 700; font-size: 1rem; transition: 0.3s; color: #94a3b8;
+            background: rgba(255,255,255,0.05); padding: 6px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; font-weight: 700; font-size: 0.9rem; color: #94a3b8;
         }
         .radio-label input { display: none; }
-        .radio-label.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); color: #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
+        .radio-label.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); color: #d4af37; }
 
-        /* ================== الترابيزة الخشب الفخمة ================== */
+        /* ================== الترابيزة الخشب الفخمة (مقاس ثابت ومناسب) ================== */
         .table-area {
             position: relative; 
             background-color: #2c1005;
             background-image: 
                 radial-gradient(circle at center, rgba(139, 69, 19, 0.5) 0%, rgba(20, 5, 0, 0.95) 100%),
                 repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(0,0,0,0.15) 15px, rgba(0,0,0,0.15) 30px);
-            border: 12px solid #0f0502; border-radius: 25px; 
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.9), 0 15px 35px rgba(0,0,0,0.9), 0 0 0 2px #d4af37;
-            width: 100%; flex: 1; min-height: 330px; 
-            margin: 0 auto 5px auto; display: flex; align-items: center; justify-content: center; flex-direction: column;
-            padding: 30px 10px 20px 10px; 
-        }
-        .table-area::before {
-            content: ""; position: absolute; inset: 0; border-radius: 12px; pointer-events: none;
-            background-image: repeating-linear-gradient(15deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px);
+            border: 8px solid #0f0502; border-radius: 20px; 
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 5px 15px rgba(0,0,0,0.9), 0 0 0 2px #d4af37;
+            width: 100%; height: 270px; flex: 0 0 auto; /* يمنع الترابيزة إنها تتمط */
+            margin: 0 auto 5px auto; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+            padding: 10px 5px; 
         }
 
         .ai-player {
-            position: absolute; background: rgba(15, 23, 42, 0.95); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            width: 90px; height: 90px; font-size: 0.9rem; font-weight: 700;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 5px 15px rgba(0,0,0,0.7); z-index: 10; color: #e2e8f0; backdrop-filter: blur(8px);
+            position: absolute; background: rgba(15, 23, 42, 0.95); border: 2px solid rgba(255,255,255,0.1); border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            width: 75px; height: 75px; font-size: 0.8rem; font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.7); z-index: 10; color: #e2e8f0; backdrop-filter: blur(8px);
         }
         .ai-player span.player-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 4px; }
-        .ai-player .playing-tag { color: #d4af37; font-size: 0.75rem; font-weight: 900; animation: blink 1s infinite; text-shadow: 0 0 5px #d4af37; }
+        .ai-player .playing-tag { color: #d4af37; font-size: 0.7rem; font-weight: 900; animation: blink 1s infinite; }
         
         @keyframes blink { 0%, 100% {opacity: 1;} 50% {opacity: 0.2;} }
-        @keyframes goldPulse {
-            0% { box-shadow: 0 0 10px rgba(212,175,55,0.4); transform: scale(1.05); }
-            50% { box-shadow: 0 0 25px rgba(212,175,55,0.8); transform: scale(1.1); border-color: #fff; }
-            100% { box-shadow: 0 0 10px rgba(212,175,55,0.4); transform: scale(1.05); }
-        }
+        @keyframes goldPulse { 0%, 100% { box-shadow: 0 0 8px rgba(212,175,55,0.4); transform: scale(1.02); } 50% { box-shadow: 0 0 20px rgba(212,175,55,0.8); transform: scale(1.08); border-color: #fff; } }
 
         .ai-player.active-turn { border-color: #d4af37; background: rgba(212, 175, 55, 0.2); animation: goldPulse 1.5s infinite; z-index: 12; }
         .ai-player.won { opacity: 0.3; filter: grayscale(100%); transform: scale(0.9); }
-        .ai-player .badge { background: linear-gradient(135deg, #d4af37, #b38728); color: #000; padding: 2px 8px; border-radius: 6px; font-size: 0.9rem; font-weight: 900; margin-top: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .ai-player .badge { background: linear-gradient(135deg, #d4af37, #b38728); color: #000; padding: 2px 6px; border-radius: 6px; font-size: 0.8rem; font-weight: 900; }
         
-        .pos-top { top: 10px; left: 50%; transform: translateX(-50%); height: auto; width: auto; padding: 6px 20px; flex-direction: row; }
-        .pos-left { left: 10px; top: 50%; transform: translateY(-50%); }
-        .pos-right { right: 10px; top: 50%; transform: translateY(-50%); }
+        .pos-top { top: 5px; left: 50%; transform: translateX(-50%); height: auto; width: auto; padding: 4px 15px; flex-direction: row; }
+        .pos-left { left: 5px; top: 50%; transform: translateY(-50%); }
+        .pos-right { right: 5px; top: 50%; transform: translateY(-50%); }
 
-        .center-board { 
-            text-align: center; width: 100%; z-index: 5; position: relative; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; flex: 1;
-        }
+        .center-board { text-align: center; width: 100%; z-index: 5; position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: auto; margin-bottom: auto;}
         
         #turn-banner {
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent); color: #d4af37; padding: 4px 30px; border-radius: 12px;
-            font-size: 1.1rem; font-weight: 900; display: inline-block;
-            border-top: 1px solid rgba(212, 175, 55, 0.5); border-bottom: 1px solid rgba(212, 175, 55, 0.5); margin-bottom: 5px; text-shadow: 0 2px 4px #000;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent); color: #d4af37; padding: 2px 20px; border-radius: 8px;
+            font-size: 0.95rem; font-weight: 900; display: inline-block; border-top: 1px solid rgba(212, 175, 55, 0.5); border-bottom: 1px solid rgba(212, 175, 55, 0.5); 
         }
 
         .current-claim-box {
-            background: rgba(0, 0, 0, 0.8); color: #e2e8f0; padding: 6px 25px; border-radius: 12px;
-            border: 1px solid rgba(212, 175, 55, 0.4); font-size: 1rem; display: inline-block; backdrop-filter: blur(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.8); color: #e2e8f0; padding: 4px 15px; border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.4); font-size: 0.9rem; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.6);
         }
-        #current-claim { color: #d4af37; font-size: 1.6rem; font-weight: 900; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-        
-        .board-stats { font-size: 0.85rem; color: #94a3b8; background: rgba(0,0,0,0.7); padding: 4px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); font-weight: 700; margin-bottom: 10px; }
+        #current-claim { color: #d4af37; font-size: 1.3rem; font-weight: 900; }
+        .board-stats { font-size: 0.8rem; color: #94a3b8; background: rgba(0,0,0,0.7); padding: 2px 12px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(255,255,255,0.05);}
 
+        /* منطقة التجهيز - في مكانها الصح بدون لخبطة */
         #staging-area {
-            position: relative; margin: 10px auto 5px auto;
-            display: flex; gap: 6px; justify-content: center; align-items: center;
-            min-width: 140px; min-height: 85px; padding: 16px 8px 8px 8px;
+            position: relative; display: flex; gap: 4px; justify-content: center; align-items: center;
+            min-width: 120px; min-height: 60px; padding: 10px 6px 6px 6px;
             background: rgba(0,0,0,0.5); border: 2px dashed rgba(212, 175, 55, 0.6);
-            border-radius: 15px; transition: 0.3s; z-index: 15; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            border-radius: 12px; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); margin: 0 auto; z-index: 15;
         }
         #staging-area::before {
-            content: "مُجهز للرمي 🚀"; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-            color: #d4af37; font-size: 0.8rem; font-weight: 900; pointer-events: none;
-            background: rgba(0,0,0,0.9); padding: 2px 10px; border-radius: 6px; border: 1px solid rgba(212, 175, 55, 0.4);
-            white-space: nowrap;
+            content: "مُجهز للرمي 🚀"; position: absolute; top: -14px; 
+            color: #d4af37; font-size: 0.75rem; font-weight: 900;
+            background: rgba(0,0,0,0.9); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(212, 175, 55, 0.4);
         }
 
         .status-box {
-            background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 10px; 
-            padding: 10px; margin: 0 auto 5px auto; max-width: 650px; width: 100%; font-size: 1rem; font-weight: 700; color: #d4af37;
-            flex-shrink: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; 
+            padding: 8px; margin: 0 auto 5px auto; width: 100%; font-size: 0.95rem; font-weight: 700; color: #d4af37;
+            flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
-        /* ================== الدومينو العاجي (Ivory) ================== */
-        .player-area { flex-shrink: 0; margin-bottom: 5px; position: relative; z-index: 15; }
-        #box-player { 
-            margin: 0; color: #d4af37; font-size: 1.1rem; font-weight: 900; padding: 6px 20px; border-radius: 10px; display: inline-block; transition: 0.3s; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
-        }
+        /* ================== الدومينو (حجم أصغر شوية للموبايل) ================== */
+        .player-area { flex-shrink: 0; position: relative; z-index: 15; }
+        #box-player { margin: 0; color: #d4af37; font-size: 1rem; font-weight: 900; padding: 4px 15px; border-radius: 8px; display: inline-block; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
         #box-player.active-turn { animation: goldPulse 1.5s infinite; }
         
-        .hand { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 8px 0; min-height: 75px; }
+        .hand { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin: 6px 0; min-height: 65px; }
 
         .domino-piece {
-            width: 36px; height: 72px; 
-            background: linear-gradient(135deg, #fffff8 0%, #e8e0cc 100%); 
-            border-radius: 6px; cursor: pointer; display: flex; flex-direction: column;
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s; user-select: none;
-            box-shadow: 2px 5px 10px rgba(0,0,0,0.7), inset -1px -1px 3px rgba(0,0,0,0.1); 
-            border: 1px solid #d6cbb3; position: relative; z-index: 2;
+            width: 30px; height: 60px; background: linear-gradient(145deg, #ffffff, #e2e8f0); border-radius: 5px; cursor: pointer; display: flex; flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s; user-select: none; flex-shrink: 0;
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.7), inset -1px -1px 3px rgba(0,0,0,0.2); border: 1px solid #cbd5e1; position: relative; z-index: 2;
         }
-        .domino-piece:hover { transform: translateY(-5px); }
+        .domino-piece:hover { transform: translateY(-4px); }
         
-        #staging-area .domino-piece { transform: scale(1.1) translateY(-2px); box-shadow: 0 12px 20px rgba(0,0,0,0.9); border: 2px solid #3b82f6; }
+        #staging-area .domino-piece { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.9); border: 2px solid #3b82f6; }
         
-        .dots-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); flex: 1; padding: 3px; align-items: center; justify-items: center; }
-        .dot { background: radial-gradient(circle at 30% 30%, #222, #000); border-radius: 50%; width: 7px; height: 7px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5); }
+        .dots-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); flex: 1; padding: 2px; align-items: center; justify-items: center; }
+        .dot { background: radial-gradient(circle at 30% 30%, #333, #000); border-radius: 50%; width: 6px; height: 6px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5); }
+        .divider { width: 85%; height: 2px; background: #64748b; margin: 0 auto; border-radius: 1px; }
         
-        .divider { width: 85%; height: 2px; background: #b8b09e; margin: 0 auto; border-radius: 1px; box-shadow: inset 0 1px 1px rgba(0,0,0,0.2); position: relative; }
-        
-        .spinner-pin {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 6px; height: 6px; border-radius: 50%;
-            background: radial-gradient(circle, #fcd34d, #b45309);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-        }
-
-        #table-stack { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; max-width: 95%; max-height: 100px; overflow-y: auto; padding: 5px; gap: 4px; position: relative; }
+        #table-stack { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; max-width: 95%; max-height: 80px; overflow: hidden; padding: 2px; gap: 3px; }
         
         .facedown-piece {
-            width: 30px; height: 60px; 
-            background: linear-gradient(145deg, #cbd5e1, #94a3b8); border-radius: 4px;
-            display: flex; align-items: center; justify-content: center; box-shadow: 2px 3px 6px rgba(0,0,0,0.6); 
-            border: 1px solid #64748b; transform-style: preserve-3d; margin: 1px; position: relative; 
+            width: 24px; height: 48px; background: linear-gradient(145deg, #cbd5e1, #94a3b8); border-radius: 3px;
+            display: flex; align-items: center; justify-content: center; box-shadow: 1px 2px 4px rgba(0,0,0,0.6); 
+            border: 1px solid #64748b; margin: 1px; position: relative; 
         }
 
         .old-piece { filter: brightness(0.6); opacity: 0.9; transform: scale(0.9); }
-        .new-piece { animation: dropBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border: 2px solid #d4af37; box-shadow: 0 0 10px rgba(212,175,55,0.4); }
-        .separator-line { width: 3px; height: 40px; background: linear-gradient(to bottom, transparent, #d4af37, transparent); border-radius: 2px; margin: 0 10px; }
+        .new-piece { animation: dropBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border: 2px solid #d4af37; box-shadow: 0 0 8px rgba(212,175,55,0.4); }
+        .separator-line { width: 2px; height: 35px; background: linear-gradient(to bottom, transparent, #d4af37, transparent); border-radius: 2px; margin: 0 6px; }
 
-        @keyframes dropBounce { 0% { transform: translateY(-80px) scale(1.2) rotate(15deg); opacity: 0; } 100% { transform: translateY(0) scale(1) rotate(0); opacity: 1; } }
+        @keyframes dropBounce { 0% { transform: translateY(-50px) scale(1.2) rotate(15deg); opacity: 0; } 100% { transform: translateY(0) scale(1) rotate(0); opacity: 1; } }
         @keyframes flipReveal {
             0% { transform: rotateY(0deg) scale(1); background: #cbd5e1; }
-            50% { transform: rotateY(90deg) scale(1.2); box-shadow: 0 0 25px #d4af37; }
-            100% { transform: rotateY(0deg) scale(1); background: #ffffff; box-shadow: 0 0 10px rgba(255,255,255,0.4); }
+            50% { transform: rotateY(90deg) scale(1.2); box-shadow: 0 0 20px #d4af37; }
+            100% { transform: rotateY(0deg) scale(1); background: #ffffff; box-shadow: 0 0 8px rgba(255,255,255,0.4); }
         }
         .flip-anim { animation: flipReveal 0.6s ease-in-out forwards !important; border-color: #d4af37 !important; }
 
         /* ================== أزرار التحكم ================== */
         .btn {
-            background: rgba(212, 175, 55, 0.1); color: #d4af37; padding: 10px 18px;
-            border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 10px; font-family: 'Tajawal', sans-serif; font-weight: 700;
-            cursor: pointer; font-size: 1.1rem; margin: 4px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; max-width: 250px; backdrop-filter: blur(5px);
-            text-transform: uppercase; letter-spacing: 0.5px;
+            background: rgba(212, 175, 55, 0.1); color: #d4af37; padding: 8px 15px;
+            border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 8px; font-family: 'Tajawal', sans-serif; font-weight: 700;
+            cursor: pointer; font-size: 1rem; margin: 2px; transition: 0.2s; width: 100%; max-width: 250px; text-transform: uppercase;
         }
-        .btn:hover { background: rgba(212, 175, 55, 0.2); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
         .btn:active { transform: translateY(1px); }
-        .btn-primary { background: linear-gradient(135deg, #d4af37, #b38728); color: #000; border: none; font-weight: 900; box-shadow: 0 4px 10px rgba(212,175,55,0.4); }
-        .btn-primary:hover { background: linear-gradient(135deg, #fde047, #d4af37); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6); }
-        .btn-danger { color: #fff; border: none; background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 4px 10px rgba(239,68,68,0.4); }
-        .btn-danger:hover { background: linear-gradient(135deg, #f87171, #dc2626); box-shadow: 0 6px 20px rgba(239,68,68,0.6); }
-        .btn-blue { color: #fff; border: none; background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 4px 10px rgba(59,130,246,0.4); }
-        .btn-blue:hover { background: linear-gradient(135deg, #60a5fa, #2563eb); box-shadow: 0 6px 20px rgba(59,130,246,0.6); }
+        .btn-primary { background: linear-gradient(135deg, #d4af37, #b38728); color: #000; border: none; font-weight: 900; }
+        .btn-danger { color: #fff; border: none; background: linear-gradient(135deg, #ef4444, #b91c1c); }
+        .btn-blue { color: #fff; border: none; background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         
-        .controls-container { background: rgba(0,0,0,0.5); border-radius: 15px; padding: 12px; margin: 5px auto; max-width: 600px; border: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 20; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .claim-selector { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .controls-container { background: rgba(0,0,0,0.6); border-radius: 12px; padding: 10px; margin: 4px auto; max-width: 600px; border: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 20; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .claim-selector { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
         .claim-btn {
-            background: rgba(255,255,255,0.05); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; width: 45px; height: 45px; 
-            font-size: 1.3rem; font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.05); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; width: 40px; height: 40px; 
+            font-size: 1.2rem; font-family: 'Tajawal'; font-weight: 700; cursor: pointer; transition: 0.2s;
         }
-        .claim-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        .claim-btn.active { background: linear-gradient(135deg, #d4af37, #b38728); color: #000; border: none; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); transform: scale(1.1); }
+        .claim-btn.active { background: linear-gradient(135deg, #d4af37, #b38728); color: #000; border: none; transform: scale(1.05); }
 
-        /* ================== المودالز وشاشة الفوز ================== */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        }
-        .settings-btn {
-            position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.8); color: #d4af37; 
-            border: 1px solid rgba(212,175,55,0.3); border-radius: 10px; width: 40px; height: 40px; 
-            font-size: 1.3rem; cursor: pointer; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(5px);
-        }
-        .settings-btn:hover { background: rgba(212,175,55,0.2); transform: rotate(90deg) scale(1.1); }
+        /* ================== المودالز والشات ================== */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 2000; display: flex; justify-content: center; align-items: center; }
+        .settings-btn { position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.8); color: #d4af37; border: 1px solid rgba(212,175,55,0.3); border-radius: 8px; width: 35px; height: 35px; font-size: 1.2rem; cursor: pointer; z-index: 100; display: flex; align-items: center; justify-content: center; }
 
-        #win-overlay { flex-direction: column; text-align: center; z-index: 3000; }
-        #win-name {
-            font-size: 3.5rem; font-weight: 900; margin: 10px 0;
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 4px 10px rgba(212,175,55,0.6)); animation: winScale 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes winScale { 0% {transform: scale(0.1); opacity: 0;} 100% {transform: scale(1); opacity: 1;} }
-        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-20px);} }
-        
-        .rules-list { text-align: right; line-height: 1.8; color: #cbd5e1; font-size: 1rem; padding-right: 20px; list-style-type: decimal; }
-        .rules-list li { margin-bottom: 10px; }
-        .rules-list strong { color: #d4af37; }
+        .score-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 1rem; text-align: right; }
+        .score-table th { padding: 8px; border-bottom: 2px solid rgba(212,175,55,0.3); color: #d4af37; font-weight: 900;}
+        .score-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 700;}
 
-        .score-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 1.1rem; text-align: right; }
-        .score-table th { padding: 12px; border-bottom: 2px solid rgba(212,175,55,0.3); color: #d4af37; font-weight: 900;}
-        .score-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 700;}
-
-        /* الشات */
+        /* الشات وبابلز الكلام */
         .chat-toggle-btn {
             position: absolute; bottom: 10px; left: 10px; background: rgba(15, 23, 42, 0.8); color: #d4af37;
-            border: 1px solid rgba(212,175,55,0.4); border-radius: 20px; padding: 8px 18px; font-weight: 700; font-family: 'Tajawal'; font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer; z-index: 100; transition: 0.3s; backdrop-filter: blur(5px);
+            border: 1px solid rgba(212,175,55,0.4); border-radius: 15px; padding: 6px 12px; font-weight: 700; font-family: 'Tajawal'; font-size: 0.9rem;
+            cursor: pointer; z-index: 100;
         }
-        .chat-toggle-btn:hover { background: rgba(212,175,55,0.2); transform: translateY(-2px); }
         .chat-container {
-            position: absolute; bottom: 55px; left: 10px; width: 280px; max-height: 320px; height: 45vh;
-            background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(212,175,55,0.3); border-radius: 15px;
-            display: flex; flex-direction: column; z-index: 101; box-shadow: 0 15px 35px rgba(0,0,0,0.8); transition: 0.3s; transform-origin: bottom left; backdrop-filter: blur(15px);
+            position: absolute; bottom: 50px; left: 10px; width: 260px; max-height: 280px; height: 40vh;
+            background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(212,175,55,0.3); border-radius: 12px;
+            display: flex; flex-direction: column; z-index: 101; box-shadow: 0 10px 25px rgba(0,0,0,0.8);
         }
-        .chat-container.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
-        .chat-header { background: rgba(0,0,0,0.5); color: #d4af37; padding: 12px; font-weight: 900; border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .close-chat { cursor: pointer; color: #94a3b8; padding: 0 8px; font-size: 1.2rem; transition: 0.2s; }
-        .close-chat:hover { color: #f87171; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-        .chat-msg { padding: 8px 14px; border-radius: 10px; font-size: 0.95rem; max-width: 85%; line-height: 1.4; font-weight: 500;}
-        .msg-player { background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05)); color: #d4af37; align-self: flex-start; text-align: right; border: 1px solid rgba(212, 175, 55, 0.3); border-bottom-right-radius: 2px;}
-        .msg-ai { background: rgba(255,255,255,0.05); color: #cbd5e1; align-self: flex-end; text-align: right; border: 1px solid rgba(255,255,255,0.1); border-bottom-left-radius: 2px;}
-        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); border-radius: 0 0 15px 15px; }
-        .chat-input-area input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: #fff; font-family: 'Tajawal'; font-size: 0.95rem; }
-        .chat-input-area input:focus { outline: none; border-color: #3b82f6; }
-        .chat-send-btn { background: transparent; color: #3b82f6; border: none; padding: 0 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+        .chat-container.hidden { display: none; }
+        .chat-header { background: rgba(0,0,0,0.5); color: #d4af37; padding: 8px 12px; font-weight: 900; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; }
+        .close-chat { cursor: pointer; color: #f87171; font-size: 1.1rem; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 8px; }
+        .chat-msg { padding: 6px 10px; border-radius: 8px; font-size: 0.85rem; max-width: 85%; }
+        .msg-player { background: rgba(212, 175, 55, 0.15); color: #d4af37; align-self: flex-start; text-align: right; border: 1px solid rgba(212, 175, 55, 0.3); }
+        .msg-ai { background: rgba(255,255,255,0.05); color: #cbd5e1; align-self: flex-end; text-align: right; border: 1px solid rgba(255,255,255,0.1); }
+        .chat-input-area { display: flex; padding: 6px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); }
+        .chat-input-area input { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: #fff; font-family: 'Tajawal'; font-size: 0.9rem; }
+        .chat-send-btn { background: transparent; color: #3b82f6; border: none; padding: 0 8px; font-weight: 900; font-size: 1rem; cursor: pointer; }
         
+        /* بابلز الكلام اللي بتظهر فوق اللاعبين */
+        .player-bubble {
+            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            background: #fdfbf7; color: #000; padding: 3px 8px; border-radius: 8px;
+            font-size: 0.75rem; font-weight: bold; white-space: nowrap;
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 50; border: 2px solid #f59e0b;
+        }
+        .player-bubble.show { opacity: 1; top: -38px; }
+        .player-bubble::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #f59e0b transparent transparent transparent; }
+        #bubble-player.player-bubble { top: -35px; }
+        #bubble-player.player-bubble.show { top: -45px; }
     </style>
 </head>
 <body>
 
-    <!-- ================== الواجهة الرئيسية ================== -->
+    <!-- الواجهة الرئيسية -->
     <div id="lobby-screen" class="screen active">
         <div class="glass-panel">
             <button class="info-btn" onclick="openRules()">❓</button>
-            <h2>دومينو الشك 🀄</h2>
-            <button id="resume-btn" class="btn btn-blue hidden" style="margin-bottom: 15px; padding: 12px;" onclick="resumeGame()">استكمال الجيم السابق 🔄</button>
+            <h2>do4 🀄</h2>
+            <button id="resume-btn" class="btn btn-blue hidden" style="margin-bottom: 15px;" onclick="resumeGame()">استكمال الجيم السابق 🔄</button>
 
-            <!-- اللعب الأونلاين -->
             <div class="setup-section" style="border-color: rgba(212, 175, 55, 0.4);">
-                <h3 style="color: #d4af37;">لعب أونلاين (مع أصحابك) 🌐</h3>
-                <input type="text" id="online-player-name" class="name-input" placeholder="اسمك (عشان صحابك يعرفوك)">
-                
-                <div style="display:flex; justify-content:center; margin-bottom: 10px;">
-                    <button class="btn btn-primary" onclick="createOnlineRoom()" style="width: 80%;">إنشاء غرفة 🏠</button>
-                </div>
-                
-                <div style="display:flex; justify-content:center; gap: 8px; align-items: center;">
-                    <input type="text" id="room-code-input" class="name-input" placeholder="كود الغرفة" style="width: 50%; margin: 0;">
-                    <button class="btn btn-blue" onclick="joinOnlineRoom()" style="width: 30%; margin: 0; padding: 10px;">انضمام 🚀</button>
+                <h3 style="color: #d4af37;">لعب أونلاين 🌐</h3>
+                <input type="text" id="online-player-name" class="name-input" placeholder="اسمك">
+                <button class="btn btn-primary" onclick="createOnlineRoom()">إنشاء غرفة 🏠</button>
+                <div style="display:flex; gap: 8px; margin-top: 8px;">
+                    <input type="text" id="room-code-input" class="name-input" placeholder="كود الغرفة" style="margin: 0; width: 60%;">
+                    <button class="btn btn-blue" onclick="joinOnlineRoom()" style="margin: 0; width: 40%;">انضمام</button>
                 </div>
             </div>
 
-            <!-- اللعب الأوفلاين -->
+            <div class="setup-section">
+                <h3>لعب فردي (ضد الكمبيوتر) 🤖</h3>
+                <!-- دي الخانة اللي كانت ناقصة وبتبوظ الـ AI ضفتها أهو -->
+                <input type="text" id="single-player-name" class="name-input" placeholder="اسمك">
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="aiCount" value="1" onclick="updateRadioUI(this)"><span>1 كمبيوتر</span></label>
+                    <label class="radio-label selected"><input type="radio" name="aiCount" value="2" checked onclick="updateRadioUI(this)"><span>2 كمبيوتر</span></label>
+                    <label class="radio-label"><input type="radio" name="aiCount" value="3" onclick="updateRadioUI(this)"><span>3 كمبيوتر</span></label>
+                </div>
+                <button class="btn btn-primary" onclick="startGameMode('ai')">ابدأ التحدي 🔥</button>
+            </div>
+
             <div class="setup-section" style="border-color: rgba(96, 165, 250, 0.2);">
-                <h3 style="color: #60a5fa;">لعب أوفلاين (لوكال / ضد الكمبيوتر) 📱</h3>
+                <h3 style="color: #60a5fa;">لعب محلي (موبايل واحد) 📱</h3>
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="localCount" value="2" onclick="updateLocalInputs(this)"><span>2 لاعبين</span></label>
                     <label class="radio-label selected"><input type="radio" name="localCount" value="3" checked onclick="updateLocalInputs(this)"><span>3 لاعبين</span></label>
                     <label class="radio-label"><input type="radio" name="localCount" value="4" onclick="updateLocalInputs(this)"><span>4 لاعبين</span></label>
                 </div>
                 <div id="local-names-container" style="margin-bottom: 10px;"></div>
-                <div style="display: flex; gap: 5px;">
-                    <button class="btn btn-blue" onclick="startGameMode('local')">بدء لعب محلي 🤝</button>
-                    <button class="btn" style="background:#334155;" onclick="startGameMode('ai')">ضد AI 🤖</button>
-                </div>
+                <button class="btn btn-blue" onclick="startGameMode('local')">بدء لعب محلي 🤝</button>
             </div>
         </div>
     </div>
 
-    <!-- ================== غرفة الانتظار (أونلاين) ================== -->
+    <!-- غرفة الانتظار -->
     <div id="waiting-screen" class="screen">
         <div class="glass-panel" style="text-align: center;">
             <h2 style="color: #fff;">غرفة الانتظار ⏳</h2>
-            <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 5px;">ابعث الكود ده لأصحابك:</p>
-            <h1 id="room-code-display" style="font-size: 4rem; letter-spacing: 8px; margin: 10px 0; color: #f59e0b; text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);">----</h1>
-            
-            <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 15px; margin-bottom: 20px;">
-                <h3 style="color: #cbd5e1; margin-top: 0; font-size: 1.1rem;">اللاعبين المنضمين:</h3>
-                <div id="online-players-list" style="display:flex; flex-direction:column; gap:8px; font-weight: bold; color: #fff;">
-                    <!-- Players will appear here -->
-                </div>
+            <p style="color: #94a3b8; font-size: 1rem;">أعط هذا الكود لأصدقائك:</p>
+            <h1 id="room-code-display" style="font-size: 3.5rem; letter-spacing: 5px; color: #d4af37; margin: 10px 0;">----</h1>
+            <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 12px; margin-bottom: 15px;">
+                <h3 style="color: #cbd5e1; margin-top: 0; font-size: 1rem;">اللاعبين:</h3>
+                <div id="online-players-list" style="display:flex; flex-direction:column; gap:6px; font-weight: bold; color: #fff; font-size: 0.9rem;"></div>
             </div>
-
-            <button id="start-online-btn" class="btn btn-primary hidden" style="font-size: 1.3rem; padding: 12px; margin-bottom: 10px;" onclick="startOnlineGame()">ابدأ اللعبة 🔥</button>
-            <button class="btn btn-danger" onclick="leaveOnlineRoom()">خروج من الغرفة 🚪</button>
+            <button id="start-online-btn" class="btn btn-primary hidden" onclick="startOnlineGame()" style="font-size: 1.2rem;">ابدأ اللعبة 🔥</button>
+            <button class="btn btn-danger" onclick="leaveOnlineRoom()">إلغاء وخروج</button>
         </div>
     </div>
 
-    <!-- ================== نافذة شرح اللعبة ================== -->
+    <!-- القوانين -->
     <div id="rules-modal" class="modal-overlay hidden">
-        <div class="glass-panel" style="width: 90%; max-width: 420px; text-align: right;">
-            <h2 style="font-size: 1.6rem; text-align: center;">قوانين اللعبة 📜</h2>
-            <ul class="rules-list">
+        <div class="glass-panel" style="width: 90%; max-width: 400px; text-align: right;">
+            <h2 style="font-size: 1.4rem; text-align: center;">قوانين اللعبة 📜</h2>
+            <ul class="rules-list" style="font-size: 0.9rem;">
                 <li><strong>الهدف:</strong> إنك تخلص ورقك كله قبل الباقيين.</li>
-                <li><strong>طريقة اللعب:</strong> بتختار من ورقة لـ 7 ورقات، تنزل بيهم مقلوبين وتعلن إنهم رقم معين (مثلاً 5).</li>
-                <li><strong>البلف:</strong> ممكن تقول الحقيقة وتنزل خمسات فعلاً، وممكن <strong>تكذب</strong> وتنزل أي ورق تاني!</li>
-                <li><strong>الشك:</strong> لو حد داس <strong>"أشك"</strong> والورق اتكشف وطلعت بتكذب، هتشيل الأرض كلها.</li>
-                <li>لو شك فيك وطلعت <strong>صادق</strong>، هو اللي هيشيل الأرض!</li>
-                <li><strong>جلا (تخطي):</strong> لو مش عايز تلعب دوس "جلا". لو كله قال جلا، الدور بيرجع لآخر واحد لعب يفتح برقم جديد.</li>
-                <li><strong>البداية:</strong> اللي معاه البلاطة (6-6) هو اللي بيبدأ إجباري.</li>
+                <li><strong>البلف:</strong> ممكن تقول الحقيقة وممكن <strong>تكذب</strong> وتنزل أي ورق.</li>
+                <li><strong>الشك:</strong> لو حد شك وطلعت بتكذب، هتشيل الأرض. لو صادق هو يشيل!</li>
             </ul>
-            <center><button class="btn btn-primary" onclick="closeRules()" style="margin-top: 10px;">فهمت اللعبة 👍</button></center>
+            <center><button class="btn btn-primary" onclick="closeRules()">فهمت اللعبة 👍</button></center>
         </div>
     </div>
 
-    <!-- ================== النتائج ================== -->
+    <!-- النتائج -->
     <div id="score-screen" class="screen">
         <div class="glass-panel">
             <h2>لوحة الشرف 🏆</h2>
@@ -368,16 +315,15 @@
         </div>
     </div>
 
-    <!-- ================== شاشة اللعب الرئيسية ================== -->
+    <!-- شاشة اللعب الرئيسية -->
     <div id="game-screen" class="screen">
         <button class="settings-btn" onclick="openSettings()">⚙</button>
-        <h1>دومينو الشك</h1>
+        <h1>do4</h1>
 
         <div class="table-area" id="main-table">
             <div class="center-board">
                 <div id="turn-banner" class="hidden">الدور على: --</div>
                 <div class="current-claim-box">المطلوب: <strong id="current-claim">--</strong></div>
-                <!-- مساحة الرصة -->
                 <div id="table-stack"></div>
                 <div class="board-stats">الرمية: <span id="last-played-count">0</span> | الأرض: <span id="total-stack">0</span></div>
             </div>
@@ -388,13 +334,14 @@
         <div class="status-box" id="status-message">جاري التوزيع...</div>
 
         <!-- أزرار الشك -->
-        <div id="player-reaction-controls" class="hidden" style="display:flex; justify-content:center; gap:12px; flex-shrink: 0; position:relative; z-index:20;">
-            <button class="btn btn-danger" style="width:auto; padding: 10px 30px; font-size: 1.2rem;" onclick="playerDoubts()">أكشفه! 🤨</button>
-            <button class="btn" style="width:auto; padding: 10px 30px;" onclick="playerPasses()">تخطي 🤫</button>
+        <div id="player-reaction-controls" class="hidden" style="display:flex; justify-content:center; gap:10px; flex-shrink: 0; z-index:20; margin-bottom: 5px;">
+            <button class="btn btn-danger" style="width:auto; padding: 8px 25px; font-size: 1.1rem;" onclick="playerDoubts()">أكشفه! 🤨</button>
+            <button class="btn" style="width:auto; padding: 8px 25px;" onclick="playerPasses()">تخطي 🤫</button>
         </div>
 
         <div class="player-area">
             <div style="position: relative; display: inline-block;">
+                <div class="player-bubble" id="bubble-player"></div>
                 <h3 id="box-player"><span id="player-name-display">ورقك</span> <span class="playing-tag hidden" id="player-playing-tag">بيلعب...</span></h3>
             </div>
             
@@ -402,13 +349,13 @@
             
             <div class="controls-container hidden" id="player-play-controls">
                 <div id="claim-section">
-                    <p style="margin: 0 0 8px 0; font-size: 1rem; color:#cbd5e1; font-weight: 700;">افتح الدور برقم كام؟</p>
+                    <p style="margin: 0 0 6px 0; font-size: 0.9rem; color:#cbd5e1; font-weight: 700;">الرقم المطلوب:</p>
                     <div class="claim-selector">
                         <button class="claim-btn" onclick="selectClaim(0)">0</button><button class="claim-btn" onclick="selectClaim(1)">1</button><button class="claim-btn" onclick="selectClaim(2)">2</button><button class="claim-btn" onclick="selectClaim(3)">3</button><button class="claim-btn" onclick="selectClaim(4)">4</button><button class="claim-btn" onclick="selectClaim(5)">5</button><button class="claim-btn" onclick="selectClaim(6)">6</button>
                     </div>
                 </div>
-                <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="btn btn-primary" id="play-btn" onclick="playPiece()" style="font-size: 1.2rem;">العب 🚀</button>
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                    <button class="btn btn-primary" id="play-btn" onclick="playPiece()" style="font-size: 1.1rem;">العب 🚀</button>
                     <button class="btn btn-blue" id="gala-btn" onclick="playerGala()">جـــلا 🏃‍♂️</button>
                 </div>
             </div>
@@ -425,42 +372,39 @@
         </div>
     </div>
 
-    <!-- ================== شاشة الاحتفال بالفوز ================== -->
+    <!-- شاشة الفوز والمودالز -->
     <div id="win-overlay" class="modal-overlay hidden">
         <div id="win-content" style="text-align: center;">
-            <div style="font-size: 5rem; animation: bounce 2s infinite;">🎉👑🎉</div>
+            <div style="font-size: 4rem; animation: bounce 2s infinite;">🎉👑🎉</div>
             <h2 id="win-name" style="color: #fff;">--</h2>
-            <p style="color: #d4af37; font-size: 1.5rem; font-weight: 900; text-shadow: 0 2px 5px #000;">خلص ورقه وكسب الجولة!</p>
         </div>
     </div>
 
-    <!-- ================== المودالز الفرعية ================== -->
     <div id="settings-modal" class="modal-overlay hidden">
-        <div class="glass-panel" style="width: 85%; max-width: 320px;">
-            <h2 style="font-size: 1.5rem;">إعدادات ⚙️</h2>
-            <button class="btn btn-primary" onclick="closeSettings()" style="margin-bottom: 10px;">استكمال اللعب ▶️</button>
+        <div class="glass-panel" style="width: 85%; max-width: 300px;">
+            <h2 style="font-size: 1.4rem;">إعدادات ⚙️</h2>
+            <button class="btn btn-primary" onclick="closeSettings()" style="margin-bottom: 8px;">استكمال اللعب ▶️</button>
             <button class="btn btn-danger" onclick="withdrawGame()">شطب وانسحاب 🏳️</button>
         </div>
     </div>
 
     <div id="pass-phone-modal" class="modal-overlay hidden">
-        <div class="glass-panel" style="width: 85%; max-width: 350px; border-color: rgba(96, 165, 250, 0.5);">
-            <h2 id="pass-phone-text" style="color: #fff; font-size: 1.4rem; margin-bottom: 25px; border: none; line-height: 1.5;">مرر الجهاز إلى ...</h2>
-            <button class="btn btn-blue" onclick="acceptPhone()" style="font-size: 1.2rem;">استلمت الجهاز 📱</button>
+        <div class="glass-panel" style="width: 85%; max-width: 300px; border-color: rgba(96, 165, 250, 0.5);">
+            <h2 id="pass-phone-text" style="color: #fff; font-size: 1.2rem; margin-bottom: 20px;">مرر الجهاز إلى ...</h2>
+            <button class="btn btn-blue" onclick="acceptPhone()">استلمت الجهاز 📱</button>
         </div>
     </div>
 
     <div id="local-reaction-modal" class="modal-overlay hidden">
-        <div class="glass-panel" style="width: 85%; max-width: 350px; border-color: rgba(248, 113, 113, 0.5);">
-            <h2 id="local-reaction-text" style="color: #e2e8f0; font-size: 1.2rem; border: none;">قام اللاعب باللعب..</h2>
-            <p style="color: #f87171; font-weight: 900; font-size: 1.3rem; margin-bottom: 15px;">الرقم المطلوب: <span id="local-reaction-claim"></span></p>
-            <div id="local-doubter-buttons" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;"></div>
-            <button class="btn" style="width: 100%; font-size: 1.1rem;" onclick="passLocalDoubt()">تخطي 🤫</button>
+        <div class="glass-panel" style="width: 85%; max-width: 320px; border-color: rgba(248, 113, 113, 0.5);">
+            <h2 id="local-reaction-text" style="color: #e2e8f0; font-size: 1.1rem; border: none;">قام اللاعب باللعب..</h2>
+            <p style="color: #f87171; font-weight: 900; font-size: 1.2rem; margin-bottom: 10px;">المطلوب: <span id="local-reaction-claim"></span></p>
+            <div id="local-doubter-buttons" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;"></div>
+            <button class="btn" style="width: 100%;" onclick="passLocalDoubt()">تخطي 🤫</button>
         </div>
     </div>
 
     <script>
-        // ================= إعدادات Firebase =================
         const firebaseConfig = {
             apiKey: "AIzaSyCD3jR3M4tPo3S08wic58E6t9Q35mabqK0",
             authDomain: "do44-4319b.firebaseapp.com",
@@ -473,270 +417,235 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ================= المتغيرات الأساسية =================
-        let gameMode = 'ai'; // 'ai', 'local', 'online'
-        let totalPlayersCount = 3; 
+        let gameMode = 'ai'; let totalPlayersCount = 3; 
         let players = []; let playerNames = {}; let hands = {}; let hasWon = {}; let scores = {};
         let stack = []; let lastPlayedPieces = []; let turnIndex = 0; let lastPlayerId = ''; 
         let selectedPieces = []; let activeNumber = -1; let userSelectedClaim = -1; 
         let doubtHandled = false; let reactionTimers = []; let aiWillDoubtFlag = false;
         let isProcessingTurn = false; let consecutiveGalas = 0; 
+        
+        let roomCode = ""; let isHost = false; let myId = ""; 
+        let roomListener = null; let chatListener = null;
 
-        // متغيرات الأونلاين
-        let roomCode = "";
-        let myId = "p_" + Math.random().toString(36).substr(2, 6);
-        let isHost = false;
-        let roomListener = null;
-        let chatListener = null;
+        function sortHand(hand) { hand.forEach(p => { if (p[1] > p[0]) { let temp = p[0]; p[0] = p[1]; p[1] = temp; } }); hand.sort((a, b) => { if (a[0] !== b[0]) return b[0] - a[0]; return b[1] - a[1]; }); }
 
-        function sortHand(hand) {
-            hand.forEach(p => { if (p[1] > p[0]) { let temp = p[0]; p[0] = p[1]; p[1] = temp; } });
-            hand.sort((a, b) => { if (a[0] !== b[0]) return b[0] - a[0]; return b[1] - a[1]; });
+        // فحص الأسماء الممنوعة
+        function isValidName(n) {
+            if(n.includes("إبرام") || n.includes("ابرام")) { alert("ممنوع استخدام هذا الاسم!"); return false; }
+            return true;
         }
 
         window.onload = function() {
             updateLocalInputs(document.querySelector('input[name="localCount"]:checked'));
-            if(localStorage.getItem('dominoProSave')) document.getElementById('resume-btn').classList.remove('hidden');
+            if(localStorage.getItem('do4Save')) document.getElementById('resume-btn').classList.remove('hidden');
         };
 
         function openRules() { document.getElementById('rules-modal').classList.remove('hidden'); }
         function closeRules() { document.getElementById('rules-modal').classList.add('hidden'); }
 
         function updateLocalInputs(element) {
-            if(element) {
-                let group = element.closest('.radio-group');
-                group.querySelectorAll('.radio-label').forEach(lbl => lbl.classList.remove('selected'));
-                element.parentElement.classList.add('selected');
-            }
+            if(element) updateRadioUI(element);
             let count = parseInt(document.querySelector('input[name="localCount"]:checked').value);
-            let container = document.getElementById('local-names-container');
-            container.innerHTML = '';
-            for(let i=1; i<=count; i++) {
-                let defaultName = i === 1 ? "إبرام" : `لاعب ${i}`;
-                container.innerHTML += `<input type="text" id="local-name-${i}" class="name-input" placeholder="${defaultName}" style="margin-bottom: 6px; background: rgba(0,0,0,0.4); border-color: rgba(96, 165, 250, 0.4);">`;
-            }
+            let container = document.getElementById('local-names-container'); container.innerHTML = '';
+            for(let i=1; i<=count; i++) { container.innerHTML += `<input type="text" id="local-name-${i}" class="name-input" placeholder="لاعب ${i}" style="margin-bottom: 6px; background: rgba(0,0,0,0.4); border-color: rgba(96, 165, 250, 0.4);">`; }
         }
 
-        function switchScreen(screenId) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(screenId).classList.add('active'); }
-        function returnToMenu() { 
-            scores = {}; 
-            if(gameMode === 'online') leaveOnlineRoom();
-            switchScreen('lobby-screen'); 
-        }
-        function startNewRound() { 
-            document.getElementById('win-overlay').classList.add('hidden'); 
-            if(gameMode === 'online') {
-                if(isHost) startOnlineGame();
-                else switchScreen('game-screen'); // Sync will handle the rest
-            } else {
-                switchScreen('game-screen'); initGame(); 
-            }
+        function saveGame() {
+            if(gameMode === 'online') return;
+            let state = { gameMode, totalPlayersCount, players, playerNames, hands, hasWon, scores, stack, lastPlayedPieces, turnIndex, lastPlayerId, activeNumber, consecutiveGalas, myId };
+            localStorage.setItem('do4Save', JSON.stringify(state));
         }
 
+        function clearSave() { localStorage.removeItem('do4Save'); document.getElementById('resume-btn').classList.add('hidden'); }
         function releaseProcessingLock() { isProcessingTurn = false; }
 
-        // ================= الأونلاين (Firebase Logic) =================
-        function getOnlineName() { return document.getElementById('online-player-name').value.trim() || "إبرام"; }
+        function resumeGame() {
+            let saved = JSON.parse(localStorage.getItem('do4Save'));
+            if(!saved || saved.gameMode === 'online') return;
+            gameMode = saved.gameMode; totalPlayersCount = saved.totalPlayersCount; players = saved.players; playerNames = saved.playerNames;
+            hands = saved.hands; hasWon = saved.hasWon; scores = saved.scores; stack = saved.stack; lastPlayedPieces = saved.lastPlayedPieces;
+            turnIndex = saved.turnIndex; lastPlayerId = saved.lastPlayerId; activeNumber = saved.activeNumber; consecutiveGalas = saved.consecutiveGalas || 0;
+            myId = saved.myId || 'p0'; selectedPieces = []; releaseProcessingLock();
+            players.forEach(p => sortHand(hands[p]));
 
+            document.getElementById('chat-toggle').classList.toggle('hidden', gameMode === 'local');
+            switchScreen('game-screen'); setupTableUI(); updateUI(); highlightTurn(players[turnIndex]);
+            
+            if (lastPlayedPieces.length > 0 && consecutiveGalas === 0) {
+                setStatus(`استكمال: ${playerNames[lastPlayerId]} لعب ${lastPlayedPieces.length} ورقات.`, "#fff");
+                if (gameMode === 'local') showLocalReactionModal(); else startReactionPhase(lastPlayerId);
+            } else {
+                let activePlayerId = players[turnIndex];
+                if (activePlayerId === myId) { setStatus(`استكمال: دورك يا ${playerNames[myId]}..`, "#d4af37"); document.getElementById('player-play-controls').classList.remove('hidden'); } 
+                else if (gameMode === 'local') { showPassPhoneModal(activePlayerId); } 
+                else { setStatus(`استكمال: انتظار ${playerNames[activePlayerId]}...`, "#94a3b8"); setTimeout(executeAITurn, 2000); }
+            }
+        }
+
+        function updateRadioUI(element) { let group = element.closest('.radio-group'); group.querySelectorAll('.radio-label').forEach(lbl => lbl.classList.remove('selected')); element.parentElement.classList.add('selected'); }
+        function switchScreen(screenId) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(screenId).classList.add('active'); }
+        function returnToMenu() { scores = {}; if(gameMode === 'online') leaveOnlineRoom(); switchScreen('lobby-screen'); }
+        function startNewRound() { document.getElementById('win-overlay').classList.add('hidden'); if(gameMode === 'online' && isHost) startOnlineGame(); else if (gameMode !== 'online') { switchScreen('game-screen'); initGame(); } }
+
+        // ================= الأونلاين =================
         function createOnlineRoom() {
-            gameMode = 'online'; isHost = true;
+            let name = document.getElementById('online-player-name').value.trim() || "اللاعب";
+            if(!isValidName(name)) return;
+
+            gameMode = 'online'; isHost = true; myId = "p_" + Math.random().toString(36).substr(2, 6);
             roomCode = Math.floor(1000 + Math.random() * 9000).toString();
-            players = [myId]; playerNames = {}; playerNames[myId] = getOnlineName(); scores[myId] = 0;
-
-            db.ref('rooms/' + roomCode).set({
-                status: 'waiting', host: myId, players: players, names: playerNames, scores: scores
-            });
-
-            switchScreen('waiting-screen');
+            players = [myId]; playerNames = {}; playerNames[myId] = name; scores = {}; scores[myId] = 0;
+            
+            db.ref('rooms/' + roomCode).set({ status: 'waiting', host: myId, players: players, names: playerNames, scores: scores });
             document.getElementById('room-code-display').innerText = roomCode;
-            listenToRoom();
+            switchScreen('waiting-screen'); listenToRoom();
         }
 
         function joinOnlineRoom() {
             let code = document.getElementById('room-code-input').value.trim();
-            if(code.length !== 4) return alert("كود الغرفة لازم يكون 4 أرقام!");
+            if(code.length !== 4) return alert("الكود لازم يكون 4 أرقام!");
+            let name = document.getElementById('online-player-name').value.trim() || "اللاعب";
+            if(!isValidName(name)) return;
             
             db.ref('rooms/' + code).once('value').then(snap => {
-                if(!snap.exists()) return alert("الغرفة دي مش موجودة يا معلم!");
-                let data = snap.val();
-                if(data.status !== 'waiting') return alert("اللعبة بدأت بالفعل!");
+                if(!snap.exists()) return alert("الغرفة غير موجودة!");
+                let data = snap.val(); if(data.status !== 'waiting') return alert("اللعبة بدأت بالفعل!");
                 
-                gameMode = 'online'; isHost = false; roomCode = code;
-                let pList = data.players || [];
-                if(pList.length >= 4) return alert("الغرفة مليانة للأسف!");
+                gameMode = 'online'; isHost = false; roomCode = code; myId = "p_" + Math.random().toString(36).substr(2, 6);
+                let pList = data.players || []; if(pList.length >= 4) return alert("الغرفة ممتلئة!");
+                pList.push(myId); let nms = data.names || {}; nms[myId] = name; let scrs = data.scores || {}; scrs[myId] = 0;
                 
-                pList.push(myId);
-                let nms = data.names || {}; nms[myId] = getOnlineName();
-                let scrs = data.scores || {}; scrs[myId] = 0;
-
                 db.ref('rooms/' + roomCode).update({ players: pList, names: nms, scores: scrs });
-
-                switchScreen('waiting-screen');
                 document.getElementById('room-code-display').innerText = roomCode;
-                document.getElementById('start-online-btn').classList.add('hidden'); // Only host starts
-                listenToRoom();
+                document.getElementById('start-online-btn').classList.add('hidden');
+                switchScreen('waiting-screen'); listenToRoom();
             });
         }
 
         function listenToRoom() {
             if(roomListener) db.ref('rooms/' + roomCode).off('value', roomListener);
             if(chatListener) db.ref('rooms/' + roomCode + '/chat').off('child_added', chatListener);
-
+            
             roomListener = db.ref('rooms/' + roomCode).on('value', snap => {
-                if(!snap.exists()) { alert("الهوست قفل الغرفة!"); leaveOnlineRoom(); return; }
+                if(!snap.exists()) { leaveOnlineRoom(); return; }
                 let data = snap.val();
                 
                 if(data.status === 'waiting') {
                     players = data.players || []; playerNames = data.names || {}; scores = data.scores || {};
                     let html = "";
-                    players.forEach(p => {
-                        let isMe = p === myId ? " (إنت)" : "";
-                        let isH = p === data.host ? " 👑" : "";
-                        html += `<div style="background:rgba(255,255,255,0.1); padding:8px 15px; border-radius:10px; border:1px solid rgba(212,175,55,0.3);">${playerNames[p]}${isMe}${isH}</div>`;
-                    });
+                    players.forEach(p => { html += `<div style="background:rgba(255,255,255,0.1); padding:8px; border-radius:8px; border:1px solid rgba(212,175,55,0.4);">${playerNames[p]} ${p===data.host?'👑':''} ${p===myId?'(إنت)':''}</div>`; });
                     document.getElementById('online-players-list').innerHTML = html;
-                    
                     if(isHost && players.length > 1) document.getElementById('start-online-btn').classList.remove('hidden');
-                    else document.getElementById('start-online-btn').classList.add('hidden');
-                } 
-                else if (data.status === 'playing') {
-                    if (document.getElementById('waiting-screen').classList.contains('active')) {
-                        switchScreen('game-screen');
-                        setupTableUI();
-                        listenToChat();
-                    }
+                } else if(data.status === 'playing') {
+                    if(document.getElementById('waiting-screen').classList.contains('active')) { switchScreen('game-screen'); setupTableUI(); listenToChat(); }
                     syncGameState(data);
                 }
             });
         }
 
         function startOnlineGame() {
-            totalPlayersCount = players.length;
-            let deck = [];
-            for(let i=0; i<=6; i++) for(let j=i; j<=6; j++) {
-                if((totalPlayersCount === 3 || totalPlayersCount === 4) && i===0 && j===0) continue;
-                deck.push([i, j]);
-            }
-            deck.sort(() => Math.random() - 0.5);
-
-            hands = {}; hasWon = {};
-            let cardsPerP = totalPlayersCount === 2 ? 14 : (totalPlayersCount === 3 ? 9 : 6);
-            players.forEach((p, idx) => {
-                hands[p] = deck.slice(idx * cardsPerP, (idx + 1) * cardsPerP);
-                sortHand(hands[p]); hasWon[p] = false;
-            });
-
-            let starter = players[0]; let maxD = -1;
-            for(let d=6; d>=0; d--) {
-                let found = players.find(p => hands[p].some(t => t[0]===d && t[1]===d));
-                if(found) { starter = found; maxD = d; break; }
-            }
-            if(!starter) { starter = players[0]; maxD = Math.max(...hands[starter].map(p => Math.max(p[0], p[1]))); }
-
-            turnIndex = players.indexOf(starter); activeNumber = maxD;
+            totalPlayersCount = players.length; let deck = [];
+            for(let i=0; i<=6; i++) for(let j=i; j<=6; j++) { if((totalPlayersCount===3||totalPlayersCount===4)&&i===0&&j===0) continue; deck.push([i, j]); }
+            deck.sort(() => Math.random() - 0.5); hands = {}; hasWon = {};
+            let cPP = totalPlayersCount===2 ? 14 : (totalPlayersCount===3 ? 9 : 6);
+            players.forEach((p, idx) => { hands[p] = deck.slice(idx*cPP, (idx+1)*cPP); sortHand(hands[p]); hasWon[p] = false; });
             
-            db.ref('rooms/' + roomCode).update({
-                status: 'playing', turnIndex: turnIndex, activeNumber: activeNumber,
-                hands: hands, hasWon: hasWon, stack: [], lastPlayedPieces: [], lastPlayerId: "",
-                consecutiveGalas: 0, doubtPhase: false, doubtPasses: 0, winner: null
-            });
+            let starter = players[0]; let maxD = -1;
+            for(let d=6; d>=0; d--) { let found = players.find(p => hands[p].some(t => t[0]===d && t[1]===d)); if(found) { starter = found; maxD = d; break; } }
+            if(!starter) { starter = players[0]; maxD = Math.max(...hands[starter].map(p => Math.max(p[0], p[1]))); }
+            
+            db.ref('rooms/' + roomCode).update({ status: 'playing', turnIndex: players.indexOf(starter), activeNumber: maxD, hands: hands, hasWon: hasWon, stack: [], lastPlayedPieces: [], lastPlayerId: "", consecutiveGalas: 0, doubtPhase: false, doubtPasses: 0, winner: null, doubtEvent: null });
         }
 
         function syncGameState(data) {
             players = data.players || []; playerNames = data.names || {}; scores = data.scores || {};
             hands = data.hands || {}; hasWon = data.hasWon || {};
             turnIndex = data.turnIndex || 0; activeNumber = data.activeNumber === undefined ? -1 : data.activeNumber;
-            stack = data.stack || []; lastPlayedPieces = data.lastPlayedPieces || [];
-            lastPlayerId = data.lastPlayerId || ""; consecutiveGalas = data.consecutiveGalas || 0;
+            stack = data.stack || []; lastPlayedPieces = data.lastPlayedPieces || []; lastPlayerId = data.lastPlayerId || ""; consecutiveGalas = data.consecutiveGalas || 0;
             
-            if (data.winner) {
-                if(data.winner === 'draw') {
-                    showWinOverlay("انسحاب! مفيش فايز", () => updateScoreboard());
-                } else {
-                    if (isHost && !scores.updated) {
-                         scores[data.winner]++;
-                         db.ref('rooms/' + roomCode + '/scores').set(scores);
-                         db.ref('rooms/' + roomCode).update({ 'scores/updated': true });
-                    }
+            if(data.winner) {
+                if(data.winner === 'draw') { showWinOverlay("انسحاب! مفيش فايز", () => updateScoreboard()); } 
+                else {
+                    if(isHost && !scores.updated) { scores[data.winner]++; db.ref('rooms/'+roomCode+'/scores').set(scores); db.ref('rooms/'+roomCode).update({'scores/updated': true}); }
                     showWinOverlay(playerNames[data.winner], () => updateScoreboard());
                 }
                 return;
             }
 
-            updateUI(); highlightTurn(players[turnIndex]); releaseProcessingLock(); doubtHandled = false;
+            if (data.doubtEvent) {
+                if(!doubtHandled) { doubtHandled = true; resolveDoubtShared(data.doubtEvent.doubterId, data.doubtEvent.targetId); }
+                return; 
+            }
 
+            updateUI(); highlightTurn(players[turnIndex]); releaseProcessingLock(); doubtHandled = false;
+            
             if(data.doubtPhase) {
                 if(lastPlayerId !== myId && !hasWon[myId]) {
                     showTurnControls(false); document.getElementById('player-reaction-controls').classList.remove('hidden');
-                    setStatus(`نزل ${playerNames[lastPlayerId]} ${lastPlayedPieces.length} ورقات كـ (${activeNumber}). هتشك ولا تخطي؟`, "#f87171");
-                } else {
-                    showTurnControls(false); setStatus(`انتظار قرار باقي اللاعبين...`, "#94a3b8");
-                }
+                    setStatus(`نزل ${playerNames[lastPlayerId]} ${lastPlayedPieces.length} ورقات كـ (${activeNumber}). هتشك؟`, "#f87171");
+                } else { showTurnControls(false); setStatus(`انتظار قرار الباقين...`, "#94a3b8"); }
             } else {
                 document.getElementById('player-reaction-controls').classList.add('hidden');
-                let curP = players[turnIndex];
-                if(curP === myId) {
-                    setStatus(activeNumber === -1 ? `دورك افتح برقم` : `دورك تلعب على (${activeNumber})`, "#d4af37"); 
-                    document.getElementById('player-play-controls').classList.remove('hidden');
-                } else {
-                    setStatus(`الدور على ${playerNames[curP]}...`, "#94a3b8"); showTurnControls(false);
-                }
+                if(players[turnIndex] === myId) { setStatus(activeNumber===-1 ? `افتح برقم` : `العب كـ (${activeNumber})`, "#d4af37"); document.getElementById('player-play-controls').classList.remove('hidden'); }
+                else { setStatus(`الدور على ${playerNames[players[turnIndex]]}...`, "#94a3b8"); showTurnControls(false); }
             }
         }
 
         function leaveOnlineRoom() {
             if(roomCode && myId) {
-                if(isHost) { db.ref('rooms/' + roomCode).remove(); } 
-                else {
-                    db.ref('rooms/' + roomCode).once('value').then(snap => {
-                        if(snap.exists()) {
-                            let data = snap.val();
-                            let pList = data.players.filter(p => p !== myId);
-                            if(data.status === 'playing') db.ref('rooms/' + roomCode).update({ winner: 'draw' }); // Ruin the game if someone leaves
-                            else db.ref('rooms/' + roomCode).update({ players: pList });
-                        }
-                    });
-                }
+                if(isHost) db.ref('rooms/' + roomCode).remove();
+                else db.ref('rooms/' + roomCode).once('value').then(snap => { if(snap.exists()) { let d = snap.val(); if(d.status === 'playing') db.ref('rooms/'+roomCode).update({winner: 'draw'}); else db.ref('rooms/'+roomCode).update({players: d.players.filter(p=>p!==myId)}); }});
             }
             if(roomListener) db.ref('rooms/' + roomCode).off('value', roomListener);
             if(chatListener) db.ref('rooms/' + roomCode + '/chat').off('child_added', chatListener);
-            roomCode = null; gameMode = 'ai'; switchScreen('lobby-screen');
+            roomCode = ""; gameMode = 'ai'; switchScreen('lobby-screen');
         }
 
-        // ================= الأوفلاين (Local & AI) =================
+        // ================= الأوفلاين الأساسي =================
         function startGameMode(mode) {
-            gameMode = mode; players = []; playerNames = {}; scores = {};
+            clearSave(); gameMode = mode; players = []; playerNames = {}; scores = {};
 
             if (mode === 'ai') {
-                totalPlayersCount = parseInt(document.querySelector('input[name="localCount"]:checked') ? document.querySelector('input[name="localCount"]:checked').value : 3);
-                players.push('player'); playerNames['player'] = "إبرام"; scores['player'] = 0;
+                // إصلاح الخانة الناقصة للـ AI
+                let nameInput = document.getElementById('single-player-name');
+                let typedName = nameInput ? nameInput.value.trim() : "";
+                let mainName = typedName !== "" ? typedName : "اللاعب";
+                if(!isValidName(mainName)) return;
+
+                totalPlayersCount = parseInt(document.querySelector('input[name="aiCount"]:checked').value) + 1;
+                myId = 'player'; players.push(myId); playerNames[myId] = mainName; scores[myId] = 0;
                 for(let i=1; i<totalPlayersCount; i++) { players.push(`comp${i}`); playerNames[`comp${i}`] = `الكمبيوتر ${i}`; scores[`comp${i}`] = 0; }
                 document.getElementById('chat-toggle').classList.remove('hidden');
             } else {
                 totalPlayersCount = parseInt(document.querySelector('input[name="localCount"]:checked').value);
+                myId = 'local1';
                 for(let i=1; i<=totalPlayersCount; i++) {
-                    let pId = `local${i}`; players.push(pId); scores[pId] = 0;
                     let typed = document.getElementById(`local-name-${i}`).value.trim();
-                    playerNames[pId] = typed !== "" ? typed : (i===1 ? "إبرام" : `لاعب ${i}`);
+                    let pName = typed !== "" ? typed : `لاعب ${i}`;
+                    if(!isValidName(pName)) return;
+
+                    let pId = `local${i}`; players.push(pId); scores[pId] = 0;
+                    playerNames[pId] = pName;
                 }
                 document.getElementById('chat-toggle').classList.add('hidden');
             }
-            myId = players[0];
             setupTableUI(); startNewRound();
         }
 
         function setupTableUI() {
             document.querySelectorAll('.ai-player').forEach(el => el.remove()); const table = document.getElementById('main-table');
-            let otherPlayers = players.filter(p => p !== myId); 
+            let otherPlayers = gameMode === 'ai' ? players.filter(p => p !== 'player') : (gameMode === 'online' ? players.filter(p=>p!==myId) : players); 
             
             let positions = [];
             if (otherPlayers.length === 1) positions = ['pos-top'];
             else if (otherPlayers.length === 2) positions = ['pos-left', 'pos-right'];
             else if (otherPlayers.length === 3) positions = ['pos-left', 'pos-top', 'pos-right'];
+            else if (otherPlayers.length === 4) positions = ['pos-left', 'pos-top', 'pos-right', 'pos-top'];
             
             otherPlayers.forEach((p, i) => {
                 if (positions[i]) { 
                     table.innerHTML += `<div class="ai-player ${positions[i]}" id="box-${p}">
+                        <div class="player-bubble" id="bubble-${p}"></div>
                         <span class="player-name">${playerNames[p]}</span>
                         <span class="playing-tag hidden" id="tag-${p}">بيلعب...</span>
                         <span id="count-${p}" class="badge">0</span>
@@ -751,9 +660,9 @@
             sortedPlayers.forEach((p, index) => { 
                 let rowColor = index === 0 && p.score > 0 ? 'color: #d4af37;' : 'color: #e2e8f0;';
                 tbody.innerHTML += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); ${rowColor}">
-                    <td style="padding: 12px;">${index + 1} ${index === 0 && p.score > 0 ? '🏆' : ''}</td>
-                    <td style="padding: 12px;">${p.name}</td>
-                    <td style="padding: 12px; font-weight:900;">${p.score}</td>
+                    <td style="padding: 10px;">${index + 1} ${index === 0 && p.score > 0 ? '🏆' : ''}</td>
+                    <td style="padding: 10px;">${p.name}</td>
+                    <td style="padding: 10px; font-weight:900;">${p.score}</td>
                 </tr>`; 
             });
             switchScreen('score-screen');
@@ -766,8 +675,9 @@
 
         function initGame() {
             releaseProcessingLock(); stack = []; lastPlayedPieces = []; selectedPieces = []; 
-            activeNumber = -1; userSelectedClaim = -1; consecutiveGalas = 0;
+            activeNumber = -1; userSelectedClaim = -1; consecutiveGalas = 0; doubtHandled = false;
             document.querySelectorAll('.claim-btn').forEach(btn => btn.classList.remove('active')); hideAllControls();
+            document.getElementById('win-overlay').classList.add('hidden');
 
             let allPieces = []; let is3Players = totalPlayersCount === 3; let is4Players = totalPlayersCount === 4;
             for (let i = 0; i <= 6; i++) { for (let j = i; j <= 6; j++) { if((is3Players || is4Players) && i === 0 && j === 0) continue; allPieces.push([i, j]); } }
@@ -787,11 +697,12 @@
             if (!starter) { starter = players[0]; highestDouble = Math.max(...hands[starter].map(p => Math.max(p[0], p[1]))); }
             
             turnIndex = players.indexOf(starter); activeNumber = highestDouble; 
+            saveGame();
 
             if (gameMode === 'local') { showPassPhoneModal(starter); } 
             else {
                 updateUI(); highlightTurn(starter);
-                if(starter === 'player') { 
+                if(starter === myId) { 
                     setStatus(`معاك البلاطة (${highestDouble}-${highestDouble})! افتح الدور.`, "#d4af37"); 
                     document.getElementById('player-play-controls').classList.remove('hidden'); 
                 } 
@@ -821,7 +732,10 @@
             let playerBox = document.getElementById('box-player');
             if(playerBox) { 
                 const playerNameDisplay = document.getElementById('player-name-display');
-                if (playerNameDisplay) playerNameDisplay.innerText = `أوراق ${playerNames[gameMode === 'local' ? activePlayerId : myId]}`;
+                if (playerNameDisplay) {
+                    if (gameMode === 'local') playerNameDisplay.innerText = `أوراق ${playerNames[activePlayerId]}`;
+                    else playerNameDisplay.innerText = `أوراق ${playerNames[myId]}`;
+                }
 
                 if(activePlayerId === myId || gameMode === 'local') {
                     playerBox.classList.add('active-turn'); 
@@ -851,14 +765,15 @@
             setTimeout(() => { overlay.classList.add('hidden'); callback(); }, 3500);
         }
 
-        function checkGameOverOffline() {
+        function checkGameOver() {
             let activeCount = players.filter(p => !hasWon[p]).length;
             if (activeCount <= 1) {
+                clearSave();
                 let winner = players.find(p => hasWon[p]); 
                 if(winner) scores[winner] += 1;
                 hideAllControls(); document.getElementById('turn-banner').classList.add('hidden');
-                if (winner) { showWinOverlay(playerNames[winner], () => { updateScoreboard(); }); } 
-                else { updateScoreboard(); }
+                if (winner) showWinOverlay(playerNames[winner], () => updateScoreboard());
+                else updateScoreboard();
                 return true;
             }
             return false;
@@ -876,7 +791,7 @@
             if(currentHand) {
                 currentHand.forEach((piece, index) => {
                     const el = document.createElement('div'); el.className = `domino-piece`;
-                    el.innerHTML = getDotsHTML(piece[0]) + '<div class="divider"><div class="spinner-pin"></div></div>' + getDotsHTML(piece[1]); 
+                    el.innerHTML = getDotsHTML(piece[0]) + '<div class="divider"></div>' + getDotsHTML(piece[1]); 
                     el.onclick = () => selectPiece(index); 
                     
                     if (selectedPieces.includes(index)) { if(stagingDiv) stagingDiv.appendChild(el); } 
@@ -884,6 +799,9 @@
                 });
             }
 
+            const playerNameDisplay = document.getElementById('player-name-display');
+            if(playerNameDisplay) playerNameDisplay.innerText = `أوراق ${playerNames[gameMode === 'local' ? activePlayerId : myId]}`;
+            
             let oldPiecesCount = stack.length - lastPlayedPieces.length;
             let html = '';
             for(let i=0; i<oldPiecesCount; i++) { html += `<div class="facedown-piece old-piece"></div>`; }
@@ -914,24 +832,20 @@
 
         function selectPiece(index) {
             if(isProcessingTurn) return;
-            let activePlayerId = players[turnIndex]; 
-            if (gameMode !== 'local' && activePlayerId !== myId) return; 
-            if (hasWon[activePlayerId]) return;
+            let activePlayerId = players[turnIndex]; if (gameMode !== 'local' && activePlayerId !== myId) return; if (hasWon[activePlayerId]) return;
             const pos = selectedPieces.indexOf(index);
             if (pos > -1) selectedPieces.splice(pos, 1); else if (selectedPieces.length < 7) selectedPieces.push(index); updateUI();
         }
 
-        // ================= أفعال اللعب =================
         function playerGala() {
             if(isProcessingTurn) return; if(activeNumber === -1 || stack.length === 0) return; 
             isProcessingTurn = true; consecutiveGalas++; hideAllControls(); doubtHandled = false;
-            
             if(gameMode === 'online') {
                 db.ref('rooms/' + roomCode).update({ consecutiveGalas: consecutiveGalas });
                 handleGalaNextLogic();
             } else {
                 let activePlayerId = players[turnIndex]; setStatus(`${playerNames[activePlayerId]} تخطى دوره (جلا)`, "#94a3b8"); 
-                setTimeout(checkGalaAndNextOffline, 1500);
+                saveGame(); setTimeout(checkGalaAndNext, 1500);
             }
         }
 
@@ -940,7 +854,7 @@
             if (selectedPieces.length === 0) { alert("حدد ورقة واحدة على الأقل!"); return; }
             let claim = activeNumber === -1 ? userSelectedClaim : activeNumber; if (claim === -1) { alert("اختر الرقم لفتح الدور!"); return; } 
             
-            isProcessingTurn = true; consecutiveGalas = 0; doubtHandled = false;
+            isProcessingTurn = true; consecutiveGalas = 0; doubtHandled = false; 
             activeNumber = claim; selectedPieces.sort((a,b) => b-a); lastPlayedPieces = []; lastPlayerId = players[turnIndex];
             
             let currentHand = gameMode === 'local' ? hands[lastPlayerId] : hands[myId];
@@ -950,13 +864,10 @@
             hideAllControls(); 
 
             if(gameMode === 'online') {
-                db.ref('rooms/' + roomCode).update({
-                    activeNumber: activeNumber, stack: stack, lastPlayedPieces: lastPlayedPieces, lastPlayerId: lastPlayerId,
-                    hands: hands, consecutiveGalas: 0, doubtPhase: true, doubtPasses: 0
-                });
+                db.ref('rooms/' + roomCode).update({ activeNumber: activeNumber, stack: stack, lastPlayedPieces: lastPlayedPieces, lastPlayerId: lastPlayerId, hands: hands, consecutiveGalas: 0, doubtPhase: true, doubtPasses: 0, doubtEvent: null });
             } else {
                 updateUI(); setStatus(`تم لعب ${lastPlayedPieces.length} ورقات كـ (${claim}). هتشك ولا تخطي؟`, "#f87171"); 
-                if (gameMode === 'local') setTimeout(showLocalReactionModal, 1000); else startReactionPhaseOffline('player');
+                saveGame(); if (gameMode === 'local') setTimeout(showLocalReactionModal, 1000); else startReactionPhase('player');
             }
         }
 
@@ -964,23 +875,19 @@
             let activePlayers = players.filter(p => !hasWon[p]);
             if (consecutiveGalas >= activePlayers.length - 1 && stack.length > 0) {
                 let nextStarter = lastPlayerId; if (hasWon[nextStarter]) nextStarter = activePlayers[0]; 
-                if(gameMode === 'online') {
-                    db.ref('rooms/' + roomCode).update({ activeNumber: -1, consecutiveGalas: 0, turnIndex: players.indexOf(nextStarter) });
-                }
-            } else {
-                if(gameMode === 'online') db.ref('rooms/' + roomCode).update({ turnIndex: getNextPlayerIndex(turnIndex) });
-            }
+                if(gameMode === 'online') db.ref('rooms/' + roomCode).update({ activeNumber: -1, consecutiveGalas: 0, turnIndex: players.indexOf(nextStarter) });
+            } else { if(gameMode === 'online') db.ref('rooms/' + roomCode).update({ turnIndex: getNextPlayerIndex(turnIndex) }); }
         }
 
-        // ================= AI Logic (Offline) =================
         function executeAITurn() {
-            let ai = players[turnIndex]; if(hasWon[ai]) { turnIndex = getNextPlayerIndex(turnIndex); playNextHelperOffline(); return; }
+            let ai = players[turnIndex]; if(hasWon[ai]) return nextTurn(); 
             isProcessingTurn = true; doubtHandled = false;
             
             if(activeNumber !== -1 && stack.length > 0) {
                 let matches = hands[ai].filter(p => p[0] === activeNumber || p[1] === activeNumber);
                 if(matches.length === 0 && Math.random() > 0.4) {
-                    consecutiveGalas++; setStatus(`${playerNames[ai]} تخطى دوره (جلا)`, "#94a3b8"); setTimeout(checkGalaAndNextOffline, 1500); return;
+                    consecutiveGalas++; setStatus(`${playerNames[ai]} تخطى دوره (جلا)`, "#94a3b8");
+                    saveGame(); setTimeout(checkGalaAndNext, 1500); return;
                 }
             }
 
@@ -997,63 +904,42 @@
                 }
             }
             stack.push(...lastPlayedPieces); updateUI(); setStatus(`قام ${playerNames[ai]} بلعب ${lastPlayedPieces.length} ورقات. هتشك ولا تخطي؟`, "#f87171"); 
-            startReactionPhaseOffline(ai);
+            saveGame(); startReactionPhase(ai);
         }
 
-        function checkGalaAndNextOffline() {
+        function checkGalaAndNext() {
             let activePlayers = players.filter(p => !hasWon[p]);
             if (consecutiveGalas >= activePlayers.length - 1 && stack.length > 0) {
                 let nextStarter = lastPlayerId; if (hasWon[nextStarter]) nextStarter = activePlayers[0]; 
                 setStatus(`الجميع تخطى.. ${playerNames[nextStarter]} سيفتح برقم جديد`, "#d4af37");
                 activeNumber = -1; consecutiveGalas = 0; turnIndex = players.indexOf(nextStarter);
-                setTimeout(() => { if(gameMode === 'local') showPassPhoneModal(players[turnIndex]); else playNextHelperOffline(); }, 3000);
+                setTimeout(() => { if(gameMode === 'local') showPassPhoneModal(players[turnIndex]); else playNextHelper(); }, 3000);
             } else {
                 turnIndex = getNextPlayerIndex(turnIndex);
-                if(gameMode === 'local') showPassPhoneModal(players[turnIndex]); else playNextHelperOffline();
+                if(gameMode === 'local') showPassPhoneModal(players[turnIndex]); else nextTurn();
             }
         }
 
-        function startReactionPhaseOffline(targetId) {
+        function startReactionPhase(targetId) {
             doubtHandled = false; aiWillDoubtFlag = false; reactionTimers.forEach(clearTimeout); reactionTimers = [];
-            let otherAIs = players.filter(ai => ai !== targetId && ai !== 'player' && !hasWon[ai]);
+            let otherAIs = players.filter(ai => ai !== targetId && ai !== myId && !hasWon[ai]);
 
             otherAIs.forEach(ai => {
                 let doubtChance = 0.15; if (lastPlayedPieces.length > 2) doubtChance += 0.3;
                 let matchCount = hands[ai].filter(p => p[0] === activeNumber || p[1] === activeNumber).length;
                 if (matchCount >= 2) doubtChance += 0.4; if (matchCount + lastPlayedPieces.length > 7) doubtChance = 1.0;
-                if (Math.random() < doubtChance) { aiWillDoubtFlag = true; reactionTimers.push(setTimeout(() => executeDoubtOffline(ai, targetId), Math.floor(Math.random() * 1800) + 1200)); }
+                if (Math.random() < doubtChance) { aiWillDoubtFlag = true; reactionTimers.push(setTimeout(() => executeDoubt(ai, targetId), Math.floor(Math.random() * 1800) + 1200)); }
             });
 
-            if (targetId !== 'player' && !hasWon.player) { document.getElementById('player-reaction-controls').classList.remove('hidden'); } 
-            else if (!aiWillDoubtFlag) { reactionTimers.push(setTimeout(() => handleNoDoubtOffline(targetId), 2000)); }
+            if (targetId !== myId && !hasWon[myId]) { document.getElementById('player-reaction-controls').classList.remove('hidden'); } 
+            else if (!aiWillDoubtFlag) { reactionTimers.push(setTimeout(() => handleNoDoubt(targetId), 2000)); }
         }
 
-        function executeDoubtOffline(doubterId, targetId) {
-            if (doubtHandled) return; doubtHandled = true; reactionTimers.forEach(clearTimeout); reactionTimers = []; hideAllControls();
-            setStatus(`شك ${playerNames[doubterId]} في ${playerNames[targetId]}! جاري الكشف...`, "#f87171"); setTimeout(() => resolveDoubtShared(doubterId, targetId), 1500);
-        }
-
-        function handleNoDoubtOffline(targetId) {
-            if (doubtHandled) return; doubtHandled = true; reactionTimers.forEach(clearTimeout); reactionTimers = [];
-            if (hands[targetId].length === 0) {
-                hasWon[targetId] = true; setStatus(`لا يوجد شك! ${playerNames[targetId]} فاز!`, "#d4af37");
-                if (checkGameOverOffline()) return; 
-                setTimeout(() => { turnIndex = getNextPlayerIndex(players.indexOf(targetId)); gameMode === 'local' ? showPassPhoneModal(players[turnIndex]) : playNextHelperOffline(); }, 2500); return;
-            }
-            setStatus(`لا يوجد شك.. التالي.`, "#94a3b8"); 
-            setTimeout(() => { turnIndex = getNextPlayerIndex(turnIndex); if(gameMode === 'local') { showPassPhoneModal(players[turnIndex]); } else { playNextHelperOffline(); } }, 1500);
-        }
-
-        function playNextHelperOffline() {
-            setStatus(`يبدأ ${playerNames[players[turnIndex]]} برقم جديد...`, "#94a3b8"); highlightTurn(players[turnIndex]);
-            setTimeout(() => { releaseProcessingLock(); if (players[turnIndex] === 'player') document.getElementById('player-play-controls').classList.remove('hidden'); else executeAITurn(); }, 2000);
-        }
-
-        // ================= Doubt & Sync =================
-        function playerDoubts() {
+        function playerDoubts() { 
             if (doubtHandled) return; doubtHandled = true; hideAllControls();
-            if(gameMode === 'online') { db.ref('rooms/' + roomCode).update({ doubtPhase: false }); resolveDoubtShared(myId, lastPlayerId); }
-            else { executeDoubtOffline('player', lastPlayerId); }
+            if(gameMode === 'online') { 
+                db.ref('rooms/' + roomCode).update({ doubtEvent: { doubterId: myId, targetId: lastPlayerId }, doubtPhase: false }); 
+            } else { executeDoubt(myId, lastPlayerId); }
         }
 
         function playerPasses() {
@@ -1063,17 +949,93 @@
                     let activeRem = players.filter(p => !hasWon[p]).length;
                     if(snap.val() >= activeRem - 1) { 
                         if(hands[lastPlayerId].length === 0) {
-                            hasWon[lastPlayerId] = true; 
-                            db.ref('rooms/' + roomCode).update({ hasWon: hasWon, doubtPhase: false, doubtPasses: 0 });
-                            if(checkWinOnline()) return;
+                            hasWon[lastPlayerId] = true; db.ref('rooms/' + roomCode).update({ hasWon: hasWon, doubtPhase: false, doubtPasses: 0 });
+                            if(players.filter(p => !hasWon[p]).length <= 1) { db.ref('rooms/' + roomCode).update({ winner: lastPlayerId }); return; }
                             turnIndex = getNextPlayerIndex(players.indexOf(lastPlayerId));
                         } else { turnIndex = getNextPlayerIndex(turnIndex); }
                         db.ref('rooms/' + roomCode).update({ turnIndex: turnIndex, doubtPhase: false, doubtPasses: 0 });
                     }
                 });
-            } else {
-                if (aiWillDoubtFlag) setStatus("تخطي.. انتظار الباقين...", "#94a3b8"); else handleNoDoubtOffline(lastPlayerId);
+            } else { if (aiWillDoubtFlag) setStatus("تخطي.. انتظار الباقين...", "#94a3b8"); else handleNoDoubt(lastPlayerId); }
+        }
+
+        // ================= Local Device Passing =================
+        function showPassPhoneModal(nextPlayerId) {
+            document.getElementById('player-hand').innerHTML = ''; document.getElementById('staging-area').innerHTML = ''; 
+            hideAllControls(); releaseProcessingLock();
+            let msg = activeNumber !== -1 && stack.length === 0 ? `معاك البلاطة (${activeNumber}-${activeNumber})! مرر لـ ${playerNames[nextPlayerId]}` : `مرر الجهاز إلى ${playerNames[nextPlayerId]}`;
+            document.getElementById('pass-phone-text').innerText = msg;
+            document.getElementById('pass-phone-modal').classList.remove('hidden');
+        }
+
+        function acceptPhone() {
+            document.getElementById('pass-phone-modal').classList.add('hidden');
+            updateUI(); highlightTurn(players[turnIndex]); 
+            let msg = activeNumber !== -1 && stack.length === 0 ? `معاك البلاطة (${activeNumber}-${activeNumber})! افتح الدور.` : `دورك يا ${playerNames[players[turnIndex]]}..`;
+            setStatus(msg, "#d4af37"); document.getElementById('player-play-controls').classList.remove('hidden');
+        }
+
+        function showLocalReactionModal() {
+            document.getElementById('local-reaction-claim').innerText = activeNumber;
+            document.getElementById('local-reaction-text').innerText = `لعب ${playerNames[lastPlayerId]} ${lastPlayedPieces.length} ورقات.`;
+            let btnContainer = document.getElementById('local-doubter-buttons'); btnContainer.innerHTML = '';
+            
+            let otherPlayers = players.filter(p => p !== lastPlayerId && !hasWon[p]);
+            otherPlayers.forEach(p => { btnContainer.innerHTML += `<button class="btn btn-danger" style="width:100%; font-size:1.1rem; padding: 10px;" onclick="executeLocalDoubt('${p}', '${lastPlayerId}')">أكشفه! (${playerNames[p]}) 🤨</button>`; });
+            document.getElementById('local-reaction-modal').classList.remove('hidden');
+        }
+
+        function executeLocalDoubt(doubterId, targetId) { document.getElementById('local-reaction-modal').classList.add('hidden'); executeDoubt(doubterId, targetId); }
+        function passLocalDoubt() { document.getElementById('local-reaction-modal').classList.add('hidden'); handleNoDoubt(lastPlayerId); }
+
+        // ================= أنيميشن الكروت الطايرة =================
+        function flyCardsToPlayer(targetId, callback) {
+            try {
+                const stackDiv = document.getElementById('table-stack');
+                let boxId = `box-${targetId}`; if (targetId === myId || (gameMode === 'local' && targetId === lastPlayerId)) boxId = 'box-player';
+                const targetBox = document.getElementById(boxId);
+                
+                if (!stackDiv || !targetBox || stack.length === 0) { callback(); return; }
+
+                const targetRect = targetBox.getBoundingClientRect();
+                const targetX = targetRect.left + (targetRect.width / 2);
+                const targetY = targetRect.top + (targetRect.height / 2);
+
+                const pieces = stackDiv.querySelectorAll('.facedown-piece, .domino-piece');
+                if (!pieces || pieces.length === 0) { callback(); return; }
+
+                pieces.forEach((piece, index) => {
+                    const rect = piece.getBoundingClientRect();
+                    const pieceX = rect.left + (rect.width / 2);
+                    const pieceY = rect.top + (rect.height / 2);
+                    const deltaX = targetX - pieceX;
+                    const deltaY = targetY - pieceY;
+
+                    piece.style.transition = `transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) ${index * 0.05}s, opacity 0.5s ease-in ${index * 0.05}s`;
+                    piece.style.zIndex = 1000 + index;
+                    piece.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.2) rotate(${Math.random() * 360}deg)`;
+                    piece.style.opacity = '0';
+                });
+
+                setTimeout(callback, 600 + (pieces.length * 50));
+            } catch (e) { callback(); }
+        }
+
+        function executeDoubt(doubterId, targetId) {
+            if (doubtHandled) return; doubtHandled = true; reactionTimers.forEach(clearTimeout); reactionTimers = []; hideAllControls();
+            setStatus(`شك ${playerNames[doubterId]} في ${playerNames[targetId]}! جاري الكشف...`, "#f87171"); setTimeout(() => resolveDoubtShared(doubterId, targetId), 1500);
+        }
+
+        function handleNoDoubt(targetId) {
+            if (doubtHandled) return; doubtHandled = true; reactionTimers.forEach(clearTimeout); reactionTimers = [];
+            
+            if (hands[targetId].length === 0) {
+                hasWon[targetId] = true; setStatus(`لا يوجد شك! ${playerNames[targetId]} فاز!`, "#d4af37");
+                if (checkGameOver()) return; 
+                setTimeout(() => { turnIndex = getNextPlayerIndex(players.indexOf(targetId)); saveGame(); gameMode === 'local' ? showPassPhoneModal(players[turnIndex]) : playNextHelper(); }, 2500); return;
             }
+            setStatus(`لا يوجد شك.. التالي.`, "#94a3b8"); 
+            setTimeout(() => { turnIndex = getNextPlayerIndex(turnIndex); saveGame(); if(gameMode === 'local') { showPassPhoneModal(players[turnIndex]); } else { nextTurn(); } }, 1500);
         }
 
         function resolveDoubtShared(doubterId, targetId) {
@@ -1083,7 +1045,8 @@
             let html = '';
             for(let i=0; i<oldPiecesCount; i++) { html += `<div class="facedown-piece old-piece"></div>`; }
             if(oldPiecesCount > 0 && lastPlayedPieces.length > 0) { html += `<div class="separator-line"></div>`; }
-            lastPlayedPieces.forEach((p, i) => { html += `<div class="domino-piece flip-anim" style="pointer-events:none; animation-delay: ${i*0.1}s;">${getDotsHTML(p[0])}<div class="divider"><div class="spinner-pin"></div></div>${getDotsHTML(p[1])}</div>`; });
+
+            lastPlayedPieces.forEach((p, i) => { html += `<div class="domino-piece flip-anim" style="pointer-events:none; animation-delay: ${i*0.1}s;">${getDotsHTML(p[0])}<div class="divider"></div>${getDotsHTML(p[1])}</div>`; });
             document.getElementById('table-stack').innerHTML = html;
 
             let msg = ""; let loserId = isTruth ? doubterId : targetId;
@@ -1100,113 +1063,79 @@
             setStatus(msg, isTruth ? "#f87171" : "#d4af37");
 
             if(gameMode === 'online' && isHost) {
-                // Host updates DB state
-                db.ref('rooms/' + roomCode).update({ hands: hands, hasWon: hasWon, turnIndex: turnIndex, stack: [], lastPlayedPieces: [], activeNumber: -1, doubtPhase: false });
-                if(checkWinOnline()) { db.ref('rooms/' + roomCode).update({ winner: hasWon[targetId] ? targetId : doubterId }); return; }
+                db.ref('rooms/' + roomCode).update({ hands: hands, hasWon: hasWon, turnIndex: turnIndex, stack: [], lastPlayedPieces: [], activeNumber: -1, doubtPhase: false, doubtEvent: null });
+                if(players.filter(p => !hasWon[p]).length <= 1) { db.ref('rooms/' + roomCode).update({ winner: hasWon[targetId] ? targetId : doubterId }); return; }
             }
             
             setTimeout(() => {
                 flyCardsToPlayer(loserId, () => {
-                    if(gameMode !== 'online') {
+                    if (gameMode !== 'online') {
                         stack = []; lastPlayedPieces = []; activeNumber = -1; updateUI(); 
-                        if (checkGameOverOffline()) { releaseProcessingLock(); return; }
-                        if (gameMode === 'local') showPassPhoneModal(players[turnIndex]); else playNextHelperOffline();
-                    } else {
-                        // Online updates via DB listener
+                        if (checkGameOver()) { releaseProcessingLock(); return; }
+                        saveGame(); if (gameMode === 'local') showPassPhoneModal(players[turnIndex]); else playNextHelper();
                     }
                 });
             }, 2000);
         }
-
-        // ================= Local Device Passing =================
-        function showPassPhoneModal(nextPlayerId) {
-            document.getElementById('player-hand').innerHTML = ''; document.getElementById('staging-area').innerHTML = ''; 
-            hideAllControls(); releaseProcessingLock();
-            let msg = activeNumber !== -1 && stack.length === 0 ? `معاك البلاطة (${activeNumber}-${activeNumber})! مرر الجهاز لـ ${playerNames[nextPlayerId]} لفتح الدور` : `مرر الجهاز إلى ${playerNames[nextPlayerId]}`;
-            document.getElementById('pass-phone-text').innerText = msg;
-            document.getElementById('pass-phone-modal').classList.remove('hidden');
+        
+        function playNextHelper() {
+            setStatus(`يبدأ ${playerNames[players[turnIndex]]} برقم جديد...`, "#94a3b8"); highlightTurn(players[turnIndex]); saveGame();
+            setTimeout(() => { releaseProcessingLock(); if (players[turnIndex] === myId) document.getElementById('player-play-controls').classList.remove('hidden'); else executeAITurn(); }, 2000);
         }
 
-        function acceptPhone() {
-            document.getElementById('pass-phone-modal').classList.add('hidden');
-            updateUI(); highlightTurn(players[turnIndex]); 
-            let msg = activeNumber !== -1 && stack.length === 0 ? `معاك البلاطة (${activeNumber}-${activeNumber})! افتح الدور.` : `دورك يا ${playerNames[players[turnIndex]]}..`;
-            setStatus(msg, "#d4af37");
-            document.getElementById('player-play-controls').classList.remove('hidden');
-        }
-
-        function showLocalReactionModal() {
-            document.getElementById('local-reaction-claim').innerText = activeNumber;
-            document.getElementById('local-reaction-text').innerText = `لعب ${playerNames[lastPlayerId]} ${lastPlayedPieces.length} ورقات.`;
-            let btnContainer = document.getElementById('local-doubter-buttons'); btnContainer.innerHTML = '';
-            
-            let otherPlayers = players.filter(p => p !== lastPlayerId && !hasWon[p]);
-            otherPlayers.forEach(p => { btnContainer.innerHTML += `<button class="btn btn-danger" style="width:100%; font-size:1.1rem; padding: 10px;" onclick="executeLocalDoubt('${p}', '${lastPlayerId}')">أكشفه! (${playerNames[p]}) 🤨</button>`; });
-            document.getElementById('local-reaction-modal').classList.remove('hidden');
-        }
-
-        function executeLocalDoubt(doubterId, targetId) { document.getElementById('local-reaction-modal').classList.add('hidden'); executeDoubtOffline(doubterId, targetId); }
-        function passLocalDoubt() { document.getElementById('local-reaction-modal').classList.add('hidden'); handleNoDoubtOffline(lastPlayerId); }
-
-        // ================= أنيميشن الكروت الطايرة =================
-        function flyCardsToPlayer(targetId, callback) {
-            try {
-                const stackDiv = document.getElementById('table-stack');
-                const targetBox = document.getElementById((targetId === myId || (gameMode==='local' && targetId===lastPlayerId)) ? 'box-player' : `box-${targetId}`);
-                if (!stackDiv || !targetBox || stack.length === 0) { callback(); return; }
-
-                const targetRect = targetBox.getBoundingClientRect();
-                const targetX = targetRect.left + (targetRect.width / 2);
-                const targetY = targetRect.top + (targetRect.height / 2);
-
-                const pieces = stackDiv.querySelectorAll('.facedown-piece, .domino-piece');
-                if (!pieces || pieces.length === 0) { callback(); return; }
-
-                pieces.forEach((piece, index) => {
-                    const rect = piece.getBoundingClientRect();
-                    const deltaX = targetX - (rect.left + (rect.width / 2));
-                    const deltaY = targetY - (rect.top + (rect.height / 2));
-
-                    piece.style.transition = `transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) ${index * 0.05}s, opacity 0.5s ease-in ${index * 0.05}s`;
-                    piece.style.zIndex = 1000 + index;
-                    piece.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.2) rotate(${Math.random() * 360}deg)`;
-                    piece.style.opacity = '0';
-                });
-                setTimeout(callback, 600 + (pieces.length * 50));
-            } catch (e) { callback(); }
+        function nextTurn() {
+            turnIndex = getNextPlayerIndex(turnIndex); let nextPlayer = players[turnIndex]; highlightTurn(nextPlayer); saveGame();
+            releaseProcessingLock();
+            if (nextPlayer === myId) { setStatus(`دورك.. العب على (${activeNumber})!`, "#d4af37"); document.getElementById('player-play-controls').classList.remove('hidden'); } 
+            else { setStatus(`انتظار ${playerNames[nextPlayer]}...`, "#94a3b8"); setTimeout(executeAITurn, 2000); }
         }
 
         // ================= Settings / Chat =================
         function openSettings() { document.getElementById('settings-modal').classList.remove('hidden'); }
         function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
         function withdrawGame() {
-            closeSettings(); reactionTimers.forEach(clearTimeout); reactionTimers = []; hideAllControls(); releaseProcessingLock();
-            if(gameMode === 'online') { leaveOnlineRoom(); }
-            else {
-                let activeOthers = players.filter(p => p !== players[turnIndex] && !hasWon[p]);
-                if(activeOthers.length > 0) { let winner = activeOthers.sort((a,b) => hands[a].length - hands[b].length)[0]; scores[winner] += 1; setStatus(`انسحاب! فاز ${playerNames[winner]}.`, "#f87171"); } 
-                else { setStatus(`انسحاب من اللعبة.`, "#f87171"); }
-                setTimeout(updateScoreboard, 2500);
-            }
+            closeSettings(); clearSave(); reactionTimers.forEach(clearTimeout); reactionTimers = []; hideAllControls(); releaseProcessingLock();
+            if(gameMode === 'online') { leaveOnlineRoom(); return; }
+            let activeOthers = players.filter(p => p !== players[turnIndex] && !hasWon[p]);
+            if(activeOthers.length > 0) {
+                let winner = activeOthers.sort((a,b) => hands[a].length - hands[b].length)[0]; scores[winner] += 1;
+                setStatus(`انسحاب! فاز ${playerNames[winner]}.`, "#f87171");
+            } else { setStatus(`انسحاب من اللعبة.`, "#f87171"); }
+            setTimeout(updateScoreboard, 2500);
         }
         
         function toggleChat() { document.getElementById('chat-window').classList.toggle('hidden'); }
         function handleChatPress(e) { if(e.key === 'Enter') sendChatMessage(); }
+
+        function showBubble(senderId, text) {
+            let boxId = (senderId === myId || (gameMode==='local' && senderId===players[turnIndex])) ? 'bubble-player' : `bubble-${senderId}`;
+            let b = document.getElementById(boxId);
+            if(b) {
+                b.innerText = text; b.classList.add('show');
+                setTimeout(() => b.classList.remove('show'), 3000);
+            }
+        }
+
         function sendChatMessage() {
             let input = document.getElementById('chat-input'); let msg = input.value.trim(); if(msg === '') return;
-            
-            if(gameMode === 'online') {
-                db.ref('rooms/' + roomCode + '/chat').push({ senderId: myId, senderName: playerNames[myId], text: msg });
-            } else {
-                let chatBox = document.getElementById('chat-messages'); chatBox.innerHTML += `<div class="chat-msg msg-player"><strong>${playerNames['player']}:</strong> ${msg}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-                let activeAIs = players.filter(p => p !== 'player' && p.startsWith('comp'));
+            if(gameMode === 'online') { 
+                db.ref('rooms/' + roomCode + '/chat').push({ senderId: myId, senderName: playerNames[myId], text: msg }); 
+            }
+            else {
+                let chatBox = document.getElementById('chat-messages'); 
+                let currentLocalId = gameMode === 'local' ? players[turnIndex] : myId;
+                chatBox.innerHTML += `<div class="chat-msg msg-player"><strong>${playerNames[currentLocalId]}:</strong> ${msg}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight; 
+                showBubble(currentLocalId, msg);
+
+                let activeAIs = players.filter(p => p !== myId && p.startsWith('comp'));
                 if(activeAIs.length > 0) {
                     setTimeout(() => {
                         let ai = activeAIs[Math.floor(Math.random() * activeAIs.length)];
                         let aiReplies = ["العب يا عم", "أنا مركز معاك", "ورقك مكشوف", "هكسبك برضه"]; let reply = aiReplies[Math.floor(Math.random() * aiReplies.length)];
                         chatBox.innerHTML += `<div class="chat-msg msg-ai"><strong>${playerNames[ai].split(' ')[0]}:</strong> ${reply}</div>`;
                         chatBox.scrollTop = chatBox.scrollHeight;
+                        showBubble(ai, reply);
                     }, 1500 + Math.random() * 2000);
                 }
             }
@@ -1215,13 +1144,12 @@
 
         function listenToChat() {
             if(chatListener) db.ref('rooms/' + roomCode + '/chat').off('child_added', chatListener);
-            let chatBox = document.getElementById('chat-messages'); chatBox.innerHTML = '';
+            document.getElementById('chat-messages').innerHTML = '';
             chatListener = db.ref('rooms/' + roomCode + '/chat').on('child_added', snap => {
-                let msg = snap.val();
-                let isMe = msg.senderId === myId;
-                let cls = isMe ? 'msg-player' : 'msg-ai';
-                chatBox.innerHTML += `<div class="chat-msg ${cls}"><strong>${msg.senderName}:</strong> ${msg.text}</div>`;
+                let msg = snap.val(); let isMe = msg.senderId === myId; let chatBox = document.getElementById('chat-messages');
+                chatBox.innerHTML += `<div class="chat-msg ${isMe?'msg-player':'msg-ai'}"><strong>${msg.senderName}:</strong> ${msg.text}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
+                showBubble(msg.senderId, msg.text);
             });
         }
     </script>
