@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>دومينو الشك - VIP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #0a0a0a; color: #fff; font-family: 'Tajawal', sans-serif;
+            text-align: center; margin: 0; padding: 10px; min-height: 100vh;
+            display: flex; flex-direction: column; overflow-x: hidden;
+        }
+        h1 { color: #ffd700; margin: 5px 0 15px 0; font-size: 1.6rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+        
+        .screen { display: none; width: 100%; max-width: 650px; margin: 0 auto; flex: 1; flex-direction: column; position: relative; }
+        .screen.active { display: flex; }
+
+        /* قائمة الدخول (Lobby) */
+        .menu-box {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a); border: 3px solid #ffd700;
+            border-radius: 20px; padding: 30px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,215,0,0.2);
+            margin: auto; width: 95%;
+        }
+        .menu-box h2 { color: #ffd700; font-size: 2rem; margin-top: 0; text-shadow: 2px 2px 5px #000; }
+        
+        .mode-selector { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #555; }
+        .mode-selector h3 { margin-top: 0; color: #ccc; }
+        
+        .name-input {
+            padding: 12px; border-radius: 10px; border: 2px solid #ffd700; text-align: center;
+            width: 80%; margin-bottom: 15px; font-family: 'Tajawal'; font-size: 1.2rem;
+            background: #222; color: #fff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .name-input:focus { outline: none; box-shadow: 0 0 10px #ffd700; }
+
+        .radio-group { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        .radio-label {
+            background: #222; padding: 10px 20px; border-radius: 10px; border: 2px solid #555;
+            cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: 0.3s;
+        }
+        .radio-label input { display: none; }
+        .radio-label input:checked + span { color: #ffd700; }
+        .radio-label.selected { border-color: #ffd700; background: rgba(255,215,0,0.1); box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+
+        /* لوحة النتائج */
+        .score-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 1.2rem; }
+        .score-table th, .score-table td { padding: 10px; border-bottom: 1px solid #444; }
+        .score-table th { color: #ffd700; }
+        .score-row.winner { background: rgba(50, 205, 50, 0.2); font-weight: bold; color: #32CD32; }
+
+        /* الترابيزة */
+        .table-area {
+            position: relative; background: radial-gradient(circle at center, #235A34, #0D2615);
+            border: 15px solid #4a3018; border-radius: 50px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 15px 30px rgba(0,0,0,0.8), inset 0 0 0 2px rgba(255,255,255,0.1);
+            width: 100%; height: 45vh; min-height: 320px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center;
+        }
+
+        .ai-player {
+            position: absolute; background: rgba(0, 0, 0, 0.7); border: 2px solid #555; border-radius: 15px;
+            padding: 6px 12px; display: flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: bold;
+            transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 10;
+        }
+        .ai-player.active-turn { border-color: #ffd700; background: rgba(255, 215, 0, 0.2); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); transform: scale(1.08); }
+        .ai-player.won { opacity: 0.5; filter: grayscale(100%); }
+        .ai-player .badge { background: #ffd700; color: #000; padding: 3px 8px; border-radius: 12px; font-size: 1.1rem; }
+        
+        .pos-top { top: 10px; left: 50%; transform: translateX(-50%); }
+        .pos-left { left: 10px; top: 50%; transform: translateY(-50%); flex-direction: column; }
+        .pos-right { right: 10px; top: 50%; transform: translateY(-50%); flex-direction: column; }
+
+        .center-board { text-align: center; max-width: 85%; z-index: 5; }
+        .current-claim-box {
+            background: rgba(0, 0, 0, 0.8); color: #fff; padding: 8px 20px; border-radius: 25px;
+            border: 1px solid #ffd700; font-size: 1.2rem; margin-bottom: 15px; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        #current-claim { color: #ffd700; font-size: 1.8rem; font-weight: 900; }
+        .board-stats { font-size: 0.85rem; color: #ccc; background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 12px; margin-top: 15px; }
+
+        .status-box {
+            background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a); border: 2px solid #ffd700; border-radius: 12px; 
+            padding: 12px; margin: 0 auto 15px auto; max-width: 650px; width: 100%; font-size: 1.2rem; font-weight: bold; color: #ffd700;
+        }
+
+        .hand { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 10px 0; }
+
+        .domino-piece {
+            width: 46px; height: 92px; background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 8px; cursor: pointer; display: flex; flex-direction: column;
+            transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none;
+            box-shadow: 3px 6px 10px rgba(0,0,0,0.5), inset 1px 1px 3px #fff; border: none;
+        }
+        .domino-piece.selected { transform: translateY(-12px); box-shadow: 0 10px 20px rgba(0,0,0,0.8); border: 3px solid #ffd700; }
+        
+        .dots-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); flex: 1; padding: 4px; align-items: center; justify-items: center; }
+        .dot { background: radial-gradient(circle at 30% 30%, #555, #000); border-radius: 50%; width: 8px; height: 8px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.8), 0.5px 0.5px 1px rgba(255,255,255,0.9); }
+        .divider { width: 90%; height: 2px; background: rgba(0,0,0,0.3); margin: 0 auto; box-shadow: inset 0 1px 1px rgba(0,0,0,0.5); }
+        
+        #table-stack { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+        .facedown-piece {
+            width: 38px; height: 76px; background: linear-gradient(145deg, #e0e0e0, #cccccc); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); border: 1px solid #aaa; animation: dropIn 0.3s forwards;
+        }
+        .facedown-piece::after { content: '🀄'; font-size: 1.4rem; color: #888; text-shadow: 1px 1px 1px #fff; }
+
+        @keyframes dropIn { 0% { transform: translateY(-50px) scale(1.1) rotate(15deg); opacity: 0; } 100% { transform: translateY(0) scale(1) rotate(0); opacity: 1; } }
+
+        .btn {
+            background: linear-gradient(to bottom, #ffd700, #d4af37); color: #000; padding: 12px 25px;
+            border: none; border-radius: 25px; font-family: 'Tajawal', sans-serif; font-weight: 900;
+            cursor: pointer; font-size: 1.2rem; margin: 5px; transition: 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.5); width: 100%; max-width: 300px;
+        }
+        .btn:active { transform: scale(0.95); box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .btn-danger { background: linear-gradient(to bottom, #ff4757, #d32f2f); color: #fff; }
+        .btn-blue { background: linear-gradient(to bottom, #00d2ff, #3a7bd5); color: #fff; }
+        
+        .controls-container { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 15px; margin: 10px auto; max-width: 600px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .claim-selector { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .claim-btn {
+            background: linear-gradient(to bottom, #ffffff, #e0e0e0); color: #000; border: none; border-radius: 10px; width: 45px; height: 45px; 
+            font-size: 1.4rem; font-family: 'Tajawal', sans-serif; font-weight: 900; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+        }
+        .claim-btn.active { background: linear-gradient(to bottom, #ffd700, #ffaa00); box-shadow: 0 0 15px #ffd700; transform: scale(1.15); }
+        .hidden { display: none !important; }
+
+        /* ================== زرار وشاشة الإعدادات (الانسحاب) ================== */
+        .settings-btn {
+            position: absolute; top: 15px; left: 15px; background: #222; color: #fff; 
+            border: 2px solid #ffd700; border-radius: 50%; width: 45px; height: 45px; 
+            font-size: 1.5rem; cursor: pointer; z-index: 100; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .settings-btn:hover { background: #444; transform: rotate(90deg); }
+        
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .modal-overlay.hidden { display: none !important; }
+        
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a); padding: 30px; border-radius: 15px; 
+            border: 2px solid #ffd700; text-align: center; width: 85%; max-width: 350px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+        }
+        .modal-content h2 { color: #ffd700; margin-top: 0; }
+
+        /* ================== نظام الشات ================== */
+        .chat-toggle-btn {
+            position: fixed; bottom: 20px; left: 20px; background: #3a7bd5; color: #fff;
+            border: 2px solid #fff; border-radius: 50px; padding: 10px 18px; font-weight: bold; font-family: 'Tajawal'; font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6); cursor: pointer; z-index: 100; transition: 0.3s;
+        }
+        .chat-toggle-btn:hover { background: #00d2ff; transform: scale(1.05); }
+
+        .chat-container {
+            position: fixed; bottom: 80px; left: 20px; width: 280px; max-height: 350px; height: 50vh;
+            background: rgba(20, 20, 20, 0.95); border: 2px solid #3a7bd5; border-radius: 12px;
+            display: flex; flex-direction: column; z-index: 100; box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            transition: 0.3s; transform-origin: bottom left;
+        }
+        .chat-container.hidden { transform: scale(0); opacity: 0; pointer-events: none; }
+        
+        .chat-header { background: #3a7bd5; color: #fff; padding: 10px; font-weight: bold; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: center; }
+        .close-chat { cursor: pointer; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 50%; transition: 0.2s; }
+        .close-chat:hover { background: #ff4757; }
+        
+        .chat-messages { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .chat-msg { padding: 8px 12px; border-radius: 12px; font-size: 0.95rem; max-width: 85%; line-height: 1.3; font-weight: bold; }
+        .msg-player { background: #ffd700; color: #000; align-self: flex-start; text-align: right; border-bottom-right-radius: 2px; }
+        .msg-ai { background: #444; color: #fff; align-self: flex-end; text-align: right; border: 1px solid #666; border-bottom-left-radius: 2px; }
+        
+        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid #444; background: #1a1a1a; border-radius: 0 0 10px 10px; }
+        .chat-input-area input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; font-family: 'Tajawal'; }
+        .chat-input-area input:focus { outline: none; border-color: #3a7bd5; }
+        .chat-send-btn { background: #3a7bd5; color: #fff; border: none; border-radius: 8px; padding: 0 15px; margin-right: 5px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <!-- ================== شاشة القائمة الرئيسية ================== -->
+    <div id="lobby-screen" class="screen active">
+        <div class="menu-box">
+            <h2>دومينو الشك 🀄</h2>
+            
+            <div class="mode-selector">
+                <h3>اكتب اسمك يا بطل ✍️</h3>
+                <input type="text" id="player-name-input" class="name-input" placeholder="اسمك إيه؟">
+                
+                <h3 style="margin-top: 15px;">لعب ضد الكمبيوتر 🤖</h3>
+                <div class="radio-group" id="ai-count-group">
+                    <label class="radio-label">
+                        <input type="radio" name="aiCount" value="1" onclick="updateRadioUI()">
+                        <span>1 كمبيوتر</span>
+                    </label>
+                    <label class="radio-label selected">
+                        <input type="radio" name="aiCount" value="2" checked onclick="updateRadioUI()">
+                        <span>2 كمبيوتر</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="aiCount" value="3" onclick="updateRadioUI()">
+                        <span>3 كمبيوتر</span>
+                    </label>
+                </div>
+                <button class="btn" onclick="startGameMode('ai')">ابدأ اللعب الآن 🎮</button>
+            </div>
+
+            <div class="mode-selector" style="border-color: #3a7bd5;">
+                <h3>لعب مع أصحابك أونلاين 🌐</h3>
+                <input type="text" placeholder="كود الروم (مثال: 1234)" class="name-input" style="border-color: #3a7bd5; margin-bottom: 10px;">
+                <button class="btn btn-blue" onclick="startMultiplayer()">دخول / إنشاء روم 🏠</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== شاشة النتائج ================== -->
+    <div id="score-screen" class="screen">
+        <div class="menu-box">
+            <h2>لوحة المراكز 🏆</h2>
+            <table class="score-table" id="scoreboard-table">
+                <thead>
+                    <tr>
+                        <th>المركز</th>
+                        <th>اللاعب</th>
+                        <th>عدد المكاسب</th>
+                    </tr>
+                </thead>
+                <tbody id="scoreboard-body"></tbody>
+            </table>
+            <button class="btn" onclick="startNewRound()">العب دور جديد 🔄</button>
+            <button class="btn btn-danger" onclick="returnToMenu()">رجوع للقائمة 🚪</button>
+        </div>
+    </div>
+
+    <!-- ================== شاشة اللعب ================== -->
+    <div id="game-screen" class="screen">
+        
+        <!-- زرار الإعدادات -->
+        <button class="settings-btn" onclick="openSettings()">⚙️</button>
+
+        <h1>دومينو الشك 🀄</h1>
+
+        <div class="table-area" id="main-table">
+            <div class="center-board">
+                <div class="current-claim-box">
+                    الرقم: <strong id="current-claim">--</strong>
+                </div>
+                <div id="table-stack"></div>
+                <div class="board-stats">
+                    نزل الدور ده: <span id="last-played-count">0</span> | كل الأرض: <span id="total-stack">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-box" id="status-message">جاري تجهيز اللعبة...</div>
+
+        <div id="player-reaction-controls" class="hidden" style="display:flex; justify-content:center; gap:10px;">
+            <button class="btn btn-danger" style="width:auto;" onclick="playerDoubts()">أشـــك 🤨</button>
+            <button class="btn" style="width:auto;" onclick="playerPasses()">عديها ➡️</button>
+        </div>
+
+        <div class="player-area">
+            <h3 id="box-player" style="margin: 0 0 10px 0; color: #ffd700; text-shadow: 1px 1px 2px #000;">ورقك 😎</h3>
+            <div class="hand" id="player-hand"></div>
+            
+            <div class="controls-container hidden" id="player-play-controls">
+                <div id="claim-section">
+                    <p style="margin: 0 0 10px 0; font-size: 1.1rem; color:#fff;">افتح الدور برقم كام؟</p>
+                    <div class="claim-selector">
+                        <button class="claim-btn" onclick="selectClaim(0)">0</button>
+                        <button class="claim-btn" onclick="selectClaim(1)">1</button>
+                        <button class="claim-btn" onclick="selectClaim(2)">2</button>
+                        <button class="claim-btn" onclick="selectClaim(3)">3</button>
+                        <button class="claim-btn" onclick="selectClaim(4)">4</button>
+                        <button class="claim-btn" onclick="selectClaim(5)">5</button>
+                        <button class="claim-btn" onclick="selectClaim(6)">6</button>
+                    </div>
+                </div>
+                <button class="btn play-btn" id="play-btn" onclick="playPiece()">إلعب الورق</button>
+            </div>
+        </div>
+        
+        <!-- زرار ومربع الشات -->
+        <button class="chat-toggle-btn" onclick="toggleChat()">💬 دردشة</button>
+        
+        <div id="chat-window" class="chat-container hidden">
+            <div class="chat-header">
+                <span>دردشة اللعبة 💬</span>
+                <span class="close-chat" onclick="toggleChat()">✖</span>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="chat-msg msg-ai" style="align-self: center; background: transparent; border: none; color: #aaa; font-size: 0.8rem;">أهلاً بيك في الروم!</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="اكتب رسالة..." onkeypress="handleChatPress(event)">
+                <button class="chat-send-btn" onclick="sendChatMessage()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== شاشة الإعدادات / الانسحاب ================== -->
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>إعدادات الجيم ⚙️</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">الواجهة دي بتوقف اللعب مؤقتاً لحد ما تقرر.</p>
+            <button class="btn btn-blue" onclick="closeSettings()" style="margin-bottom: 15px;">▶️ استكمال اللعب</button>
+            <button class="btn btn-danger" onclick="withdrawGame()">🏳️ انسحاب من الجيم</button>
+        </div>
+    </div>
+
+    <script>
+        // ================= المتغيرات =================
+        let totalAiCount = 2;
+        let players = [];
+        let playerNames = { player: 'أنت 😎' };
+        let hands = {};
+        let hasWon = {};
+        let scores = { player: 0 };
+        
+        let stack = []; let lastPlayedPieces = []; let turnIndex = 0; let lastPlayerId = ''; 
+        let selectedPieces = []; let activeNumber = -1; let userSelectedClaim = -1; 
+        let doubtHandled = false; let reactionTimers = []; let aiWillDoubtFlag = false;
+
+        // ================= الإعدادات والانسحاب =================
+        function openSettings() { document.getElementById('settings-modal').classList.remove('hidden'); }
+        function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
+        
+        function withdrawGame() {
+            closeSettings();
+            reactionTimers.forEach(clearTimeout); reactionTimers = [];
+            hideAllControls();
+            
+            let activeAIs = players.filter(p => p !== 'player' && !hasWon[p]);
+            if(activeAIs.length > 0) {
+                // الكمبيوتر اللي معاه أقل ورق بيكسب
+                let winnerAi = activeAIs.sort((a,b) => hands[a].length - hands[b].length)[0];
+                scores[winnerAi] += 1;
+                setStatus(`انسحبت يا وحش! 🏳️ ${playerNames[winnerAi]} كسب الدور ده.`, "#ff4757");
+            } else {
+                setStatus(`انسحبت من الجيم 🏳️`, "#ff4757");
+            }
+            
+            setTimeout(updateScoreboard, 2500);
+        }
+
+        // ================= الشات =================
+        function toggleChat() { document.getElementById('chat-window').classList.toggle('hidden'); }
+        function handleChatPress(e) { if(e.key === 'Enter') sendChatMessage(); }
+        
+        function sendChatMessage() {
+            let input = document.getElementById('chat-input');
+            let msg = input.value.trim();
+            if(msg === '') return;
+            
+            let chatBox = document.getElementById('chat-messages');
+            chatBox.innerHTML += `<div class="chat-msg msg-player"><strong>${playerNames['player']}:</strong> ${msg}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+            input.value = '';
+
+            let activeAIs = players.filter(p => p !== 'player');
+            if(activeAIs.length > 0) {
+                setTimeout(() => {
+                    let ai = activeAIs[Math.floor(Math.random() * activeAIs.length)];
+                    let aiReplies = [
+                        "العب يا عم خلينا نخلص 😂", "شكلك بتشيل الأرض كتير", "أنا مركز معاك أوي الدور ده 👀", 
+                        "بلاش بلف هقفشك!", "ههههههههههه", "يا ابني ده أنا كمبيوتر هتكسبني إزاي؟", 
+                        "ركز في ورقك وسيبك من الشات", "هتشيل الليلة يا بطل 😎"
+                    ];
+                    let reply = aiReplies[Math.floor(Math.random() * aiReplies.length)];
+                    chatBox.innerHTML += `<div class="chat-msg msg-ai"><strong>${playerNames[ai].split(' ')[0]}:</strong> ${reply}</div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 1500 + Math.random() * 2500);
+            }
+        }
+
+        // ================= الـ UI والقائمة =================
+        function updateRadioUI() {
+            document.querySelectorAll('.radio-label').forEach(lbl => lbl.classList.remove('selected'));
+            document.querySelector('input[name="aiCount"]:checked').parentElement.classList.add('selected');
+        }
+
+        function startMultiplayer() {
+            alert("عشان تلعب أونلاين مع أصحابك لازم نربط اللعبة بقاعدة بيانات. خلينا نلعب ضد الكمبيوتر دلوقتي لحد ما نركب السيرفر! 🚀");
+        }
+
+        function startGameMode(mode) {
+            let typedName = document.getElementById('player-name-input').value.trim();
+            playerNames['player'] = typedName !== "" ? typedName : "الزعيم 😎";
+            
+            totalAiCount = parseInt(document.querySelector('input[name="aiCount"]:checked').value);
+            players = ['player'];
+            for(let i=1; i<=totalAiCount; i++) {
+                players.push(`comp${i}`);
+                playerNames[`comp${i}`] = `كمبيوتر ${i} 🤖`;
+                if(scores[`comp${i}`] === undefined) scores[`comp${i}`] = 0;
+            }
+
+            setupTableUI();
+            startNewRound();
+        }
+
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function returnToMenu() {
+            scores = { player: 0 }; 
+            switchScreen('lobby-screen');
+        }
+
+        function startNewRound() {
+            switchScreen('game-screen');
+            initGame();
+        }
+
+        function setupTableUI() {
+            document.querySelectorAll('.ai-player').forEach(el => el.remove());
+            const table = document.getElementById('main-table');
+
+            if(totalAiCount === 1) {
+                table.innerHTML += `<div class="ai-player pos-top" id="box-comp1"><span>${playerNames.comp1}</span><span id="count-comp1" class="badge">0</span></div>`;
+            } else if (totalAiCount === 2) {
+                table.innerHTML += `<div class="ai-player pos-left" id="box-comp1"><span>${playerNames.comp1}</span><span id="count-comp1" class="badge">0</span></div>`;
+                table.innerHTML += `<div class="ai-player pos-right" id="box-comp2"><span>${playerNames.comp2}</span><span id="count-comp2" class="badge">0</span></div>`;
+            } else if (totalAiCount === 3) {
+                table.innerHTML += `<div class="ai-player pos-left" id="box-comp1"><span>${playerNames.comp1}</span><span id="count-comp1" class="badge">0</span></div>`;
+                table.innerHTML += `<div class="ai-player pos-top" id="box-comp2"><span>${playerNames.comp2}</span><span id="count-comp2" class="badge">0</span></div>`;
+                table.innerHTML += `<div class="ai-player pos-right" id="box-comp3"><span>${playerNames.comp3}</span><span id="count-comp3" class="badge">0</span></div>`;
+            }
+            document.getElementById('box-player').innerText = `ورقك يا ${playerNames.player}`;
+        }
+
+        function updateScoreboard() {
+            let sortedPlayers = players.map(p => ({ id: p, name: playerNames[p], score: scores[p] })).sort((a, b) => b.score - a.score);
+            let tbody = document.getElementById('scoreboard-body');
+            tbody.innerHTML = '';
+            sortedPlayers.forEach((p, index) => {
+                tbody.innerHTML += `<tr class="${index === 0 && p.score > 0 ? 'winner' : ''}">
+                    <td>${index + 1} ${index === 0 && p.score > 0 ? '👑' : ''}</td>
+                    <td>${p.name}</td>
+                    <td>${p.score} نقطة</td>
+                </tr>`;
+            });
+            switchScreen('score-screen');
+        }
+
+        // ================= اللعبة =================
+        function getDotsHTML(num) {
+            const layouts = { 0: [], 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+            let html = '<div class="dots-grid">';
+            for(let i=0; i<9; i++) { html += layouts[num].includes(i) ? '<div class="dot"></div>' : '<div></div>'; }
+            return html + '</div>';
+        }
+
+        function initGame() {
+            stack = []; lastPlayedPieces = []; selectedPieces = []; activeNumber = -1; userSelectedClaim = -1;
+            document.querySelectorAll('.claim-btn').forEach(btn => btn.classList.remove('active'));
+            hideAllControls();
+
+            let allPieces = [];
+            let totalPlayers = totalAiCount + 1;
+            for (let i = 0; i <= 6; i++) {
+                for (let j = i; j <= 6; j++) {
+                    if(totalPlayers === 3 && i === 0 && j === 0) continue; 
+                    allPieces.push([i, j]);
+                }
+            }
+            allPieces.sort(() => Math.random() - 0.5); 
+            
+            let cardsPerPlayer = totalPlayers === 2 ? 14 : (totalPlayers === 3 ? 9 : 7);
+            players.forEach((p, index) => { hands[p] = allPieces.slice(index * cardsPerPlayer, (index + 1) * cardsPerPlayer); hasWon[p] = false; });
+            
+            let starter = players.find(p => hands[p].some(piece => piece[0] === 6 && piece[1] === 6)) || 'player';
+            turnIndex = players.indexOf(starter); activeNumber = 6; 
+            
+            updateUI(); highlightTurn(starter);
+
+            if(starter === 'player') {
+                setStatus("أنت معاك الدش (6-6)! حدده وافتح الدور بـ (6).", "#ffd700");
+                document.getElementById('player-play-controls').classList.remove('hidden');
+            } else {
+                setStatus(`${playerNames[starter]} معاه الدش وهيبدأ.`, "#fff");
+                setTimeout(executeAITurn, 2500);
+            }
+        }
+
+        function highlightTurn(activePlayerId) {
+            players.forEach(p => {
+                let box = document.getElementById(`box-${p}`);
+                if (box) { box.classList.remove('active-turn'); if (hasWon[p]) box.classList.add('won'); else if (p === activePlayerId) box.classList.add('active-turn'); }
+            });
+        }
+
+        function getNextPlayerIndex(currentIndex) {
+            let nextIdx = (currentIndex + 1) % players.length;
+            while (hasWon[players[nextIdx]]) { nextIdx = (nextIdx + 1) % players.length; }
+            return nextIdx;
+        }
+
+        function checkGameOver() {
+            let activeCount = players.filter(p => !hasWon[p]).length;
+            if (activeCount <= 1) {
+                let winner = players.find(p => hasWon[p]); 
+                if(winner) scores[winner] += 1;
+                let loser = players.find(p => !hasWon[p]);
+                setStatus(`الجولة خلصت! ${winner ? playerNames[winner] + ' كسب 🎉' : ''} و ${playerNames[loser]} شال الليلة 😭`, "#ffd700");
+                hideAllControls(); setTimeout(updateScoreboard, 3500); return true;
+            }
+            return false;
+        }
+
+        function updateUI() {
+            const handDiv = document.getElementById('player-hand'); handDiv.innerHTML = '';
+            hands.player.forEach((piece, index) => {
+                const el = document.createElement('div'); el.className = `domino-piece ${selectedPieces.includes(index) ? 'selected' : ''}`;
+                el.innerHTML = getDotsHTML(piece[0]) + '<div class="divider"></div>' + getDotsHTML(piece[1]);
+                el.onclick = () => selectPiece(index); handDiv.appendChild(el);
+            });
+
+            document.getElementById('table-stack').innerHTML = lastPlayedPieces.map(() => `<div class="facedown-piece"></div>`).join('');
+            players.forEach(p => { if(p !== 'player' && document.getElementById(`count-${p}`)) document.getElementById(`count-${p}`).innerText = hasWon[p] ? 'كسب' : hands[p].length; });
+            
+            document.getElementById('last-played-count').innerText = lastPlayedPieces.length;
+            document.getElementById('total-stack').innerText = stack.length;
+            
+            const claimSection = document.getElementById('claim-section'); const playBtn = document.getElementById('play-btn'); const currentClaimText = document.getElementById('current-claim');
+
+            if(activeNumber === -1) {
+                currentClaimText.innerText = "اختار رقم"; claimSection.style.display = "block"; playBtn.innerText = "إلعب الورق";
+            } else {
+                currentClaimText.innerText = activeNumber; claimSection.style.display = "none"; playBtn.innerText = `إلعب على إنهم (${activeNumber})`;
+            }
+        }
+
+        function setStatus(msg, color = "#ffd700") { document.getElementById('status-message').innerText = msg; document.getElementById('status-message').style.color = color; }
+        function hideAllControls() { document.getElementById('player-play-controls').classList.add('hidden'); document.getElementById('player-reaction-controls').classList.add('hidden'); }
+        function selectClaim(num) { userSelectedClaim = num; document.querySelectorAll('.claim-btn').forEach(btn => btn.classList.remove('active')); document.querySelectorAll('.claim-btn')[num].classList.add('active'); }
+
+        function selectPiece(index) {
+            if (players[turnIndex] !== 'player' || hasWon.player) return;
+            const pos = selectedPieces.indexOf(index);
+            if (pos > -1) selectedPieces.splice(pos, 1); else if (selectedPieces.length < 7) selectedPieces.push(index);
+            updateUI();
+        }
+
+        function playPiece() {
+            if (selectedPieces.length === 0) { alert("حدد ورقة واحدة على الأقل!"); return; }
+            let claim = activeNumber === -1 ? userSelectedClaim : activeNumber;
+            if (claim === -1) { alert("اختار الرقم اللي هيفتح الدور!"); return; }
+            activeNumber = claim; selectedPieces.sort((a,b) => b-a); lastPlayedPieces = []; lastPlayerId = 'player';
+            
+            selectedPieces.forEach(idx => { let p = hands.player.splice(idx, 1)[0]; lastPlayedPieces.push(p); stack.push(p); });
+            selectedPieces = []; userSelectedClaim = -1; document.querySelectorAll('.claim-btn').forEach(btn => btn.classList.remove('active'));
+            
+            hideAllControls(); updateUI(); setStatus(`نزلت ${lastPlayedPieces.length} ورقات على إنهم (${claim})..`, "#fff");
+            startReactionPhase('player');
+        }
+
+        function executeAITurn() {
+            let ai = players[turnIndex]; if(hasWon[ai]) return nextTurn(); 
+            lastPlayerId = ai; lastPlayedPieces = [];
+            
+            if(activeNumber === -1) {
+                let p = hands[ai].splice(Math.floor(Math.random() * hands[ai].length), 1)[0];
+                activeNumber = p[0]; lastPlayedPieces.push(p);
+            } else {
+                let matches = hands[ai].filter(p => p[0] === activeNumber || p[1] === activeNumber);
+                if (Math.random() < 0.7 && matches.length > 0) {
+                    let numToPlay = Math.min(matches.length, Math.floor(Math.random()*2) + 1);
+                    for(let i=0; i<numToPlay; i++) lastPlayedPieces.push(hands[ai].splice(hands[ai].indexOf(matches[i]), 1)[0]);
+                } else {
+                    let numToPlay = Math.floor(Math.random()*2) + 1; 
+                    for(let i=0; i<numToPlay; i++) { if(hands[ai].length === 0) break; lastPlayedPieces.push(hands[ai].splice(Math.floor(Math.random() * hands[ai].length), 1)[0]); }
+                }
+            }
+            stack.push(...lastPlayedPieces); updateUI(); setStatus(`${playerNames[ai]} نزل ${lastPlayedPieces.length} ورقات (${activeNumber}).`, "#ff4757");
+            startReactionPhase(ai);
+        }
+
+        function startReactionPhase(targetId) {
+            doubtHandled = false; aiWillDoubtFlag = false; reactionTimers.forEach(clearTimeout); reactionTimers = [];
+            let otherAIs = players.filter(ai => ai !== targetId && ai !== 'player' && !hasWon[ai]);
+
+            otherAIs.forEach(ai => {
+                let doubtChance = 0.15;
+                if (lastPlayedPieces.length > 2) doubtChance += 0.3;
+                let matchCount = hands[ai].filter(p => p[0] === activeNumber || p[1] === activeNumber).length;
+                if (matchCount >= 2) doubtChance += 0.4;
+                if (matchCount + lastPlayedPieces.length > (totalAiCount===1?14:7)) doubtChance = 1.0;
+
+                if (Math.random() < doubtChance) {
+                    aiWillDoubtFlag = true; reactionTimers.push(setTimeout(() => executeDoubt(ai, targetId), Math.floor(Math.random() * 1800) + 1200));
+                }
+            });
+
+            if (targetId !== 'player' && !hasWon.player) { document.getElementById('player-reaction-controls').classList.remove('hidden'); } 
+            else if (!aiWillDoubtFlag) { reactionTimers.push(setTimeout(() => handleNoDoubt(targetId), 2000)); }
+        }
+
+        function playerDoubts() { if (!doubtHandled) executeDoubt('player', lastPlayerId); }
+        function playerPasses() {
+            hideAllControls(); if (doubtHandled) return;
+            if (aiWillDoubtFlag) setStatus("عديتها.. بنشوف الكمبيوترات...", "#fff"); else handleNoDoubt(lastPlayerId);
+        }
+
+        function executeDoubt(doubterId, targetId) {
+            if (doubtHandled) return; doubtHandled = true; reactionTimers.forEach(clearTimeout); reactionTimers = []; hideAllControls();
+            setStatus(`${playerNames[doubterId]} شك في ${playerNames[targetId]}! 🤨 جاري الكشف...`, "#ff4757"); setTimeout(() => resolveDoubt(doubterId, targetId), 2000);
+        }
+
+        function handleNoDoubt(targetId) {
+            if (doubtHandled) return; doubtHandled = true; reactionTimers.forEach(clearTimeout); reactionTimers = [];
+            if (hands[targetId].length === 0) {
+                hasWon[targetId] = true; setStatus(`محدش شك! ${playerNames[targetId]} كسب وخرج! 🎉`, "#ffd700");
+                if (checkGameOver()) return; setTimeout(() => { turnIndex = getNextPlayerIndex(players.indexOf(targetId)); playNextHelper(); }, 2500); return;
+            }
+            setStatus(`محدش شك.. الدور على اللي بعده.`, "#fff"); setTimeout(nextTurn, 2000);
+        }
+
+        function resolveDoubt(doubterId, targetId) {
+            let isTruth = lastPlayedPieces.every(p => p[0] === activeNumber || p[1] === activeNumber);
+            let revealedHtml = '<div style="display:flex; justify-content:center; gap:5px; transform:scale(0.8);">';
+            lastPlayedPieces.forEach(p => { revealedHtml += `<div class="domino-piece" style="pointer-events:none; border:2px solid #ffd700; background:#fff;">${getDotsHTML(p[0])}<div class="divider"></div>${getDotsHTML(p[1])}</div>`; });
+            document.getElementById('table-stack').innerHTML = revealedHtml + '</div>'; 
+
+            let msg = "";
+            if (isTruth) {
+                msg = `${playerNames[targetId]} صادق! ${playerNames[doubterId]} هيشيل الأرض 😭`; hands[doubterId].push(...stack);
+                if (hands[targetId].length === 0) { hasWon[targetId] = true; msg += ` 🎉 ${playerNames[targetId]} كسب وخرج!`; turnIndex = getNextPlayerIndex(players.indexOf(targetId)); } 
+                else { turnIndex = players.indexOf(targetId); }
+            } else {
+                msg = `${playerNames[doubterId]} قفش ${playerNames[targetId]} بيكدب! ${playerNames[targetId]} شال الأرض 😎`; hands[targetId].push(...stack); turnIndex = players.indexOf(doubterId); 
+            }
+
+            setStatus(msg, (doubterId === 'player' && isTruth) || (targetId === 'player' && !isTruth) ? "#ff4757" : "#ffd700");
+
+            setTimeout(() => { stack = []; lastPlayedPieces = []; activeNumber = -1; updateUI(); if (checkGameOver()) return; playNextHelper(); }, 4500);
+        }
+        
+        function playNextHelper() {
+            setStatus(`الدور هيبدأ من عند ${playerNames[players[turnIndex]]} برقم جديد...`, "#fff"); highlightTurn(players[turnIndex]);
+            setTimeout(() => { if (players[turnIndex] === 'player') document.getElementById('player-play-controls').classList.remove('hidden'); else executeAITurn(); }, 2500);
+        }
+
+        function nextTurn() {
+            turnIndex = getNextPlayerIndex(turnIndex); let nextPlayer = players[turnIndex]; highlightTurn(nextPlayer);
+            if (nextPlayer === 'player') { setStatus(`دورك.. حدد ورق والعب على (${activeNumber})!`, "#ffd700"); document.getElementById('player-play-controls').classList.remove('hidden'); } 
+            else { setStatus(`الدور على ${playerNames[nextPlayer]} بيفكر...`, "#fff"); setTimeout(executeAITurn, 2000); }
+        }
+    </script>
+</body>
+</html>
