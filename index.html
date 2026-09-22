@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>do4 - VIP Premium (Ultra Sync)</title>
+    <title>do4 - VIP Premium (Ultra Sync & No Freezes)</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <!-- مكتبات Firebase للأونلاين -->
@@ -283,7 +283,7 @@
     <div id="lobby-screen" class="screen active">
         <div class="glass-panel">
             <button class="info-btn" onclick="openRules()">❓</button>
-            <h2>kosom kerolos 🀄</h2>
+            <h2>do4 🀄</h2>
             <button id="resume-btn" class="btn btn-blue hidden" style="margin-bottom: 15px; padding: 12px;" onclick="resumeGame()">استكمال الجيم السابق 🔄</button>
 
             <div class="setup-section" style="border-color: rgba(212, 175, 55, 0.4);">
@@ -372,8 +372,7 @@
     <!-- ================== شاشة اللعب ================== -->
     <div id="game-screen" class="screen">
         <button class="settings-btn" onclick="openSettings()">⚙</button>
-        <h1>kosom kirols
-        </h1>
+        <h1>do4</h1>
 
         <div class="table-area" id="main-table">
             <div id="staging-area"></div>
@@ -576,7 +575,7 @@
             else if (gameMode !== 'online') { switchScreen('game-screen'); initGame(); }
         }
 
-        // ================= نظام الأونلاين =================
+        // ================= نظام الأونلاين (المتزامن بدون أخطاء) =================
         function createOnlineRoom() {
             let name = document.getElementById('online-player-name').value.trim() || "اللاعب";
             if(!isValidName(name)) return;
@@ -643,7 +642,7 @@
             for(let d=6; d>=0; d--) { let found = players.find(p => hands[p].some(t => t[0]===d && t[1]===d)); if(found) { starter = found; maxD = d; break; } }
             if(!starter) { starter = players[0]; maxD = Math.max(...hands[starter].map(p => Math.max(p[0], p[1]))); }
             
-            db.ref('rooms/' + roomCode).update({ status: 'playing', turnIndex: players.indexOf(starter), activeNumber: maxD, hands: hands, hasWon: hasWon, stack: [], lastPlayedPieces: [], lastPlayerId: "", consecutiveGalas: 0, doubtPhase: false, doubtPasses: 0, winner: null, doubtEvent: null });
+            db.ref('rooms/' + roomCode).update({ status: 'playing', turnIndex: players.indexOf(starter), activeNumber: maxD, hands: hands, hasWon: hasWon, stack: [], lastPlayedPieces: [], lastPlayerId: "", consecutiveGalas: 0, doubtPhase: false, passes: null, winner: null, doubtEvent: null });
         }
 
         function syncGameState(data) {
@@ -661,21 +660,42 @@
                 return;
             }
 
+            // Sync Doubt Event (الكشف)
             if (data.doubtEvent) {
                 if(!doubtHandled) {
                     doubtHandled = true;
                     resolveDoubtShared(data.doubtEvent.doubterId, data.doubtEvent.targetId);
                 }
-                return; 
+                return; // بنقف هنا عشان الأنيميشن يخلص ومفيش تحديث يمسحه
             }
 
             releaseProcessingLock(); updateUI(); highlightTurn(players[turnIndex]); 
             
             if(data.doubtPhase) {
-                if(lastPlayerId !== myId && !hasWon[myId]) {
+                let passes = data.passes || {};
+                let activeRem = players.filter(p => !hasWon[p]).length;
+                
+                // لو الكل عمل تخطي (الـ Host بينفذ النقلة عشان مفيش تضارب)
+                if (isHost && Object.keys(passes).length >= activeRem - 1) {
+                    let nextT = getNextPlayerIndex(turnIndex);
+                    if (hands[lastPlayerId].length === 0) {
+                        hasWon[lastPlayerId] = true;
+                        if (players.filter(p => !hasWon[p]).length <= 1) {
+                            db.ref('rooms/' + roomCode).update({ winner: lastPlayerId });
+                            return;
+                        }
+                        nextT = getNextPlayerIndex(players.indexOf(lastPlayerId));
+                    }
+                    db.ref('rooms/' + roomCode).update({ turnIndex: nextT, doubtPhase: false, passes: null, hasWon: hasWon });
+                    return;
+                }
+
+                if(lastPlayerId !== myId && !hasWon[myId] && !passes[myId]) {
                     showTurnControls(false); document.getElementById('player-reaction-controls').classList.remove('hidden');
-                    setStatus(`نزل ${playerNames[lastPlayerId]} ${lastPlayedPieces.length} ورقات كـ (${activeNumber}). هتشك؟`, "#f87171");
-                } else { showTurnControls(false); setStatus(`انتظار قرار الباقين...`, "#94a3b8"); }
+                    setStatus(`نزل ${playerNames[lastPlayerId]} ${lastPlayedPieces.length} ورقات كـ (${activeNumber}). هتشك ولا تخطي؟`, "#f87171");
+                } else { 
+                    showTurnControls(false); setStatus(`انتظار قرار الباقين...`, "#94a3b8"); 
+                }
             } else {
                 document.getElementById('player-reaction-controls').classList.add('hidden');
                 if(players[turnIndex] === myId) { setStatus(activeNumber===-1 ? `افتح برقم` : `العب كـ (${activeNumber})`, "#d4af37"); document.getElementById('player-play-controls').classList.remove('hidden'); }
@@ -954,7 +974,7 @@
             hideAllControls(); 
 
             if(gameMode === 'online') {
-                db.ref('rooms/' + roomCode).update({ activeNumber: activeNumber, stack: stack, lastPlayedPieces: lastPlayedPieces, lastPlayerId: lastPlayerId, hands: hands, consecutiveGalas: 0, doubtPhase: true, doubtPasses: 0, doubtEvent: null });
+                db.ref('rooms/' + roomCode).update({ activeNumber: activeNumber, stack: stack, lastPlayedPieces: lastPlayedPieces, lastPlayerId: lastPlayerId, hands: hands, consecutiveGalas: 0, doubtPhase: true, passes: null, doubtEvent: null });
             } else {
                 updateUI(); setStatus(`تم لعب ${lastPlayedPieces.length} ورقات كـ (${claim}). هتشك ولا تخطي؟`, "#f87171"); 
                 saveGame(); if (gameMode === 'local') setTimeout(showLocalReactionModal, 1000); else startReactionPhase('player');
@@ -1035,23 +1055,8 @@
         function playerPasses() {
             hideAllControls(); if (doubtHandled) return;
             if(gameMode === 'online') {
-                // شلنا ال Transaction اللي كانت بتهنج اللعبة وبدلناها بطريقة مباشرة
-                db.ref('rooms/' + roomCode + '/doubtPasses').once('value').then(snap => {
-                    let currentPasses = (snap.val() || 0) + 1;
-                    let activeRem = players.filter(p => !hasWon[p]).length;
-                    
-                    if(currentPasses >= activeRem - 1) { 
-                        if(hands[lastPlayerId].length === 0) {
-                            hasWon[lastPlayerId] = true; db.ref('rooms/' + roomCode).update({ hasWon: hasWon, doubtPhase: false, doubtPasses: 0 });
-                            if(players.filter(p => !hasWon[p]).length <= 1) { db.ref('rooms/' + roomCode).update({ winner: lastPlayerId }); return; }
-                            turnIndex = getNextPlayerIndex(players.indexOf(lastPlayerId));
-                        } else { turnIndex = getNextPlayerIndex(turnIndex); }
-                        db.ref('rooms/' + roomCode).update({ turnIndex: turnIndex, doubtPhase: false, doubtPasses: 0 });
-                    } else {
-                        db.ref('rooms/' + roomCode).update({ doubtPasses: currentPasses });
-                        setStatus("تم التخطي.. انتظار الباقين", "#94a3b8");
-                    }
-                });
+                db.ref('rooms/' + roomCode + '/passes/' + myId).set(true);
+                setStatus("تم التخطي.. انتظار الباقين", "#94a3b8");
             } else { if (aiWillDoubtFlag) setStatus("تخطي.. انتظار الباقين...", "#94a3b8"); else handleNoDoubt(lastPlayerId); }
         }
 
@@ -1159,7 +1164,7 @@
             setStatus(msg, isTruth ? "#f87171" : "#d4af37");
 
             if(gameMode === 'online' && isHost) {
-                db.ref('rooms/' + roomCode).update({ hands: hands, hasWon: hasWon, turnIndex: turnIndex, stack: [], lastPlayedPieces: [], activeNumber: -1, doubtPhase: false, doubtEvent: null });
+                db.ref('rooms/' + roomCode).update({ hands: hands, hasWon: hasWon, turnIndex: turnIndex, stack: [], lastPlayedPieces: [], activeNumber: -1, doubtPhase: false, passes: null, doubtEvent: null });
                 if(players.filter(p => !hasWon[p]).length <= 1) { db.ref('rooms/' + roomCode).update({ winner: hasWon[targetId] ? targetId : doubterId }); return; }
             }
             
