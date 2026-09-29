@@ -1,4 +1,4 @@
-z<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -11,14 +11,14 @@ z<!DOCTYPE html>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
-        :root { --brass:#f0b73d; --brass2:#9a6a17; --wood:#3a2415; --wood2:#5a3820; --cream:#f3e6c8; --mute:#d9c7a3; --teal:#1f8a86; --red:#b3372d; --bone1:#fbf2d9; --bone2:#e6d3a2; }
+        :root { --gold:#f0b73d; --f1:#21805a; --f2:#166044; --f3:#0c3b2a; --t1:#fbf2d9; --t2:#efe0b5; --t3:#e6d3a2; --te:#a8935f; --tb:#cdb886; --pip:#1a1410; --brass:#f0b73d; --brass2:#9a6a17; --wood:#3a2415; --wood2:#5a3820; --cream:#f3e6c8; --mute:#d9c7a3; --teal:#1f8a86; --red:#b3372d; --bone1:#fbf2d9; --bone2:#e6d3a2; }
         * { box-sizing: border-box; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         body { background: radial-gradient(90% 55% at 50% -5%, rgba(255,170,60,.30), transparent 65%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23f0b73d' stroke-opacity='.08' stroke-width='1.2'%3E%3Cpath d='M24 2L46 24L24 46L2 24Z'/%3E%3Cpath d='M24 12L36 24L24 36L12 24Z'/%3E%3Ccircle cx='24' cy='24' r='3'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(#26170e, #140b06); color: var(--cream); font-family: 'Tajawal', sans-serif; text-align: center; margin: 0; padding: 6px; height: 100svh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
         body::before { content: ''; position: fixed; left: -20%; bottom: -25%; width: 140%; height: 70%; background: radial-gradient(ellipse at 30% 60%, rgba(255,255,255,.08), transparent 60%), radial-gradient(ellipse at 72% 40%, rgba(255,255,255,.06), transparent 55%); filter: blur(20px); animation: smoke 16s ease-in-out infinite alternate; pointer-events: none; z-index: 0; }
         body::after { content: ''; position: fixed; top: -10%; left: 50%; width: 90%; height: 45%; transform: translateX(-50%); background: radial-gradient(ellipse, rgba(255,190,80,.22), transparent 70%); animation: flicker 5s infinite; pointer-events: none; z-index: 0; }
-        h1 { position: relative; align-self: center; margin: 2px 0 6px; padding: 0 34px 3px; font-family: 'Lobster', 'Aref Ruqaa', cursive; font-weight: 400; font-size: 1.9rem; line-height: 1.25; color: #ffd36e; text-shadow: 0 2px 0 #000, 0 0 12px rgba(240,183,61,.55); letter-spacing: 1px; background: linear-gradient(#4f311b, #2b190d); border: 2px solid var(--brass2); border-radius: 14px; box-shadow: 0 0 0 3px #1a0f08, 0 8px 16px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,220,150,.25); flex-shrink: 0; animation: sway 6s ease-in-out infinite; transform-origin: 50% -10px; z-index: 2; }
+        h1 { position: relative; align-self: center; margin: 2px 0 6px; padding: 0 30px 3px; font-family: 'Lobster', 'Aref Ruqaa', cursive; font-weight: 400; font-size: 1.7rem; line-height: 1.25; color: #ffd36e; text-shadow: 0 2px 0 #000, 0 0 12px rgba(240,183,61,.55); letter-spacing: 1px; background: linear-gradient(#4f311b, #2b190d); border: 2px solid var(--brass2); border-radius: 14px; box-shadow: 0 0 0 3px #1a0f08, 0 8px 16px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,220,150,.25); flex-shrink: 0; animation: sway 6s ease-in-out infinite; transform-origin: 50% -10px; z-index: 2; }
         h1, .brand { background-clip: padding-box; }
-        h1::before, h1::after { content: ''; position: absolute; top: 50%; width: 12px; height: 20px; margin-top: -10px; border-radius: 3px; background: radial-gradient(circle, #1a1410 1.6px, transparent 2px) 0 0 / 6px 6.6px, linear-gradient(160deg, var(--bone1), var(--bone2)); box-shadow: 0 2px 0 #a8935f; }
+        h1::before, h1::after { content: ''; position: absolute; top: 50%; width: 12px; height: 20px; margin-top: -10px; border-radius: 3px; background: radial-gradient(circle, #1a1410 1.6px, transparent 2px) 0 0 / 6px 6.6px, linear-gradient(160deg, var(--bone1), var(--bone2)); box-shadow: 0 2px 0 var(--te); }
         h1::before { right: 10px; transform: rotate(8deg); } h1::after { left: 10px; transform: rotate(-8deg); }
 
         .screen { display: none; width: 100%; margin: 0; flex: 1; flex-direction: column; position: relative; z-index: 1; height: 100%; overflow: hidden; }
@@ -39,7 +39,7 @@ z<!DOCTYPE html>
         .radio-label input { display: none; }
         .radio-label.selected { border-color: var(--brass); background: rgba(240,183,61,.18); color: var(--brass); transform: translateY(-2px); }
 
-        .table-area { position: relative; background: repeating-radial-gradient(circle at 0 0, rgba(255,255,255,.03) 0 1px, transparent 1px 3px), radial-gradient(ellipse at 50% 45%, #21805a 0%, #166044 55%, #0c3b2a 100%); border: 10px solid #4a2c17; border-radius: 24px; box-shadow: inset 0 0 0 2px #d9a441, inset 0 0 60px rgba(0,0,0,.55), 0 0 0 2px #1a0f08, 0 12px 30px rgba(0,0,0,.6); width: 100%; flex: 1; margin: 4px 0; overflow: hidden; }
+        .table-area { position: relative; background: repeating-radial-gradient(circle at 0 0, rgba(255,255,255,.03) 0 1px, transparent 1px 3px), radial-gradient(ellipse at 50% 45%, var(--f1) 0%, var(--f2) 55%, var(--f3) 100%); border: 10px solid #4a2c17; border-radius: 24px; box-shadow: inset 0 0 0 2px #d9a441, inset 0 0 60px rgba(0,0,0,.55), 0 0 0 2px #1a0f08, 0 12px 30px rgba(0,0,0,.6); width: 100%; flex: 1; margin: 4px 0; overflow: hidden; }
         .table-area::before { content: ''; position: absolute; top: 50%; left: 50%; width: 170px; height: 170px; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid rgba(240,183,61,.16); box-shadow: 0 0 0 10px rgba(240,183,61,.05), inset 0 0 0 14px rgba(240,183,61,.04); pointer-events: none; }
         .table-area.bump { animation: bump .22s; }
 
@@ -50,10 +50,10 @@ z<!DOCTYPE html>
         .ai-player.won { opacity: .3; }
         .ai-player .badge { background: var(--brass); color: #2a1a05; padding: 1px 8px; border-radius: 999px; font-size: .74rem; font-weight: 900; }
         .pos-top { top: 6px; left: 50%; transform: translateX(-50%); height: auto; width: auto; padding: 4px 14px; flex-direction: row; }
-        .pos-left { left: 6px; top: 50%; transform: translateY(-50%); }
-        .pos-right { right: 6px; top: 50%; transform: translateY(-50%); }
+        .pos-left { left: 6px; top: 8px; }
+        .pos-right { right: 6px; top: 8px; }
 
-        .center-board { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 78%; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 5; }
+        .center-board { position: absolute; top: 47%; left: 50%; transform: translate(-50%, -50%); width: 78%; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 5; }
         #turn-banner { color: var(--brass); padding: 3px 14px; border-radius: 999px; font-size: .85rem; font-weight: 900; background: rgba(20,10,4,.65); }
         .current-claim-box { background: rgba(20,10,4,.72); color: var(--cream); padding: 6px 18px; border-radius: 12px; font-size: .84rem; border: 1px solid var(--brass2); }
         #current-claim { font-family: 'Lalezar', sans-serif; color: var(--brass); font-size: 1.5rem; font-weight: 400; margin-right: 4px; }
@@ -69,13 +69,13 @@ z<!DOCTYPE html>
         #box-player { margin: 0 0 6px; color: var(--cream); font-size: .92rem; font-weight: 900; padding: 3px 16px; border-radius: 999px; display: inline-block; background: rgba(0,0,0,.4); border: 1px solid var(--brass2); }
         .hand { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-bottom: 6px; min-height: 62px; }
 
-        .domino-piece { width: 30px; height: 58px; background: linear-gradient(160deg, var(--bone1), #efe0b5 55%, var(--bone2)); border-radius: 6px; cursor: pointer; display: flex; flex-direction: column; box-shadow: 0 3px 0 #a8935f, 0 6px 9px rgba(0,0,0,.5); border: 1px solid #cdb886; flex-shrink: 0; transition: transform .15s, box-shadow .15s; }
+        .domino-piece { width: 30px; height: 58px; background: linear-gradient(160deg, var(--t1), var(--t2) 55%, var(--t3)); border-radius: 6px; cursor: pointer; display: flex; flex-direction: column; box-shadow: 0 3px 0 var(--te), 0 6px 9px rgba(0,0,0,.5); border: 1px solid var(--tb); flex-shrink: 0; transition: transform .15s, box-shadow .15s; }
         .hand .domino-piece:hover { transform: translateY(-4px) rotate(-3deg); }
-        .domino-piece.selected { transform: translateY(-10px); box-shadow: 0 3px 0 #a8935f, 0 0 0 2px var(--brass), 0 10px 16px rgba(240,183,61,.4); }
-        #staging-area .domino-piece { transform: none; box-shadow: 0 3px 0 #a8935f, 0 0 0 2px var(--brass); }
+        .domino-piece.selected { transform: translateY(-10px); box-shadow: 0 3px 0 var(--te), 0 0 0 2px var(--brass), 0 10px 16px rgba(240,183,61,.4); }
+        #staging-area .domino-piece { transform: none; box-shadow: 0 3px 0 var(--te), 0 0 0 2px var(--brass); }
         .dots-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); flex: 1; padding: 3px; align-items: center; justify-items: center; }
-        .dot { background: #1a1410; border-radius: 50%; width: 5px; height: 5px; box-shadow: inset 0 1px 1px rgba(255,255,255,.22); }
-        .divider { position: relative; width: 82%; height: 2px; background: #a8935f; border-radius: 2px; margin: 0 auto; }
+        .dot { background: var(--pip); border-radius: 50%; width: 5px; height: 5px; box-shadow: inset 0 1px 1px rgba(255,255,255,.22); }
+        .divider { position: relative; width: 82%; height: 2px; background: var(--te); border-radius: 2px; margin: 0 auto; }
         .divider::after, .facedown-piece::after { content: ''; position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe08a, var(--brass2)); transform: translate(-50%, -50%); }
         .facedown-piece { position: relative; width: 16px; height: 31px; background: linear-gradient(160deg, #3a2a1e, #1b120b); border-radius: 4px; box-shadow: 0 2px 0 #0d0704, 0 4px 6px rgba(0,0,0,.5); border: 1px solid #56402b; margin: 1px; }
         .old-piece { opacity: .8; }
@@ -103,7 +103,7 @@ z<!DOCTYPE html>
         .modal-overlay { position: fixed; inset: 0; background: rgba(10,5,2,.8); backdrop-filter: blur(4px); z-index: 2000; display: flex; justify-content: center; align-items: center; padding: 10px; }
         .modal-overlay .glass-panel { animation: popIn .35s cubic-bezier(.2,.9,.3,1.2) both; }
         #win-overlay .glass-panel > div { animation: bounce 1s ease-in-out infinite; }
-        .settings-btn { position: absolute; top: 4px; left: 4px; background: #3c2412; color: var(--brass); border: 1px solid var(--brass2); border-radius: 10px; width: 34px; height: 34px; font-size: 1rem; cursor: pointer; z-index: 100; display: flex; align-items: center; justify-content: center; }
+        .settings-btn { position: absolute; top: 4px; left: 4px; background: #3c2412; color: var(--brass); border: 1px solid var(--brass2); border-radius: 10px; width: 30px; height: 30px; font-size: .9rem; cursor: pointer; z-index: 100; display: flex; align-items: center; justify-content: center; }
         .chat-toggle-btn { position: absolute; top: 4px; right: 4px; background: #3c2412; color: var(--cream); border: 1px solid var(--brass2); border-radius: 999px; padding: 5px 12px; font-weight: 700; font-family: 'Tajawal'; font-size: .8rem; cursor: pointer; z-index: 100; }
         .chat-container { position: absolute; top: 44px; right: 6px; width: 230px; height: 30vh; background: rgba(28,16,9,.97); border: 2px solid var(--brass2); border-radius: 16px; display: flex; flex-direction: column; z-index: 101; overflow: hidden; }
         .chat-container.hidden { display: none; }
@@ -146,13 +146,46 @@ z<!DOCTYPE html>
         .pick-in { animation: pickIn .75s cubic-bezier(.2,.9,.3,1.2) both; }
         .receive { animation: receive .8s both; }
         .float-text { position: fixed; z-index: 3000; pointer-events: none; font-family: 'Lalezar', sans-serif; font-size: 1.5rem; color: #ff8a70; text-shadow: 0 2px 0 #000, 0 0 12px rgba(255,138,112,.6); animation: rise 1.5s forwards; }
-        .callout { position: absolute; z-index: 31; display: flex; align-items: center; justify-content: center; pointer-events: none; font-family: 'Lalezar', sans-serif; font-size: 2.3rem; color: #fff; text-shadow: 0 3px 0 #000, 0 0 22px rgba(240,183,61,.8); animation: callout 1.4s both; }
+        .callout { position: absolute; z-index: 31; display: flex; justify-content: center; pointer-events: none; font-family: 'Lalezar', sans-serif; font-size: 1.6rem; color: #fff; text-shadow: 0 3px 0 #000, 0 0 22px rgba(240,183,61,.8); animation: callout 1.4s both; }
         .callout.doubt { color: #ffd36e; } .callout.lie { color: #ff8a70; text-shadow: 0 3px 0 #000, 0 0 24px rgba(255,80,60,.9); } .callout.truth { color: #7ff0b4; text-shadow: 0 3px 0 #000, 0 0 24px rgba(60,220,140,.8); }
         @keyframes pulseBtn { 0%,100% { box-shadow: 0 3px 0 #8a5c10, 0 0 0 rgba(240,183,61,0); } 50% { box-shadow: 0 3px 0 #8a5c10, 0 0 20px rgba(240,183,61,.75); } }
         @keyframes pickIn { from { transform: translateY(-300px) rotate(220deg) scale(.5); opacity: 0; } to { transform: none; opacity: 1; } }
         @keyframes receive { 0% { transform: scale(1); } 20% { transform: scale(1.22); box-shadow: 0 0 0 4px rgba(255,90,70,.6), 0 0 26px rgba(255,90,70,.8); } 40% { transform: scale(1.1) rotate(-4deg); } 60% { transform: scale(1.1) rotate(4deg); } 100% { transform: none; } }
         @keyframes rise { 0% { transform: translateY(0) scale(.5); opacity: 0; } 20% { transform: translateY(-14px) scale(1.25); opacity: 1; } 100% { transform: translateY(-80px) scale(1); opacity: 0; } }
         @keyframes callout { 0% { transform: scale(.3) rotate(-8deg); opacity: 0; } 20% { transform: scale(1.2) rotate(2deg); opacity: 1; } 70% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.15); opacity: 0; } }
+        .mini-hand { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 3px; display: flex; pointer-events: none; z-index: 12; }
+        .mini-hand i { width: 10px; height: 18px; margin: 0 -2.5px; border-radius: 2.5px; background: linear-gradient(160deg, #3a2a1e, #1b120b); border: 1px solid #6b4a24; transform: rotate(var(--r, 0deg)); box-shadow: 0 2px 3px rgba(0,0,0,.55); }
+        .ai-player.won .mini-hand { display: none; }
+        .ai-player.away { opacity: .6; border-style: dashed; }
+        .ai-player.away::after { content: 'مشغول 💤'; position: absolute; top: -9px; background: #2a170a; color: var(--brass); border: 1px solid var(--brass2); border-radius: 999px; padding: 0 7px; font-size: .58rem; white-space: nowrap; }
+        #table-stack { flex-wrap: nowrap; }
+        #table-stack .facedown-piece { margin: 1px 0 1px calc(var(--ovl, 0px) * -1); flex-shrink: 0; }
+        #table-stack .facedown-piece:first-child { margin-left: 0; }
+        .callout span { background: rgba(15,8,3,.8); border: 1px solid var(--brass2); border-radius: 999px; padding: 1px 22px 3px; }
+        .toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); background: #2a170a; color: var(--brass); border: 1px solid var(--brass2); padding: 8px 18px; border-radius: 999px; z-index: 4000; font-weight: 700; animation: toastIn .3s both; max-width: 90vw; text-align: center; box-shadow: 0 6px 16px rgba(0,0,0,.5); }
+        @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 14px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        .kick-btn { background: var(--red); color: #fff; border: none; border-radius: 8px; padding: 2px 10px; font-family: 'Tajawal'; font-weight: 700; cursor: pointer; }
+        .sw-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .sw-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: .72rem; color: var(--mute); }
+        .swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; box-shadow: 0 3px 6px rgba(0,0,0,.5); transition: .15s; }
+        .swatch.on { border-color: var(--brass); transform: scale(1.12); box-shadow: 0 0 14px rgba(240,183,61,.6); }
+        .theme-preview { display: flex; justify-content: center; gap: 10px; margin: 14px 0 12px; padding: 12px; border-radius: 14px; background: radial-gradient(ellipse, var(--f1), var(--f3)); border: 3px solid #4a2c17; }
+        .theme-preview .dots-grid i { width: 5px; height: 5px; }
+        .rank { margin: 6px 0 8px; text-align: right; }
+        .rank-row { display: flex; justify-content: space-between; padding: 6px 12px; margin-bottom: 4px; border-radius: 10px; background: rgba(0,0,0,.3); font-weight: 800; }
+        .rank-row.r0 { background: rgba(240,183,61,.22); color: var(--brass); font-size: 1.05rem; }
+        .rank-row b { font-family: 'Lalezar', sans-serif; font-weight: 400; }
+        .next-in { font-size: .85rem; color: var(--mute); margin: 4px 0 8px; min-height: 1.2em; }
+        body.tbl-burgundy { --f1:#8c2a3a; --f2:#651d2b; --f3:#3f111b; } body.tbl-navy { --f1:#2a5ca8; --f2:#1d4380; --f3:#102a52; } body.tbl-charcoal { --f1:#4a4d55; --f2:#33363c; --f3:#1c1e22; } body.tbl-wood { --f1:#b0783f; --f2:#8a5a2d; --f3:#5f3a1d; }
+        body.tile-onyx { --t1:#45454c; --t2:#2a2a2f; --t3:#19191d; --te:#050506; --tb:#5e5e66; --pip:#f6f6f6; } body.tile-gold { --t1:#ffe29a; --t2:#f0b73d; --t3:#c98d1c; --te:#8a5c10; --tb:#ffd36e; --pip:#3a2405; } body.tile-sky { --t1:#eaf6ff; --t2:#cfe8fa; --t3:#a9cfee; --te:#6f9cc0; --tb:#b5d6ee; --pip:#123048; }
+        #table-stack { position: relative; display: block; width: 330px; height: 150px; flex-shrink: 0; max-height: none; overflow: visible; flex-wrap: initial; }
+        #table-stack::before { content: ''; position: absolute; left: 50%; top: 54%; width: 250px; height: 100px; transform: translate(-50%, -50%); background: radial-gradient(ellipse, rgba(0,0,0,.28), transparent 70%); filter: blur(6px); pointer-events: none; }
+        #table-stack .facedown-piece { position: absolute; margin: 0 !important; width: 22px; height: 40px; }
+        #table-stack .facedown-piece::before { font-size: 8.5px; }
+        #table-stack .separator-line { display: none; }
+        #table-stack .new-piece { animation: none !important; }
+        .fly-piece { position: fixed; z-index: 3500; pointer-events: none; transform-origin: center; }
+        .fly-piece > * { position: absolute; left: 0; top: 0; width: 100% !important; height: 100% !important; margin: 0 !important; }
         @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
     </style>
 </head>
@@ -162,6 +195,7 @@ z<!DOCTYPE html>
     <div id="lobby-screen" class="screen active">
         <div class="glass-panel">
             <h2 class="brand">Ebramio</h2>
+            <div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn" style="font-size:.85rem;padding:7px" onclick="openTheme()">🎨 شكل اللعبة</button><button class="btn btn-blue hidden" id="rejoin-btn" style="font-size:.85rem;padding:7px" onclick="rejoinRoom()">🔙 ارجع لغرفتك</button></div>
             <button id="resume-btn" class="btn btn-blue hidden" style="margin-bottom: 10px;" onclick="resumeGame()">استكمال الجيم السابق 🔄</button>
 
             <div class="setup-section">
@@ -209,6 +243,7 @@ z<!DOCTYPE html>
         <div class="glass-panel">
             <h2>غرفة الانتظار ⏳</h2>
             <h1 id="room-code-display" style="font-size: 3rem; color: var(--gold); letter-spacing: 6px; margin: 5px 0;">----</h1>
+            <div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn" onclick="copyRoomCode()">📋 نسخ الكود</button><button class="btn btn-blue" onclick="shareRoomLink()">🔗 مشاركة الرابط</button></div>
             <div id="online-players-list" style="display:flex; flex-direction:column; gap:5px; font-weight: bold; color: #fff; font-size: 0.9rem; margin-bottom: 10px;"></div>
             <button id="start-online-btn" class="btn btn-primary hidden" onclick="startOnlineGame()">ابدأ اللعبة 🔥</button>
             <button class="btn btn-danger" style="margin-top: 5px;" onclick="leaveOnlineRoom()">خروج</button>
@@ -230,7 +265,8 @@ z<!DOCTYPE html>
     <!-- شاشة اللعب الرئيسية (Compact & Locked) -->
     <div id="game-screen" class="screen">
         <button class="settings-btn" onclick="openSettings()">⚙</button>
-        <button class="settings-btn" id="snd-btn" style="left: 44px;" onclick="toggleSnd()">🔊</button>
+        <button class="settings-btn" id="snd-btn" style="left: 38px;" onclick="toggleSnd()">🔊</button>
+        <button class="settings-btn" style="left: 72px;" onclick="openTheme()">🎨</button>
         <h1>Ebramio</h1>
 
         <div class="table-area" id="main-table">
@@ -443,7 +479,7 @@ z<!DOCTYPE html>
                 if(data.status === 'waiting') {
                     players = data.players || []; playerNames = data.names || {}; scores = data.scores || {};
                     let html = "";
-                    players.forEach(p => { html += `<div style="background:rgba(255,255,255,0.1); padding:6px; border-radius:6px;">${playerNames[p]} ${p===data.host?'👑':''}</div>`; });
+                    players.forEach(p => { html += `<div style="background:rgba(255,255,255,0.1); padding:6px 10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><span>${playerNames[p]} ${p===data.host?'👑':''}</span>${(isHost && p!==data.host) ? `<button class="kick-btn" onclick="kickPlayer('${p}')">طرد ✖</button>` : ''}</div>`; });
                     document.getElementById('online-players-list').innerHTML = html;
                     if(isHost && players.length > 1) document.getElementById('start-online-btn').classList.remove('hidden');
                 } else if(data.status === 'playing') {
@@ -894,8 +930,10 @@ z<!DOCTYPE html>
             // ---------- الصوت ----------
             let ac, muted = localStorage.getItem('do4Mute') === '1';
             const ctx = () => { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); if (ac.state === 'suspended') ac.resume(); return ac; };
-            function noise(dur, freq, q, gain, when) { const a = ctx(), t = a.currentTime + (when || 0), n = (a.sampleRate * dur) | 0, b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.5); const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = q; g.gain.value = gain; s.buffer = b; s.connect(f); f.connect(g); g.connect(a.destination); s.start(t); }
-            function knock(v) { if (muted) return; v = v || 1; try { const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(200, t); o.frequency.exponentialRampToValueAtTime(65, t + .13); g.gain.setValueAtTime(.6 * v, t); g.gain.exponentialRampToValueAtTime(.001, t + .2); o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + .22); noise(.06, 2400 + Math.random() * 900, 1.2, .5 * v); noise(.14, 700, .8, .25 * v); } catch (e) {} }
+            let bus;
+            function getBus() { const a = ctx(); if (bus) return bus; const comp = a.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 6; comp.attack.value = .002; comp.release.value = .12; const master = a.createGain(); master.gain.value = .9; const conv = a.createConvolver(), len = (a.sampleRate * .35) | 0, buf = a.createBuffer(2, len, a.sampleRate); for (let c = 0; c < 2; c++) { const d = buf.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2); } conv.buffer = buf; const wet = a.createGain(); wet.gain.value = .22; bus = a.createGain(); bus.connect(master); bus.connect(conv); conv.connect(wet); wet.connect(master); master.connect(comp); comp.connect(a.destination); return bus; }
+            function noise(dur, freq, q, gain, when) { const a = ctx(), t = a.currentTime + (when || 0), n = (a.sampleRate * dur) | 0, b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.5); const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = q; g.gain.value = gain; s.buffer = b; s.connect(f); f.connect(g); g.connect(getBus()); s.start(t); }
+            function knock(v) { if (muted) return; v = v || 1; try { const a = ctx(), t = a.currentTime, B = getBus(), j = .9 + Math.random() * .2; const p = (f0, f1, g0, d) => { const o = a.createOscillator(), g = a.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + d * .8); g.gain.setValueAtTime(g0 * v, t); g.gain.exponentialRampToValueAtTime(.001, t + d); o.connect(g); g.connect(B); o.start(t); o.stop(t + d + .02); }; p(230 * j, 85 * j, .55, .16); p(520 * j, 260 * j, .22, .09); noise(.045, 3200 * j, 1.4, .55 * v); noise(.11, 900 * j, .9, .28 * v); } catch (e) {} }
             function tick(v) { if (muted) return; try { noise(.035, 3200 + Math.random() * 800, 2, .3 * (v || 1)); } catch (e) {} }
             function rattle(n, span) { if (muted) return; try { for (let i = 0; i < n; i++) noise(.04, 1800 + Math.random() * 1800, 1.5, .15 + Math.random() * .2, Math.random() * span); } catch (e) {} }
             window.toggleSnd = function () { muted = !muted; localStorage.setItem('do4Mute', muted ? '1' : '0'); document.getElementById('snd-btn').innerText = muted ? '🔇' : '🔊'; if (!muted) knock(.7); };
@@ -920,8 +958,7 @@ z<!DOCTYPE html>
             updateUI = function () {
                 _ui.apply(this, arguments);
                 if (window.dealFX) { window.dealFX = false; document.querySelectorAll('#player-hand .domino-piece').forEach((el, i) => { const d = 1.4 + i * 0.09; el.style.animationDelay = d + 's'; el.classList.add('deal-in'); setTimeout(() => tick(1.2), d * 1000 + 380); }); }
-                const n = lastPlayedPieces.length;
-                if (n > prevLast) { const tb = document.getElementById('main-table'); tb.classList.remove('bump'); void tb.offsetWidth; tb.classList.add('bump'); setTimeout(() => knock(1.1), 250); }
+                const n = stack.length;
                 prevLast = n;
                 try {
                     const cur = gameMode === 'local' ? hands[players[turnIndex]] : hands[myId];
@@ -938,7 +975,7 @@ z<!DOCTYPE html>
 
             function boxFor(id) { let b = `box-${id}`; if (id === myId || (gameMode === 'local' && id === lastPlayerId)) b = 'box-player'; return document.getElementById(b); }
             function floatText(box, txt) { const r = box.getBoundingClientRect(), f = document.createElement('div'); f.className = 'float-text'; f.textContent = txt; f.style.cssText = `left:${r.left + r.width / 2 - 30}px;top:${r.top - 6}px`; document.body.appendChild(f); setTimeout(() => f.remove(), 1600); }
-            function callout(txt, cls) { const t = document.getElementById('main-table'), gs = document.getElementById('game-screen'); if (!t || !gs) return; const r = t.getBoundingClientRect(), g = gs.getBoundingClientRect(), c = document.createElement('div'); c.className = 'callout ' + (cls || ''); c.textContent = txt; c.style.cssText = `left:${r.left - g.left}px;top:${r.top - g.top - 60}px;width:${r.width}px;height:${r.height}px`; gs.appendChild(c); setTimeout(() => c.remove(), 1500); }
+            function callout(txt, cls) { const t = document.getElementById('main-table'), gs = document.getElementById('game-screen'); if (!t || !gs) return; const r = t.getBoundingClientRect(), g = gs.getBoundingClientRect(), c = document.createElement('div'); c.className = 'callout ' + (cls || ''); c.innerHTML = '<span></span>'; c.firstChild.textContent = txt; c.style.cssText = `left:${r.left - g.left}px;top:${r.top - g.top + r.height * .2}px;width:${r.width}px`; gs.appendChild(c); setTimeout(() => c.remove(), 1500); }
             const _fc = flyCardsToPlayer;
             flyCardsToPlayer = function (t, cb) { const n = stack.length, box = boxFor(t); rattle(10, .5); return _fc.call(this, t, function () { if (n > 0 && box) { box.classList.remove('receive'); void box.offsetWidth; box.classList.add('receive'); floatText(box, '+' + n + ' 🀄'); knock(1.3); callout(`${playerNames[t] || ''} شال ${n} 😅`, 'lie'); } cb(); }); };
             const _edl = executeDoubtLocally; executeDoubtLocally = function (d) { const tr = (d.lastPlayedPieces || []).every(p => p[0] === d.activeNumber || p[1] === d.activeNumber); knock(1.3); callout('شك! 🤨', 'doubt'); setTimeout(() => callout(tr ? 'صادق ✅' : 'كذّاب! 🤥', tr ? 'truth' : 'lie'), 1000); return _edl.apply(this, arguments); };
@@ -995,6 +1032,150 @@ z<!DOCTYPE html>
             }
             const _ai = executeAITurn; executeAITurn = function () { return (gameMode === 'ai' && aiLevel !== 'easy') ? smartAITurn() : _ai.apply(this, arguments); };
             const _rp = startReactionPhase; startReactionPhase = function (t) { return (gameMode === 'ai' && aiLevel !== 'easy') ? smartReaction(t) : _rp.apply(this, arguments); };
+            window.__fx = { knock, tick, confetti };
+        })();
+
+        /* ===== ثيمات + غرف أونلاين + جولات + أيدي اللاعبين ===== */
+        (function () {
+            const fx = window.__fx || {}, esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            function toast(t) { const e = document.createElement('div'); e.className = 'toast'; e.textContent = t; document.body.appendChild(e); setTimeout(() => e.remove(), 2400); }
+            // ---------- الثيمات ----------
+            const TB = { green: ['#21805a', '#0c3b2a', 'أخضر'], burgundy: ['#8c2a3a', '#3f111b', 'عنابي'], navy: ['#2a5ca8', '#102a52', 'أزرق'], charcoal: ['#4a4d55', '#1c1e22', 'فحمي'], wood: ['#b0783f', '#5f3a1d', 'خشب'] };
+            const TT = { ivory: ['#fbf2d9', '#e6d3a2', 'عاجي'], onyx: ['#45454c', '#19191d', 'أسود'], gold: ['#ffe29a', '#c98d1c', 'ذهبي'], sky: ['#eaf6ff', '#a9cfee', 'سماوي'] };
+            const gv = (k, d) => { try { return localStorage.getItem(k) || d; } catch (e) { return d; } };
+            function applyTheme() { const b = document.body; [...b.classList].filter(c => /^(tbl|tile)-/.test(c)).forEach(c => b.classList.remove(c)); b.classList.add('tbl-' + gv('do4Tbl', 'green'), 'tile-' + gv('do4Tile', 'ivory')); }
+            window.openTheme = function () {
+                let m = document.getElementById('theme-modal'); if (m) m.remove();
+                m = document.createElement('div'); m.id = 'theme-modal'; m.className = 'modal-overlay'; m.style.zIndex = 2500;
+                const row = (title, map, key, def) => `<h3 style="margin:8px 0 6px;color:var(--mute)">${title}</h3><div class="sw-row">${Object.keys(map).map(k => `<div class="sw-item"><div class="swatch ${gv(key, def) === k ? 'on' : ''}" data-k="${key}" data-v="${k}" style="background:linear-gradient(160deg,${map[k][0]},${map[k][1]})"></div><span>${map[k][2]}</span></div>`).join('')}</div>`;
+                m.innerHTML = `<div class="glass-panel" style="max-width:340px"><h2 style="font-size:1.5rem">🎨 شكل اللعبة</h2>${row('الترابيزة', TB, 'do4Tbl', 'green')}${row('الدومينو', TT, 'do4Tile', 'ivory')}<div class="theme-preview"><div class="domino-piece"><div class="dots-grid"><i class="dot"></i><i></i><i class="dot"></i><i class="dot"></i><i></i><i class="dot"></i><i class="dot"></i><i></i><i class="dot"></i></div><div class="divider"></div><div class="dots-grid"><i></i><i></i><i></i><i></i><i class="dot"></i><i></i><i></i><i></i><i></i></div></div><div class="domino-piece"><div class="dots-grid"><i class="dot"></i><i></i><i class="dot"></i><i></i><i class="dot"></i><i></i><i class="dot"></i><i></i><i class="dot"></i></div><div class="divider"></div><div class="dots-grid"><i class="dot"></i><i></i><i class="dot"></i><i></i><i></i><i></i><i class="dot"></i><i></i><i class="dot"></i></div></div></div><button class="btn btn-primary" style="width:100%;flex:none" id="theme-close">تمام ✔</button></div>`;
+                document.body.appendChild(m);
+                m.onclick = e => { const s = e.target.closest('.swatch'); if (s) { try { localStorage.setItem(s.dataset.k, s.dataset.v); } catch (x) {} applyTheme(); m.querySelectorAll(`.swatch[data-k="${s.dataset.k}"]`).forEach(o => o.classList.toggle('on', o === s)); fx.tick && fx.tick(1.5); } else if (e.target === m || e.target.id === 'theme-close') m.remove(); };
+            };
+            applyTheme();
+            // ---------- أيدي اللاعبين + تكديس الورق ----------
+            // ---------- كومة الورق + طيران الورق للترابيزة ----------
+            let prevStackN = 0, srcRects = null;
+            const SLOTS = (() => { const a = []; for (let r = 0; r < 3; r++) for (let c = 0; c < 11; c++) { const k = r * 11 + c; a.push({ x: 165 + (c - 5) * 29 + ((k * 37) % 9) - 4, y: 75 + (r - 1) * 50 + ((k * 53) % 9) - 4, rot: ((k * 71) % 56) - 28, d: Math.pow((c - 5) / 5, 2) + Math.pow((r - 1) / 1.1, 2) * 1.3 + ((k * 17) % 7) * .012 }); } return a.sort((p, q) => p.d - q.d); })();
+            function layoutPile() {
+                const ts = document.getElementById('table-stack'); if (!ts) return;
+                [...ts.querySelectorAll('.facedown-piece')].forEach((e, i) => { const sl = SLOTS[i % SLOTS.length], off = Math.floor(i / SLOTS.length) * 5; e.style.left = (sl.x - 11 + off) + 'px'; e.style.top = (sl.y - 20 + off) + 'px'; e.style.transform = `rotate(${sl.rot}deg)`; e.dataset.rot = sl.rot; });
+            }
+            const _pp = playPiece;
+            playPiece = function () { try { srcRects = [...document.querySelectorAll('#staging-area .domino-piece')].map(e => ({ r: e.getBoundingClientRect(), h: e.outerHTML })); } catch (e) {} return _pp.apply(this, arguments); };
+            function flyIn(dests) {
+                if (!dests.length) return;
+                const mine = lastPlayerId === myId || gameMode === 'local', src = mine ? srcRects : null; srcRects = null;
+                let fb; if (mine) fb = document.getElementById('player-hand').getBoundingClientRect(); else { const bx = document.getElementById('box-' + lastPlayerId); fb = bx ? ((bx.querySelector('.mini-hand') || bx).getBoundingClientRect()) : document.getElementById('main-table').getBoundingClientRect(); }
+                dests.forEach((d, i) => {
+                    const dr = d.getBoundingClientRect(); d.style.visibility = 'hidden';
+                    const sr = src && src[i] ? src[i].r : { left: fb.left + fb.width / 2 - 15 + (i - dests.length / 2) * 16, top: fb.top + fb.height / 2 - 29, width: 30, height: 58 };
+                    const el = document.createElement('div'); el.className = 'fly-piece'; el.style.cssText = `left:${sr.left}px;top:${sr.top}px;width:${sr.width}px;height:${sr.height}px`;
+                    let front = null; if (src && src[i]) { const t = document.createElement('template'); t.innerHTML = src[i].h.trim(); front = t.content.firstChild; front.classList.remove('selected'); front.style.transform = 'none'; el.appendChild(front); }
+                    const back = document.createElement('div'); back.className = 'facedown-piece'; el.appendChild(back); document.body.appendChild(el);
+                    const dx = dr.left + dr.width / 2 - (sr.left + sr.width / 2), dy = dr.top + dr.height / 2 - (sr.top + sr.height / 2), sc = dr.width / sr.width, rot = parseFloat(d.dataset.rot || 0), D = 620, dl = i * 110;
+                    const anim = el.animate([{ transform: 'translate(0,0) rotate(0deg) scale(1)' }, { transform: `translate(${dx * .5}px,${dy * .5 - 46}px) rotate(${rot * .5 + 90}deg) scale(1.2)`, offset: .5 }, { transform: `translate(${dx}px,${dy}px) rotate(${rot + 180}deg) scale(${sc})` }], { duration: D, delay: dl, easing: 'cubic-bezier(.3,.7,.3,1)', fill: 'both' });
+                    if (front) { front.animate([{ transform: 'scaleX(1)' }, { transform: 'scaleX(0)', offset: .45 }, { transform: 'scaleX(0)' }], { duration: D, delay: dl, fill: 'both' }); back.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(0)', offset: .45 }, { transform: 'scaleX(1)' }], { duration: D, delay: dl, fill: 'both' }); }
+                    anim.onfinish = () => {
+                        el.remove(); d.style.visibility = ''; d.animate([{ filter: 'brightness(1.8)' }, { filter: 'none' }], { duration: 280 });
+                        fx.knock && fx.knock(i === 0 ? 1.15 : .7);
+                        if (i === dests.length - 1) { const tb = document.getElementById('main-table'); tb.classList.remove('bump'); void tb.offsetWidth; tb.classList.add('bump'); }
+                    };
+                });
+            }
+            let awayMap = {};
+            const _u = updateUI;
+            updateUI = function () {
+                _u.apply(this, arguments);
+                document.querySelectorAll('.ai-player').forEach(bx => {
+                    const pid = bx.id.replace('box-', ''), b = bx.querySelector('.badge'), n = b ? (parseInt(b.textContent) || 0) : 0, c = Math.min(n, 10);
+                    let mh = bx.querySelector('.mini-hand'); if (!mh) { mh = document.createElement('div'); mh.className = 'mini-hand'; bx.appendChild(mh); }
+                    if (mh.children.length !== c) { mh.innerHTML = ''; for (let i = 0; i < c; i++) { const e = document.createElement('i'), o = i - (c - 1) / 2; e.style.setProperty('--r', (o * 7) + 'deg'); e.style.marginTop = (Math.abs(o) * .7) + 'px'; mh.appendChild(e); } }
+                    bx.classList.toggle('away', !!awayMap[pid]);
+                });
+                layoutPile();
+                const sn = stack.length;
+                if (sn > prevStackN) flyIn([...document.querySelectorAll('#table-stack .new-piece')]);
+                prevStackN = sn;
+            };
+            // ---------- الجولة الجديدة + الترتيب ----------
+            let lastWin = 0;
+            showWinOverlay = function (name, cb) {
+                const ov = document.getElementById('win-overlay'), box = ov.querySelector('.glass-panel');
+                if (!ov.classList.contains('hidden') || Date.now() - lastWin < 9000) return; lastWin = Date.now();
+                fx.confetti && fx.confetti(); fx.knock && fx.knock(1.2);
+                const draw = /انسحاب/.test(name || ''), med = ['🥇', '🥈', '🥉', '4️⃣'], rk = players.map(p => ({ n: playerNames[p] || '', s: scores[p] || 0 })).sort((a, b) => b.s - a.s);
+                box.innerHTML = `<div style="font-size:3rem">🎉👑🎉</div><h2 id="win-name" style="font-size:1.8rem">${esc(name)}</h2>${draw ? '' : `<div class="rank">${rk.map((r, i) => `<div class="rank-row r${i}"><span>${med[i] || ''} ${esc(r.n)}</span><b>${r.s}</b></div>`).join('')}</div>`}<div class="next-in" id="next-in"></div><div style="display:flex;gap:6px"><button class="btn btn-primary" id="next-now">جولة جديدة 🔄</button><button class="btn" id="exit-now">خروج 🚪</button></div>`;
+                ov.classList.remove('hidden'); let left = 7; clearInterval(window._winIv);
+                const done = go => { clearInterval(window._winIv); ov.classList.add('hidden'); go(); }, next = () => draw ? cb() : startNewRound();
+                document.getElementById('next-now').onclick = () => done(next); document.getElementById('exit-now').onclick = () => done(() => returnToMenu());
+                const t = () => { document.getElementById('next-in').textContent = draw ? '' : `الجولة الجديدة بعد ${left} ثانية…`; if (left-- <= 0) done(next); };
+                t(); window._winIv = setInterval(t, 1000);
+            };
+            const _asd = applySyncData; applySyncData = function (d) { if (!d.winner) { document.getElementById('win-overlay').classList.add('hidden'); clearInterval(window._winIv); } return _asd.apply(this, arguments); };
+            const _sog = startOnlineGame; startOnlineGame = function () { db.ref('rooms/' + roomCode + '/scores/updated').remove(); return _sog.apply(this, arguments); };
+            // ---------- الغرفة: نسخ / مشاركة / طرد ----------
+            function copyText(t) { if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).catch(() => 0); const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); } catch (e) {} a.remove(); return Promise.resolve(); }
+            window.copyRoomCode = () => copyText(roomCode).then(() => toast('تم نسخ الكود ✅'));
+            window.shareRoomLink = () => { const url = location.href.split('?')[0].split('#')[0] + '?room=' + roomCode; if (navigator.share) navigator.share({ title: 'Ebramio', text: 'تعالى العب معايا! كود الغرفة ' + roomCode, url }).catch(() => 0); else copyText(url).then(() => toast('تم نسخ رابط الغرفة 🔗')); };
+            window.kickPlayer = pid => db.ref('rooms/' + roomCode).once('value').then(s => { const d = s.val(); if (!d || d.status !== 'waiting') return; const nm = d.names || {}; delete nm[pid]; db.ref('rooms/' + roomCode).update({ players: (d.players || []).filter(x => x !== pid), names: nm, ['scores/' + pid]: null }); });
+            // ---------- الرجوع + المشغول ----------
+            const sess = () => { try { return JSON.parse(localStorage.getItem('do4Session') || 'null'); } catch (e) { return null; } };
+            const setSess = v => { try { v ? localStorage.setItem('do4Session', JSON.stringify(v)) : localStorage.removeItem('do4Session'); } catch (e) {} };
+            const refreshRejoin = () => { const b = document.getElementById('rejoin-btn'); if (b) b.classList.toggle('hidden', !sess()); };
+            const _ss = switchScreen; switchScreen = function (id) { _ss.apply(this, arguments); if (id === 'lobby-screen') refreshRejoin(); }; refreshRejoin();
+            let awayRef, awayCb, autoKey = '';
+            function hostAway(d) {
+                if (!isHost || !d || d.status !== 'playing' || d.winner || d.doubtEvent) return;
+                const aw = d.away || {}, hw = d.hasWon || {}, P = d.players || [], R = db.ref('rooms/' + roomCode);
+                if (d.doubtPhase) { const ps = d.passes || {}; P.forEach(p => { if (aw[p] && p !== d.lastPlayerId && !hw[p] && !ps[p]) R.child('passes/' + p).set(true); }); return; }
+                const cur = P[d.turnIndex]; if (!cur || !aw[cur] || hw[cur]) return;
+                const key = [d.turnIndex, (d.stack || []).length, d.consecutiveGalas || 0, cur].join('|'); if (key === autoKey) return; autoKey = key;
+                setTimeout(() => {
+                    const st = d.stack || [], act = P.filter(p => !hw[p]);
+                    if (st.length > 0 && d.activeNumber !== -1) {
+                        const cg = (d.consecutiveGalas || 0) + 1;
+                        if (cg >= act.length - 1) { let ns = d.lastPlayerId; if (hw[ns]) ns = act[0]; R.update({ activeNumber: -1, consecutiveGalas: 0, turnIndex: P.indexOf(ns) }); }
+                        else R.update({ consecutiveGalas: cg, turnIndex: getNextPlayerIndexLogic(d.turnIndex, P, hw) });
+                    } else {
+                        const hands2 = d.hands || {}, hand = hands2[cur] || []; if (!hand.length) return; const a = d.activeNumber;
+                        let i = hand.findIndex(p => a !== -1 && (p[0] === a || p[1] === a)); if (i < 0) i = 0; const claim = a !== -1 ? a : hand[i][0], pc = hand.splice(i, 1)[0]; st.push(pc);
+                        R.update({ activeNumber: claim, stack: st, lastPlayedPieces: [pc], lastPlayerId: cur, hands: hands2, consecutiveGalas: 0, doubtPhase: true, passes: null, doubtEvent: null });
+                    }
+                }, 1500);
+            }
+            const _ltr = listenToRoom;
+            listenToRoom = function () {
+                _ltr.apply(this, arguments); setSess({ room: roomCode, id: myId });
+                if (awayRef) awayRef.off('value', awayCb);
+                awayRef = db.ref('rooms/' + roomCode);
+                awayCb = snap => { const d = snap.val(); if (!d) return; awayMap = d.away || {}; if (d.host) isHost = d.host === myId; hostAway(d); if (d.status === 'waiting' && !isHost && !(d.players || []).includes(myId)) { toast('تم طردك من الغرفة'); teardown(); } };
+                awayRef.on('value', awayCb);
+            };
+            function teardown() { if (awayRef) awayRef.off('value', awayCb); if (roomListener) db.ref('rooms/' + roomCode).off('value', roomListener); if (chatListener) db.ref('rooms/' + roomCode + '/chat').off('child_added', chatListener); roomCode = ''; gameMode = 'ai'; setSess(null); switchScreen('lobby-screen'); }
+            leaveOnlineRoom = function () {
+                const rc = roomCode, me = myId, host = isHost;
+                if (rc && me) db.ref('rooms/' + rc).once('value').then(snap => {
+                    if (!snap.exists()) { setSess(null); return; } const d = snap.val(), R = db.ref('rooms/' + rc), others = (d.players || []).filter(p => p !== me);
+                    if (d.status === 'playing' && !d.winner && others.length) { const u = { ['away/' + me]: true }; if (host || d.host === me) u.host = others.find(p => !(d.away || {})[p]) || others[0]; R.update(u); }
+                    else { setSess(null); if ((host || d.host === me) || !others.length) R.remove(); else { const nm = d.names || {}; delete nm[me]; R.update({ players: others, names: nm }); } }
+                });
+                if (awayRef) awayRef.off('value', awayCb); if (roomListener) db.ref('rooms/' + rc).off('value', roomListener); if (chatListener) db.ref('rooms/' + rc + '/chat').off('child_added', chatListener);
+                roomCode = ''; gameMode = 'ai'; switchScreen('lobby-screen');
+            };
+            window.rejoinRoom = function () {
+                const s = sess(); if (!s) return;
+                db.ref('rooms/' + s.room).once('value').then(snap => {
+                    if (!snap.exists()) { setSess(null); refreshRejoin(); return toast('الغرفة اتقفلت'); }
+                    const d = snap.val(); if (!(d.players || []).includes(s.id)) { setSess(null); refreshRejoin(); return toast('اتشلت من الغرفة'); }
+                    gameMode = 'online'; roomCode = s.room; myId = s.id; players = d.players || []; playerNames = d.names || {}; scores = d.scores || {}; totalPlayersCount = players.length; isHost = d.host === myId;
+                    db.ref('rooms/' + roomCode + '/away/' + myId).remove();
+                    if (d.status === 'playing') { switchScreen('game-screen'); setupTableUI(); listenToChat(); } else { document.getElementById('room-code-display').innerText = roomCode; if (!isHost) document.getElementById('start-online-btn').classList.add('hidden'); switchScreen('waiting-screen'); }
+                    listenToRoom(); toast('رجعت للغرفة 👋');
+                });
+            };
+            // ---------- رابط الدعوة ----------
+            try { const q = new URLSearchParams(location.search).get('room'); if (q && /^\d{4}$/.test(q)) { document.getElementById('room-code-input').value = q; setTimeout(() => toast('كود الغرفة اتكتب. اكتب اسمك وانضم 👇'), 600); } } catch (e) {}
         })();
     </script>
 </body>
