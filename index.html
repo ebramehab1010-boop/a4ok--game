@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#26170e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ebramio">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" href="icon-192.png">
     <title>Ebramio</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Lalezar&family=Lobster&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
     
@@ -13,7 +21,7 @@
     <style>
         :root { --gold:#f0b73d; --f1:#21805a; --f2:#166044; --f3:#0c3b2a; --t1:#fbf2d9; --t2:#efe0b5; --t3:#e6d3a2; --te:#a8935f; --tb:#cdb886; --pip:#1a1410; --brass:#f0b73d; --brass2:#9a6a17; --wood:#3a2415; --wood2:#5a3820; --cream:#f3e6c8; --mute:#d9c7a3; --teal:#1f8a86; --red:#b3372d; --bone1:#fbf2d9; --bone2:#e6d3a2; }
         * { box-sizing: border-box; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-        body { background: radial-gradient(90% 55% at 50% -5%, rgba(255,170,60,.30), transparent 65%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23f0b73d' stroke-opacity='.08' stroke-width='1.2'%3E%3Cpath d='M24 2L46 24L24 46L2 24Z'/%3E%3Cpath d='M24 12L36 24L24 36L12 24Z'/%3E%3Ccircle cx='24' cy='24' r='3'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(#26170e, #140b06); color: var(--cream); font-family: 'Tajawal', sans-serif; text-align: center; margin: 0; padding: 6px; height: 100svh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
+        body { background: radial-gradient(90% 55% at 50% -5%, rgba(255,170,60,.30), transparent 65%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23f0b73d' stroke-opacity='.08' stroke-width='1.2'%3E%3Cpath d='M24 2L46 24L24 46L2 24Z'/%3E%3Cpath d='M24 12L36 24L24 36L12 24Z'/%3E%3Ccircle cx='24' cy='24' r='3'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(#26170e, #140b06); color: var(--cream); font-family: 'Tajawal', sans-serif; text-align: center; margin: 0; padding: max(6px, env(safe-area-inset-top)) max(6px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left)); height: 100svh; width: 100vw; overflow: hidden; display: flex; flex-direction: column; }
         body::before { content: ''; position: fixed; left: -20%; bottom: -25%; width: 140%; height: 70%; background: radial-gradient(ellipse at 30% 60%, rgba(255,255,255,.08), transparent 60%), radial-gradient(ellipse at 72% 40%, rgba(255,255,255,.06), transparent 55%); filter: blur(20px); animation: smoke 16s ease-in-out infinite alternate; pointer-events: none; z-index: 0; }
         body::after { content: ''; position: fixed; top: -10%; left: 50%; width: 90%; height: 45%; transform: translateX(-50%); background: radial-gradient(ellipse, rgba(255,190,80,.22), transparent 70%); animation: flicker 5s infinite; pointer-events: none; z-index: 0; }
         h1 { position: relative; align-self: center; margin: 2px 0 6px; padding: 0 30px 3px; font-family: 'Lobster', 'Aref Ruqaa', cursive; font-weight: 400; font-size: 1.7rem; line-height: 1.25; color: #ffd36e; text-shadow: 0 2px 0 #000, 0 0 12px rgba(240,183,61,.55); letter-spacing: 1px; background: linear-gradient(#4f311b, #2b190d); border: 2px solid var(--brass2); border-radius: 14px; box-shadow: 0 0 0 3px #1a0f08, 0 8px 16px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,220,150,.25); flex-shrink: 0; animation: sway 6s ease-in-out infinite; transform-origin: 50% -10px; z-index: 2; }
@@ -186,6 +194,9 @@
         #table-stack .new-piece { animation: none !important; }
         .fly-piece { position: fixed; z-index: 3500; pointer-events: none; transform-origin: center; }
         .fly-piece > * { position: absolute; left: 0; top: 0; width: 100% !important; height: 100% !important; margin: 0 !important; }
+        html, body { overscroll-behavior: none; }
+        body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+        input { -webkit-user-select: text; user-select: text; }
         @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
     </style>
 </head>
@@ -195,7 +206,7 @@
     <div id="lobby-screen" class="screen active">
         <div class="glass-panel">
             <h2 class="brand">Ebramio</h2>
-            <div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn" style="font-size:.85rem;padding:7px" onclick="openTheme()">🎨 شكل اللعبة</button><button class="btn btn-blue hidden" id="rejoin-btn" style="font-size:.85rem;padding:7px" onclick="rejoinRoom()">🔙 ارجع لغرفتك</button></div>
+            <div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn" style="font-size:.85rem;padding:7px" onclick="openTheme()">🎨 شكل اللعبة</button><button class="btn btn-blue hidden" id="rejoin-btn" style="font-size:.85rem;padding:7px" onclick="rejoinRoom()">🔙 ارجع لغرفتك</button><button class="btn btn-primary hidden" id="install-btn" style="font-size:.85rem;padding:7px" onclick="installApp()">📲 ثبّت التطبيق</button></div>
             <button id="resume-btn" class="btn btn-blue hidden" style="margin-bottom: 10px;" onclick="resumeGame()">استكمال الجيم السابق 🔄</button>
 
             <div class="setup-section">
@@ -212,9 +223,9 @@
                 <h3>لعب فردي (ضد الكمبيوتر) 🤖</h3>
                 <input type="text" id="single-player-name" class="name-input" placeholder="اسمك">
                 <div class="radio-group">
-                    <label class="radio-label"><input type="radio" name="aiCount" value="1" onclick="updateRadioUI(this)">1 كمبيوتر</label>
-                    <label class="radio-label selected"><input type="radio" name="aiCount" value="2" checked onclick="updateRadioUI(this)">2 كمبيوتر</label>
-                    <label class="radio-label"><input type="radio" name="aiCount" value="3" onclick="updateRadioUI(this)">3 كمبيوتر</label>
+                    <label class="radio-label"><input type="radio" name="aiCount" value="1" onclick="updateRadioUI(this)">1 AI</label>
+                    <label class="radio-label selected"><input type="radio" name="aiCount" value="2" checked onclick="updateRadioUI(this)">2 AI</label>
+                    <label class="radio-label"><input type="radio" name="aiCount" value="3" onclick="updateRadioUI(this)">3 AI</label>
                 </div>
                 <h3 style="margin: 2px 0 6px;">مستوى الصعوبة</h3>
                 <div class="radio-group">
@@ -222,6 +233,7 @@
                     <label class="radio-label"><input type="radio" name="aiLevel" value="hard" onclick="updateRadioUI(this)">صعب 😈</label>
                     <label class="radio-label"><input type="radio" name="aiLevel" value="impossible" onclick="updateRadioUI(this)">مستحيل 💀</label>
                 </div>
+                <div class="lvl-hint" id="lvl-hint"></div>
                 <button class="btn btn-primary" onclick="startGameMode('ai')">ابدأ التحدي 🔥</button>
             </div>
 
@@ -365,8 +377,7 @@
             messagingSenderId: "512561379349",
             appId: "1:512561379349:web:fd86bd9ab8fee30312361c"
         };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        const db = window.firebase ? (firebase.initializeApp(firebaseConfig), firebase.database()) : { ref() { const r = { on() {}, off() {}, set() { return Promise.resolve(); }, update() { return Promise.resolve(); }, remove() {}, push() {}, child() { return r; }, once() { return Promise.resolve({ exists() { return false; }, val() { return null; } }); } }; return r; } };
 
         // ================= المتغيرات الأساسية =================
         let gameMode = 'ai'; let totalPlayersCount = 3; 
@@ -582,7 +593,7 @@
                 if(!isValidName(mainName)) return;
                 totalPlayersCount = parseInt(document.querySelector('input[name="aiCount"]:checked').value) + 1;
                 myId = 'player'; players.push(myId); playerNames[myId] = mainName; scores[myId] = 0;
-                for(let i=1; i<totalPlayersCount; i++) { players.push(`comp${i}`); playerNames[`comp${i}`] = `الكمبيوتر ${i}`; scores[`comp${i}`] = 0; }
+                for(let i=1; i<totalPlayersCount; i++) { players.push(`comp${i}`); playerNames[`comp${i}`] = `AI ${i}`; scores[`comp${i}`] = 0; }
                 document.getElementById('chat-toggle').classList.remove('hidden');
             } else {
                 totalPlayersCount = parseInt(document.querySelector('input[name="localCount"]:checked').value);
@@ -991,47 +1002,61 @@
 
             const comb = (n, r) => { if (r < 0 || r > n) return 0; r = Math.min(r, n - r); let x = 1; for (let i = 1; i <= r; i++) x = x * (n - r + i) / i; return x; };
             function pAtLeast(N, K, h, k) { if (k <= 0) return 1; h = Math.min(h, N); const tot = comb(N, h); if (!tot) return 0; let s = 0; for (let i = 0; i < k; i++) s += comb(K, i) * comb(N - K, h - i) / tot; return Math.max(0, 1 - s); }
-            function estLie(ai, target, k) {
+            function estLie(ai, target, k, useHist) {
                 const n = activeNumber, M = (n === 0 && totalPlayersCount > 2) ? 6 : 7, hand = hands[ai] || [];
                 const own = hand.filter(p => p[0] === n || p[1] === n).length, avail = M - own;
                 if (k > avail) return 1;
                 const U = (totalPlayersCount > 2 ? 27 : 28) - hand.length, h = (hands[target] || []).length + k;
-                const hs = hist[target] || { l: 0, n: 0 }, prior = (hs.l + 1) / (hs.n + 3);
+                const hs = (useHist === false ? null : hist[target]) || { l: 0, n: 0 }, prior = (hs.l + 1) / (hs.n + 3);
                 return prior / (prior + (1 - prior) * pAtLeast(U, avail, h, k));
             }
             const bluffRate = () => { const r = pst.n ? pst.d / pst.n : .35; return Math.min(.5, Math.max(.1, .65 - r)); };
 
+            const pieceHas = (p, n) => p[0] === n || p[1] === n, mIn = (h, n) => h.filter(p => pieceHas(p, n)), rnd = (a, b) => a + Math.random() * (b - a);
+            function doubtProb(ai, target, k) {
+                const L = aiLevel, hand = hands[ai] || [], n = activeNumber, left = (hands[target] || []).length;
+                if (L === 'impossible') return isT() ? 0 : 1;               // بيشوف الورق الحقيقي
+                const avail = ((n === 0 && totalPlayersCount > 2) ? 6 : 7) - mIn(hand, n).length;
+                if (k > avail) return 1;                                      // مستحيل يكون معاه كده
+                let p;
+                if (L === 'hard') p = estLie(ai, target, k);
+                else { p = .18 + .14 * (k - 1) + (stack.length > 8 ? .08 : 0) + (avail <= k + 1 ? .2 : 0) + rnd(-.08, .08); }
+                if (left === 0) p = Math.max(p, L === 'hard' ? .9 : .7);      // هيكسب لو سكتنا
+                else if (left <= 2) p += .1;
+                return Math.min(1, Math.max(0, p));
+            }
             function smartAITurn() {
                 let ai = players[turnIndex]; if (hasWon[ai]) return proceedToNextTurn(turnIndex);
-                isProcessingTurn = true; doubtHandled = false; const hand = hands[ai] || [], imp = aiLevel === 'impossible';
-                const cnt = n => hand.filter(p => p[0] === n || p[1] === n), take = p => hand.splice(hand.indexOf(p), 1)[0];
-                if (activeNumber !== -1 && stack.length > 0 && cnt(activeNumber).length === 0) {
-                    const canBluff = hand.length <= 2 || (stack.length <= (imp ? 2 : 3) && Math.random() < (imp ? .25 : bluffRate()));
-                    if (!canBluff) { consecutiveGalas++; setStatus(`${playerNames[ai]} تخطى دوره (جلا)`, "#d9c7a3"); saveGame(); setTimeout(checkGalaAndNext, 1500); return; }
+                isProcessingTurn = true; doubtHandled = false;
+                const L = aiLevel, hand = hands[ai] || [], take = p => hand.splice(hand.indexOf(p), 1)[0], others = players.filter(p => p !== ai && !hasWon[p]);
+                const mustPlay = activeNumber === -1 || stack.length === 0;
+                if (!mustPlay && mIn(hand, activeNumber).length === 0) {
+                    const bp = hand.length <= 2 ? (L === 'easy' ? .6 : .85) : (stack.length <= 2 ? (L === 'easy' ? .12 : L === 'hard' ? Math.max(.1, bluffRate() * .7) : .15) : (L === 'easy' ? .04 : .08));
+                    if (Math.random() > bp) { consecutiveGalas++; setStatus(`${playerNames[ai]} تخطى دوره (جلا)`, "#d9c7a3"); saveGame(); setTimeout(checkGalaAndNext, rnd(1100, 2000)); return; }
                 }
                 consecutiveGalas = 0; lastPlayerId = ai; lastPlayedPieces = [];
                 if (activeNumber === -1) {
-                    let best = 0, bc = -1; for (let n = 0; n <= 6; n++) { const c = cnt(n).length; if (c > bc) { bc = c; best = n; } }
-                    activeNumber = best; cnt(best).slice(0, imp ? 3 : 2).forEach(p => lastPlayedPieces.push(take(p)));
-                } else {
-                    const m = cnt(activeNumber);
-                    if (m.length > 0) m.slice(0, imp ? 4 : 3).forEach(p => lastPlayedPieces.push(take(p)));
-                    else lastPlayedPieces.push(take([...hand].sort((a, b) => (b[0] + b[1]) - (a[0] + a[1]))[0]));
+                    const score = n => { const own = mIn(hand, n).length; return L !== 'impossible' ? own + Math.random() * (L === 'easy' ? 1.2 : .3) : own * 2 - others.reduce((s, p) => s + mIn(hands[p] || [], n).length, 0) * .8 + Math.random() * .2; };
+                    let best = 0, bs = -99; for (let n = 0; n <= 6; n++) { const sc = score(n); if (sc > bs) { bs = sc; best = n; } } activeNumber = best;
                 }
+                const m = mIn(hand, activeNumber);
+                if (m.length) {
+                    const k = m.length >= hand.length ? m.length : L === 'easy' ? Math.min(m.length, 1 + (Math.random() < .35 ? 1 : 0)) : L === 'hard' ? Math.min(m.length, 2 + (Math.random() < .25 ? 1 : 0)) : Math.min(m.length, 3);
+                    m.slice(0, k).forEach(p => lastPlayedPieces.push(take(p)));
+                } else lastPlayedPieces.push(take([...hand].sort((a, b) => (b[0] + b[1]) - (a[0] + a[1]))[0]));
                 stack.push(...lastPlayedPieces); updateUI(); setStatus(`قام ${playerNames[ai]} بلعب ${lastPlayedPieces.length} ورقات. هتشك ولا تخطي؟`, "#ff8a70"); saveGame(); startReactionPhase(ai);
             }
             function smartReaction(targetId) {
                 doubtHandled = false; aiWillDoubtFlag = false; reactionTimers.forEach(clearTimeout); reactionTimers = [];
-                const k = lastPlayedPieces.length, truth = isT();
+                const k = lastPlayedPieces.length, thr = aiLevel === 'hard' ? .53 : .5;
                 players.filter(a => a !== targetId && a !== myId && !hasWon[a]).forEach(ai => {
-                    const p = aiLevel === 'impossible' ? (truth ? 0 : 1) : estLie(ai, targetId, k) + (Math.random() * .1 - .05);
-                    if (p >= (aiLevel === 'impossible' ? .5 : .55)) { aiWillDoubtFlag = true; reactionTimers.push(setTimeout(() => executeDoubtLocallyOffline(ai, targetId), 700 + Math.floor(Math.random() * 800))); }
+                    if (doubtProb(ai, targetId, k) >= thr) { aiWillDoubtFlag = true; const d = aiLevel === 'impossible' ? rnd(450, 1100) : aiLevel === 'hard' ? rnd(800, 1900) : rnd(1200, 2800); reactionTimers.push(setTimeout(() => executeDoubtLocallyOffline(ai, targetId), d)); }
                 });
                 if (targetId !== myId && !hasWon[myId]) document.getElementById('player-reaction-controls').classList.remove('hidden');
                 else if (!aiWillDoubtFlag) reactionTimers.push(setTimeout(() => handleNoDoubtLocally(targetId), 2000));
             }
-            const _ai = executeAITurn; executeAITurn = function () { return (gameMode === 'ai' && aiLevel !== 'easy') ? smartAITurn() : _ai.apply(this, arguments); };
-            const _rp = startReactionPhase; startReactionPhase = function (t) { return (gameMode === 'ai' && aiLevel !== 'easy') ? smartReaction(t) : _rp.apply(this, arguments); };
+            const _ai = executeAITurn; executeAITurn = function () { return gameMode === 'ai' ? smartAITurn() : _ai.apply(this, arguments); };
+            const _rp = startReactionPhase; startReactionPhase = function (t) { return gameMode === 'ai' ? smartReaction(t) : _rp.apply(this, arguments); };
             window.__fx = { knock, tick, confetti };
         })();
 
@@ -1176,6 +1201,22 @@
             };
             // ---------- رابط الدعوة ----------
             try { const q = new URLSearchParams(location.search).get('room'); if (q && /^\d{4}$/.test(q)) { document.getElementById('room-code-input').value = q; setTimeout(() => toast('كود الغرفة اتكتب. اكتب اسمك وانضم 👇'), 600); } } catch (e) {}
+        })();
+
+        /* ===== تثبيت التطبيق + أوفلاين ===== */
+        (function () {
+            const toast = t => { const e = document.createElement('div'); e.className = 'toast'; e.textContent = t; document.body.appendChild(e); setTimeout(() => e.remove(), 3200); };
+            let dp = null; const btn = document.getElementById('install-btn'), ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+            if (!standalone && btn && /^https?:$/.test(location.protocol)) btn.classList.remove('hidden');
+            addEventListener('beforeinstallprompt', e => { e.preventDefault(); dp = e; });
+            addEventListener('appinstalled', () => btn && btn.classList.add('hidden'));
+            window.installApp = () => { if (dp) { dp.prompt(); dp.userChoice.finally(() => { dp = null; }); } else toast(ios ? 'من Safari: اضغط زرار المشاركة ثم Add to Home Screen' : 'من قايمة المتصفح ⋮ اختار Install app'); };
+            ['createOnlineRoom', 'joinOnlineRoom', 'rejoinRoom'].forEach(n => { const f = window[n]; if (typeof f === 'function') window[n] = function () { if (!window.firebase || !navigator.onLine) return toast('الأونلاين محتاج إنترنت 📶'); return f.apply(this, arguments); }; });
+            const hints = { easy: 'بيلعب زي لاعب عادي: بيشك لما الكلام يبان غريب', hard: 'بيحسب الاحتمالات وبيفتكر مين كان بيكدب', impossible: 'بيشوف ورق الكل 👁️ ومفيش كدبة بتعدي' };
+            const hintEl = document.getElementById('lvl-hint'), updHint = () => { const c = document.querySelector('input[name="aiLevel"]:checked'); if (hintEl && c) hintEl.textContent = hints[c.value]; };
+            document.querySelectorAll('input[name="aiLevel"]').forEach(r => r.addEventListener('click', updHint)); updHint();
+            if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
         })();
     </script>
 </body>
